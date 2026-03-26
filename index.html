@@ -104,25 +104,6 @@
   .inst-section em { font-style: italic; }
   .cite { font-size: 11px; color: var(--text-tertiary); }
   .axis-visual { display: flex; align-items: stretch; margin: 10px 0; border-radius: var(--radius-md); overflow: hidden; border: 0.5px solid var(--border); }
-  .axis-neg { background: var(--danger-bg); padding: 8px 14px; flex: 1; text-align: center; border-right: 0.5px solid var(--border); }
-  .axis-neg .aword { font-size: 14px; font-weight: 600; color: var(--danger-text); }
-  .axis-neg .albl { font-size: 10px; color: var(--danger-text); opacity: 0.7; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px; }
-  .axis-mid { padding: 8px 16px; background: var(--bg-secondary); text-align: center; border-right: 0.5px solid var(--border); }
-  .axis-mid .albl { font-size: 10px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; }
-  .axis-mid .aname { font-size: 12px; font-weight: 600; color: var(--text); margin-top: 2px; }
-  .axis-pos { background: var(--info-bg); padding: 8px 14px; flex: 1; text-align: center; }
-  .axis-pos .aword { font-size: 14px; font-weight: 600; color: var(--info-text); }
-  .axis-pos .albl { font-size: 10px; color: var(--info-text); opacity: 0.7; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px; }
-  .example-box { background: var(--success-bg); border: 0.5px solid var(--success-border); border-radius: var(--radius-md); padding: 10px 14px; margin-top: 10px; }
-  .example-box-no { background: var(--bg-secondary); border-color: var(--border-md); }
-  .example-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--success-text); margin-bottom: 5px; }
-  .example-box-no .example-label { color: var(--text-secondary); }
-  .example-box p, .example-box-no p { font-size: 12px; margin-bottom: 0; color: var(--text-secondary); line-height: 1.6; }
-  .task-list { padding-left: 1.2rem; margin: 8px 0; display: flex; flex-direction: column; gap: 6px; }
-  .task-list li { font-size: 13px; color: var(--text-secondary); line-height: 1.65; }
-  .task-list li strong { color: var(--text); font-weight: 600; }
-
-  .axis-visual { display: flex; align-items: stretch; margin: 10px 0; border-radius: var(--radius-md); overflow: hidden; border: 0.5px solid var(--border); }
   .axis-neg { background: var(--danger-bg); padding: 8px 14px; flex: 1; text-align: center; border-right: 0.5px solid var(--danger-border); }
   .axis-neg .aword { font-size: 15px; font-weight: 600; color: var(--danger-text); }
   .axis-neg .albl { font-size: 10px; color: var(--danger-text); opacity: 0.7; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px; }
@@ -139,13 +120,20 @@
   .gbar-fill-neg { background: var(--danger-bg); height: 100%; display: flex; align-items: center; justify-content: flex-end; padding-right: 6px; font-size: 10px; color: var(--danger-text); font-weight: 600; }
   .gbar-fill-pos { background: var(--info-bg); height: 100%; display: flex; align-items: center; padding-left: 6px; font-size: 10px; color: var(--info-text); font-weight: 600; margin-left: auto; }
   .examples-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 2px; }
+  .example-box { background: var(--success-bg); border: 0.5px solid var(--success-border); border-radius: var(--radius-md); padding: 10px 14px; }
+  .example-box-no { background: var(--bg-secondary); border: 0.5px solid var(--border-md); }
+  .example-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--success-text); margin-bottom: 5px; }
+  .example-box-no .example-label { color: var(--text-secondary); }
   .eg-list { padding-left: 1rem; display: flex; flex-direction: column; gap: 4px; margin-top: 6px; }
   .eg-list li { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
   .eg-list li em { color: var(--text); font-style: normal; font-weight: 600; }
+  .task-list { padding-left: 1.2rem; margin: 8px 0; display: flex; flex-direction: column; gap: 6px; }
+  .task-list li { font-size: 13px; color: var(--text-secondary); line-height: 1.65; }
+  .task-list li strong { color: var(--text); font-weight: 600; }
   .q-badge { display: inline-block; font-size: 10px; font-weight: 600; padding: 1px 7px; border-radius: 99px; margin-right: 4px; vertical-align: middle; }
   .q1-badge { background: var(--info-bg); color: var(--info-text); }
   .q2-badge { background: var(--warning-bg); color: var(--warning-text); }
-  .cite { font-size: 11px; color: var(--text-tertiary); }
+  .warn-note { font-size: 13px; color: var(--warning-text); background: var(--warning-bg); border: 0.5px solid var(--warning-border); border-radius: var(--radius-md); padding: 10px 14px; margin-bottom: 1rem; line-height: 1.6; }
 </style>
 </head>
 <body>
@@ -156,26 +144,31 @@
     <span class="badge" id="modeLabel">Loading…</span>
   </div>
 
-  <!-- LOADING -->
   <div class="loading-state" id="loadingState">
     <div class="spinner"></div>
     Loading dataset…
   </div>
 
-  <!-- ERROR -->
   <div id="errorBox" class="hidden"></div>
 
-  <!-- SETUP: only name needed -->
   <div class="panel hidden" id="setupPanel">
     <h2>Before you begin — please read carefully</h2>
 
     <div class="instruction-block">
 
       <div class="inst-section">
-       
-        <p>A <strong>semantic axis</strong> can be defined by a pair of antonymous adjectives, e.g., <em>poor</em> vs. <em>rich</em>.  Position of a social group (e.g., "CEOs", "homeless people") on that semantic axis serves as a measure of stereotype association. </p>
-        <p>For example, CEOs are expected to be associated closer to the <em>rich</em> pole, while homeless people are associated closer to the <em>poor</em> pole. </p>
-
+        <p>A <strong>semantic axis</strong> can be defined by a pair of antonymous adjectives, e.g., <em>poor</em> vs. <em>rich</em>. Position of a social group (e.g., "CEOs", "homeless people") on that semantic axis serves as a measure of stereotype association.</p>
+        <p>For example, CEOs are expected to be associated closer to the <em>rich</em> pole, while homeless people are associated closer to the <em>poor</em> pole.</p>
+        <div class="axis-visual">
+          <div class="axis-neg"><div class="aword">poor</div><div class="albl">negative pole</div></div>
+          <div class="axis-mid"><div class="albl">semantic axis</div><div class="aname">wealth</div></div>
+          <div class="axis-pos"><div class="aword">rich</div><div class="albl">positive pole</div></div>
+        </div>
+        <div class="group-bars">
+          <div class="gbar-row"><div class="gbar-label">CEOs</div><div class="gbar-track"><div class="gbar-fill-pos" style="width:75%;">rich</div></div></div>
+          <div class="gbar-row"><div class="gbar-label">homeless people</div><div class="gbar-track"><div class="gbar-fill-neg" style="width:70%;">poor</div></div></div>
+        </div>
+      </div>
 
       <div class="inst-section">
         <div class="inst-heading">Examples</div>
@@ -184,7 +177,7 @@
             <div class="example-label">Stereotypical axes</div>
             <ul class="eg-list">
               <li><em>unfriendly ↔ friendly</em> — warmth; social groups differ in perceived warmth</li>
-              <li><em>immoral ↔ moral</em> — morality; moral character varies by different social group </li>
+              <li><em>immoral ↔ moral</em> — morality; moral character varies by different social group</li>
             </ul>
           </div>
           <div class="example-box example-box-no">
@@ -201,12 +194,16 @@
         <div class="inst-heading">Your task</div>
         <p>For each antonym pair, consider the <strong>semantic axis</strong> it constructs. You will see the <span style="color:var(--danger-text);font-weight:600;">negative pole</span> on the left and the <span style="color:var(--info-text);font-weight:600;">positive pole</span> on the right. Answer two questions <strong>in order</strong>:</p>
         <ol class="task-list">
-          <li><span class="q-badge q1-badge">Q1</span> <strong>Is this semantic axis related to humans?</strong> — Does it primarily describe traits, behaviours, or categories that apply to humans? This is a <strong>prerequisite</strong> of a semantic axes to be cosnidered as stereotypical semantic axes.</li>
+          <li><span class="q-badge q1-badge">Q1</span> <strong>Is this semantic axis related to humans?</strong> — Does it primarily describe traits, behaviours, or categories that apply to humans? This is a <strong>prerequisite</strong> of a semantic axis to be considered stereotypical.</li>
           <li><span class="q-badge q2-badge">Q2</span> <strong>Is this semantic axis stereotypical?</strong> — From <strong>your perspective</strong>, are different social groups associated with different positions along this axis? Would you expect certain groups to be closer to one pole than the other?</li>
         </ol>
         <p>Use <strong>Unsure</strong> when you genuinely cannot decide. Optional notes are available for any pair.</p>
       </div>
 
+    </div>
+
+    <div class="warn-note">
+      <strong>&#9888; Important:</strong> Please complete the annotation <strong>in one sitting</strong> without interruption. Taking breaks may shift your perspective and affect consistency across annotations. Progress is <strong>not saved</strong> if the browser tab is closed — export your annotations before closing.
     </div>
 
     <div id="welcomeNote" style="font-size:13px;color:var(--text-secondary);padding:10px 14px;background:var(--bg-secondary);border-radius:var(--radius-md);border:0.5px solid var(--border);margin-bottom:1rem;"></div>
@@ -221,7 +218,6 @@
     <div style="font-size:13px;color:var(--danger-text);margin-top:8px;" id="setupErr"></div>
   </div>
 
-  <!-- STATS -->
   <div id="statsSection" class="hidden">
     <div class="stats-row">
       <div class="stat"><div class="sv" id="stTotal">0</div><div class="sl">Total pairs</div></div>
@@ -231,7 +227,6 @@
     </div>
   </div>
 
-  <!-- ANNOTATION CARD -->
   <div id="annotationSection" class="hidden">
     <div class="card" id="mainCard">
       <div class="progress-row">
@@ -253,26 +248,7 @@
           </div>
         </div>
       </div>
-      <div class="questions">
-        <div class="question-block">
-          <div class="ql">1. Is this antonym axis stereotypical?</div>
-          <div class="qs">Does this positive/negative framing reflect a cultural or social stereotype?</div>
-          <div class="choice-row">
-            <button class="choice-btn" id="q1-yes" onclick="setQ('q1','Yes')">Yes</button>
-            <button class="choice-btn" id="q1-no" onclick="setQ('q1','No')">No</button>
-            <button class="choice-btn" id="q1-unsure" onclick="setQ('q1','Unsure')">Unsure</button>
-          </div>
-        </div>
-        <div class="question-block">
-          <div class="ql">2. Is this antonym axis related to humans?</div>
-          <div class="qs">Does this pair primarily describe human traits, behaviors, or social categories?</div>
-          <div class="choice-row">
-            <button class="choice-btn" id="q2-yes" onclick="setQ('q2','Yes')">Yes</button>
-            <button class="choice-btn" id="q2-no" onclick="setQ('q2','No')">No</button>
-            <button class="choice-btn" id="q2-unsure" onclick="setQ('q2','Unsure')">Unsure</button>
-          </div>
-        </div>
-      </div>
+      <div class="questions"></div>
       <div class="note-row">
         <label>Notes (optional)</label>
         <textarea id="noteField" placeholder="Any comments about this pair..."></textarea>
@@ -303,38 +279,27 @@
 
 </div>
 <script>
-  // =========================================================
-  // CONFIGURATION — only edit this section
-  // =========================================================
   const CONFIG = {
-    // Raw GitHub URL of your JSON dataset file.
-    // Pattern: https://raw.githubusercontent.com/USERNAME/REPO/BRANCH/FILENAME
-    datasetURL: "https://raw.githubusercontent.com/FaraneJalalifarahani/Stereotypes-in-LLMs/main/stratified_axes.json",
-
-    // Title shown in the welcome note
+    datasetURL: "https://raw.githubusercontent.com/FaraneJalaliFarahani/Stereotypes-in-LLMs/main/stratified_axes.json",
     datasetName: "Stereotypes-in-LLMs antonym pairs",
-
-    // Questions shown to annotators (edit label/description freely)
     questions: [
       {
-        id: "stereotypical",
-        label: "1. Is this antonym axis stereotypical?",
-        description: "Does this positive/negative framing reflect a cultural or social stereotype?"
+        id: "human_related",
+        label: "Q1. Is this semantic axis related to humans?",
+        description: "Does it primarily describe traits, behaviours, or categories that apply to humans? (prerequisite for stereotypicality)"
       },
       {
-        id: "human_related",
-        label: "2. Is this antonym axis related to humans?",
-        description: "Does this pair primarily describe human traits, behaviors, or social categories?"
+        id: "stereotypical",
+        label: "Q2. Is this semantic axis stereotypical?",
+        description: "From your perspective, are different social groups associated with different positions along this axis?"
       }
     ]
   };
-  // =========================================================
 
   let pairs = [], annotations = {}, currentIndex = 0;
   let annotatorName = '';
   let answers = {};
 
-  // ---- Boot: fetch dataset ----
   async function boot() {
     try {
       const res = await fetch(CONFIG.datasetURL);
@@ -345,13 +310,9 @@
       document.getElementById('loadingState').classList.add('hidden');
       document.getElementById('modeLabel').textContent = 'Ready';
       document.getElementById('welcomeNote').innerHTML =
-       document.getElementById('welcomeNote').innerHTML =
-  `This dataset contains <strong>${pairs.length} antonym pairs</strong>. ` +
-  `For each pair you will answer ${CONFIG.questions.length} question(s). ` +
-  `<br><br><strong>&#9888; Important:</strong> Please complete the annotation ` +
-  `<strong>in one sitting</strong> without interruption. Taking breaks may shift ` +
-  `your perspective and affect consistency. Progress is <strong>not saved</strong> ` +
-  `if the browser tab is closed. When done, export your annotations and send the file back.`;
+        `This dataset contains <strong>${pairs.length} antonym pairs</strong>. ` +
+        `For each pair you will answer ${CONFIG.questions.length} question(s). ` +
+        `When done, export your annotations and send the file back.`;
       document.getElementById('setupPanel').classList.remove('hidden');
     } catch(e) {
       document.getElementById('loadingState').classList.add('hidden');
@@ -381,6 +342,23 @@
       conf: get('Confidence:').replace('Confidence:', '').trim()
     };
   }
+
+  (function buildQuestions() {
+    const container = document.querySelector('.questions');
+    container.innerHTML = '';
+    CONFIG.questions.forEach(q => {
+      container.innerHTML += `
+        <div class="question-block">
+          <div class="ql">${q.label}</div>
+          <div class="qs">${q.description}</div>
+          <div class="choice-row">
+            <button class="choice-btn" id="${q.id}-yes" onclick="setQ('${q.id}','Yes')">Yes</button>
+            <button class="choice-btn" id="${q.id}-no" onclick="setQ('${q.id}','No')">No</button>
+            <button class="choice-btn" id="${q.id}-unsure" onclick="setQ('${q.id}','Unsure')">Unsure</button>
+          </div>
+        </div>`;
+    });
+  })();
 
   function startSession() {
     const err = document.getElementById('setupErr');
@@ -520,98 +498,6 @@
     el.innerHTML = '<span class="alert-msg">' + msg + '</span>';
     setTimeout(() => el.innerHTML = '', 4000);
   }
-
-  // Build question buttons dynamically from CONFIG
-  (function buildQuestions() {
-    const container = document.querySelector('.questions');
-    container.innerHTML = '';
-    CONFIG.questions.forEach(q => {
-      container.innerHTML += `
-        <div class="question-block">
-          <div class="ql">${q.label}</div>
-          <div class="qs">${q.description}</div>
-          <div class="choice-row">
-            <button class="choice-btn" id="${q.id}-yes" onclick="setQ('${q.id}','Yes')">Yes</button>
-            <button class="choice-btn" id="${q.id}-no" onclick="setQ('${q.id}','No')">No</button>
-            <button class="choice-btn" id="${q.id}-unsure" onclick="setQ('${q.id}','Unsure')">Unsure</button>
-          </div>
-        </div>`;
-    });
-  })();
-
-  // ---- Auto-save & restore from localStorage ----
-  const STORAGE_KEY = 'antonym_annotation_progress';
-
-  function saveProgress() {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({
-        annotatorName, currentIndex, annotations,
-        savedAt: new Date().toISOString()
-      }));
-    } catch(e) {}
-  }
-
-  function loadProgress() {
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)); } catch(e) { return null; }
-  }
-
-  function clearProgress() {
-    try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
-  }
-
-  function formatDate(iso) {
-    if (!iso) return '';
-    const d = new Date(iso);
-    return d.toLocaleDateString() + ' at ' + d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
-  }
-
-  // Wrap actions to auto-save after every interaction
-  const _sAN = saveAndNext; saveAndNext = function() { _sAN(); saveProgress(); };
-  const _ski = skipItem;    skipItem    = function() { _ski(); saveProgress(); };
-  const _nav = navigate;    navigate    = function(d) { _nav(d); saveProgress(); };
-  const _sSe = startSession; startSession = function() { clearProgress(); _sSe(); saveProgress(); };
-
-  // After dataset loads, check for saved progress
-  const _boot = boot;
-  boot = async function() {
-    await _boot();
-    const saved = loadProgress();
-    if (!saved || !saved.annotatorName || !pairs.length) return;
-    const done = Object.values(saved.annotations).filter(a => !a.skipped).length;
-    const banner = document.createElement('div');
-    banner.id = 'resumeBanner';
-    banner.style.cssText = 'background:var(--warning-bg);border:0.5px solid var(--warning-border);border-radius:var(--radius-md);padding:12px 14px;margin-bottom:1rem;font-size:13px;color:var(--warning-text);line-height:1.6;';
-    banner.innerHTML =
-      '<strong>Saved session found</strong> — ' + saved.annotatorName + ', ' +
-      done + '/' + pairs.length + ' pairs annotated, last saved ' + formatDate(saved.savedAt) +
-      '<br><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">' +
-      '<button class="btn btn-sm" style="background:var(--warning-bg);border-color:var(--warning-border);color:var(--warning-text);" onclick="resumeSession()">Resume session</button>' +
-      '<button class="btn btn-sm" onclick="discardSession()">Start fresh</button></div>';
-    const panel = document.getElementById('setupPanel');
-    panel.insertBefore(banner, panel.querySelector('.field'));
-  };
-
-  window.resumeSession = function() {
-    const saved = loadProgress();
-    if (!saved) return;
-    annotatorName = saved.annotatorName;
-    annotations   = saved.annotations;
-    currentIndex  = Math.min(saved.currentIndex, pairs.length - 1);
-    document.getElementById('resumeBanner')?.remove();
-    document.getElementById('setupPanel').classList.add('hidden');
-    document.getElementById('statsSection').classList.remove('hidden');
-    document.getElementById('annotationSection').classList.remove('hidden');
-    document.getElementById('modeLabel').textContent = annotatorName;
-    CONFIG.questions.forEach(q => answers[q.id] = null);
-    showItem(currentIndex);
-    updateStats();
-  };
-
-  window.discardSession = function() {
-    if (!confirm('Discard saved progress and start fresh?')) return;
-    clearProgress();
-    document.getElementById('resumeBanner')?.remove();
-  };
 
   boot();
 </script>
