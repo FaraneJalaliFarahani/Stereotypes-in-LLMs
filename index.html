@@ -94,8 +94,58 @@
   .error-box { background: var(--danger-bg); border: 0.5px solid var(--danger-border); border-radius: var(--radius-md); padding: 1rem 1.25rem; margin-bottom: 1rem; }
   .error-box p { font-size: 14px; color: var(--danger-text); line-height: 1.6; }
   .error-box code { font-family: monospace; font-size: 12px; background: rgba(0,0,0,0.06); padding: 1px 5px; border-radius: 4px; }
-  .welcome-note { font-size: 13px; color: var(--text-secondary); margin-bottom: 1rem; line-height: 1.6; padding: 10px 14px; background: var(--bg-secondary); border-radius: var(--radius-md); border: 0.5px solid var(--border); }
-  .welcome-note strong { color: var(--text); font-weight: 600; }
+  .instruction-block { display: flex; flex-direction: column; gap: 0; margin-bottom: 1.25rem; border: 0.5px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+  .inst-section { padding: 1.1rem 1.25rem; border-bottom: 0.5px solid var(--border); }
+  .inst-section:last-child { border-bottom: none; }
+  .inst-section p { font-size: 13px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 0.5rem; }
+  .inst-section p:last-child { margin-bottom: 0; }
+  .inst-heading { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .inst-section strong { color: var(--text); font-weight: 600; }
+  .inst-section em { font-style: italic; }
+  .cite { font-size: 11px; color: var(--text-tertiary); }
+  .axis-visual { display: flex; align-items: stretch; margin: 10px 0; border-radius: var(--radius-md); overflow: hidden; border: 0.5px solid var(--border); }
+  .axis-neg { background: var(--danger-bg); padding: 8px 14px; flex: 1; text-align: center; border-right: 0.5px solid var(--border); }
+  .axis-neg .aword { font-size: 14px; font-weight: 600; color: var(--danger-text); }
+  .axis-neg .albl { font-size: 10px; color: var(--danger-text); opacity: 0.7; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px; }
+  .axis-mid { padding: 8px 16px; background: var(--bg-secondary); text-align: center; border-right: 0.5px solid var(--border); }
+  .axis-mid .albl { font-size: 10px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; }
+  .axis-mid .aname { font-size: 12px; font-weight: 600; color: var(--text); margin-top: 2px; }
+  .axis-pos { background: var(--info-bg); padding: 8px 14px; flex: 1; text-align: center; }
+  .axis-pos .aword { font-size: 14px; font-weight: 600; color: var(--info-text); }
+  .axis-pos .albl { font-size: 10px; color: var(--info-text); opacity: 0.7; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px; }
+  .example-box { background: var(--success-bg); border: 0.5px solid var(--success-border); border-radius: var(--radius-md); padding: 10px 14px; margin-top: 10px; }
+  .example-box-no { background: var(--bg-secondary); border-color: var(--border-md); }
+  .example-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--success-text); margin-bottom: 5px; }
+  .example-box-no .example-label { color: var(--text-secondary); }
+  .example-box p, .example-box-no p { font-size: 12px; margin-bottom: 0; color: var(--text-secondary); line-height: 1.6; }
+  .task-list { padding-left: 1.2rem; margin: 8px 0; display: flex; flex-direction: column; gap: 6px; }
+  .task-list li { font-size: 13px; color: var(--text-secondary); line-height: 1.65; }
+  .task-list li strong { color: var(--text); font-weight: 600; }
+
+  .axis-visual { display: flex; align-items: stretch; margin: 10px 0; border-radius: var(--radius-md); overflow: hidden; border: 0.5px solid var(--border); }
+  .axis-neg { background: var(--danger-bg); padding: 8px 14px; flex: 1; text-align: center; border-right: 0.5px solid var(--danger-border); }
+  .axis-neg .aword { font-size: 15px; font-weight: 600; color: var(--danger-text); }
+  .axis-neg .albl { font-size: 10px; color: var(--danger-text); opacity: 0.7; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px; }
+  .axis-mid { padding: 8px 16px; background: var(--bg-secondary); text-align: center; border-right: 0.5px solid var(--border); white-space: nowrap; }
+  .axis-mid .albl { font-size: 10px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; }
+  .axis-mid .aname { font-size: 12px; font-weight: 600; color: var(--text); margin-top: 2px; }
+  .axis-pos { background: var(--info-bg); padding: 8px 14px; flex: 1; text-align: center; }
+  .axis-pos .aword { font-size: 15px; font-weight: 600; color: var(--info-text); }
+  .axis-pos .albl { font-size: 10px; color: var(--info-text); opacity: 0.7; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px; }
+  .group-bars { margin: 10px 0 4px; display: flex; flex-direction: column; gap: 5px; }
+  .gbar-row { display: flex; align-items: center; gap: 8px; }
+  .gbar-label { font-size: 11px; color: var(--text-secondary); min-width: 120px; text-align: right; }
+  .gbar-track { flex: 1; height: 18px; background: var(--bg-secondary); border-radius: 3px; overflow: hidden; border: 0.5px solid var(--border); display: flex; }
+  .gbar-fill-neg { background: var(--danger-bg); height: 100%; display: flex; align-items: center; justify-content: flex-end; padding-right: 6px; font-size: 10px; color: var(--danger-text); font-weight: 600; }
+  .gbar-fill-pos { background: var(--info-bg); height: 100%; display: flex; align-items: center; padding-left: 6px; font-size: 10px; color: var(--info-text); font-weight: 600; margin-left: auto; }
+  .examples-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 2px; }
+  .eg-list { padding-left: 1rem; display: flex; flex-direction: column; gap: 4px; margin-top: 6px; }
+  .eg-list li { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .eg-list li em { color: var(--text); font-style: normal; font-weight: 600; }
+  .q-badge { display: inline-block; font-size: 10px; font-weight: 600; padding: 1px 7px; border-radius: 99px; margin-right: 4px; vertical-align: middle; }
+  .q1-badge { background: var(--info-bg); color: var(--info-text); }
+  .q2-badge { background: var(--warning-bg); color: var(--warning-text); }
+  .cite { font-size: 11px; color: var(--text-tertiary); }
 </style>
 </head>
 <body>
@@ -117,8 +167,50 @@
 
   <!-- SETUP: only name needed -->
   <div class="panel hidden" id="setupPanel">
-    <h2>Start your session</h2>
-    <div class="welcome-note" id="welcomeNote"></div>
+    <h2>Before you begin — please read carefully</h2>
+
+    <div class="instruction-block">
+
+      <div class="inst-section">
+        <div class="inst-heading">What is a semantic axis?</div>
+        <p>A <strong>semantic axis</strong> is defined by a pair of antonymous adjectives — e.g. <em>poor</em> vs. <em>rich</em>.  Position of a social group (e.g., "CEOs", "homeless people") on that semantic axis — i.e., which pole of the axis it is associated with — serves as a measure of stereotype association. </p>
+        <p>For example, CEOs are stereotypically associated closer to the <em>rich</em> pole, while homeless people are associated closer to the <em>poor</em> pole. </p>
+
+
+      <div class="inst-section">
+        <div class="inst-heading">Examples</div>
+        <div class="examples-grid">
+          <div class="example-box">
+            <div class="example-label">Stereotypical axes</div>
+            <ul class="eg-list">
+              <li><em>unfriendly ↔ friendly</em> — warmth; social groups differ in perceived warmth</li>
+              <li><em>immoral ↔ moral</em> — morality; moral character varies by group stereotype</li>
+            </ul>
+          </div>
+          <div class="example-box example-box-no">
+            <div class="example-label">Non-stereotypical axes</div>
+            <ul class="eg-list">
+              <li><em>abaxial ↔ adaxial</em> — plant anatomy; no social group mapping</li>
+              <li><em>basiscopic ↔ acroscopic</em> — purely biological; no social group mapping</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="inst-section">
+        <div class="inst-heading">Your task</div>
+        <p>For each antonym pair, consider the <strong>semantic axis</strong> it constructs. You will see the <span style="color:var(--danger-text);font-weight:600;">negative pole</span> on the left and the <span style="color:var(--info-text);font-weight:600;">positive pole</span> on the right. Answer two questions <strong>in order</strong>:</p>
+        <ol class="task-list">
+          <li><span class="q-badge q1-badge">Q1</span> <strong>Is this semantic axis related to humans?</strong> — Does it primarily describe traits, behaviours, or categories that apply to people? This is a <strong>prerequisite</strong> for stereotypicality — a purely botanical or physical axis cannot be stereotypical.</li>
+          <li><span class="q-badge q2-badge">Q2</span> <strong>Is this semantic axis stereotypical?</strong> — From <strong>your perspective</strong>, are different social groups associated with different positions along this axis? Would you expect certain groups to be closer to one pole than the other?</li>
+        </ol>
+        <p>Use <strong>Unsure</strong> when you genuinely cannot decide. Optional notes are available for any pair.</p>
+      </div>
+
+    </div>
+
+    <div id="welcomeNote" style="font-size:13px;color:var(--text-secondary);padding:10px 14px;background:var(--bg-secondary);border-radius:var(--radius-md);border:0.5px solid var(--border);margin-bottom:1rem;"></div>
+
     <div class="field" style="max-width:320px;">
       <label>Your name</label>
       <input type="text" id="annotatorName" placeholder="e.g. Alice" />
@@ -217,7 +309,7 @@
   const CONFIG = {
     // Raw GitHub URL of your JSON dataset file.
     // Pattern: https://raw.githubusercontent.com/USERNAME/REPO/BRANCH/FILENAME
-    datasetURL: "https://raw.githubusercontent.com/FaraneJalaliFarahani/Stereotypes-in-LLMs/main/stratified_axes.json",
+    datasetURL: "https://raw.githubusercontent.com/FaraneJalalifarahani/Stereotypes-in-LLMs/main/stratified_axes.json",
 
     // Title shown in the welcome note
     datasetName: "Stereotypes-in-LLMs antonym pairs",
@@ -442,6 +534,80 @@
         </div>`;
     });
   })();
+
+  // ---- Auto-save & restore from localStorage ----
+  const STORAGE_KEY = 'antonym_annotation_progress';
+
+  function saveProgress() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        annotatorName, currentIndex, annotations,
+        savedAt: new Date().toISOString()
+      }));
+    } catch(e) {}
+  }
+
+  function loadProgress() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)); } catch(e) { return null; }
+  }
+
+  function clearProgress() {
+    try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+  }
+
+  function formatDate(iso) {
+    if (!iso) return '';
+    const d = new Date(iso);
+    return d.toLocaleDateString() + ' at ' + d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+  }
+
+  // Wrap actions to auto-save after every interaction
+  const _sAN = saveAndNext; saveAndNext = function() { _sAN(); saveProgress(); };
+  const _ski = skipItem;    skipItem    = function() { _ski(); saveProgress(); };
+  const _nav = navigate;    navigate    = function(d) { _nav(d); saveProgress(); };
+  const _sSe = startSession; startSession = function() { clearProgress(); _sSe(); saveProgress(); };
+
+  // After dataset loads, check for saved progress
+  const _boot = boot;
+  boot = async function() {
+    await _boot();
+    const saved = loadProgress();
+    if (!saved || !saved.annotatorName || !pairs.length) return;
+    const done = Object.values(saved.annotations).filter(a => !a.skipped).length;
+    const banner = document.createElement('div');
+    banner.id = 'resumeBanner';
+    banner.style.cssText = 'background:var(--warning-bg);border:0.5px solid var(--warning-border);border-radius:var(--radius-md);padding:12px 14px;margin-bottom:1rem;font-size:13px;color:var(--warning-text);line-height:1.6;';
+    banner.innerHTML =
+      '<strong>Saved session found</strong> — ' + saved.annotatorName + ', ' +
+      done + '/' + pairs.length + ' pairs annotated, last saved ' + formatDate(saved.savedAt) +
+      '<br><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">' +
+      '<button class="btn btn-sm" style="background:var(--warning-bg);border-color:var(--warning-border);color:var(--warning-text);" onclick="resumeSession()">Resume session</button>' +
+      '<button class="btn btn-sm" onclick="discardSession()">Start fresh</button></div>';
+    const panel = document.getElementById('setupPanel');
+    panel.insertBefore(banner, panel.querySelector('.field'));
+  };
+
+  window.resumeSession = function() {
+    const saved = loadProgress();
+    if (!saved) return;
+    annotatorName = saved.annotatorName;
+    annotations   = saved.annotations;
+    currentIndex  = Math.min(saved.currentIndex, pairs.length - 1);
+    document.getElementById('resumeBanner')?.remove();
+    document.getElementById('setupPanel').classList.add('hidden');
+    document.getElementById('statsSection').classList.remove('hidden');
+    document.getElementById('annotationSection').classList.remove('hidden');
+    document.getElementById('modeLabel').textContent = annotatorName;
+    CONFIG.questions.forEach(q => answers[q.id] = null);
+    showItem(currentIndex);
+    updateStats();
+  };
+
+  window.discardSession = function() {
+    if (!confirm('Discard saved progress and start fresh?')) return;
+    clearProgress();
+    document.getElementById('resumeBanner')?.remove();
+  };
 
   boot();
 </script>
