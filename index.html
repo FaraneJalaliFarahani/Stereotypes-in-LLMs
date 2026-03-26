@@ -348,11 +348,10 @@
        document.getElementById('welcomeNote').innerHTML =
   `This dataset contains <strong>${pairs.length} antonym pairs</strong>. ` +
   `For each pair you will answer ${CONFIG.questions.length} question(s). ` +
-  `When done, export your annotations and send the file back.` +
   `<br><br><strong>&#9888; Important:</strong> Please complete the annotation ` +
   `<strong>in one sitting</strong> without interruption. Taking breaks may shift ` +
   `your perspective and affect consistency. Progress is <strong>not saved</strong> ` +
-  `if the browser tab is closed — export your annotations before closing.`;
+  `if the browser tab is closed. When done, export your annotations and send the file back.`;
       document.getElementById('setupPanel').classList.remove('hidden');
     } catch(e) {
       document.getElementById('loadingState').classList.add('hidden');
