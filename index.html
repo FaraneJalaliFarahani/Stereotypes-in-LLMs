@@ -256,9 +256,9 @@
           <div class="score-bubble unset" id="scoreBubble">drag</div>
         </div>
         <div class="slider-row">
-          <span class="slider-end-label">1 — weak</span>
+          <span class="slider-end-label">1 — no stereotype</span>
           <input type="range" id="stereoSlider" min="1" max="5" step="1" oninput="onSliderInput()" />
-          <span class="slider-end-label right">5 — strong</span>
+          <span class="slider-end-label right">5 — very strong and widely recognized stereotype</span>
         </div>
         <div class="stereo-nudge" id="stereoNudge">&#8593; drag the slider to set a score before saving</div>
       </div>
@@ -406,8 +406,8 @@ function saveAndNext() {
   annotations[p.key] = {
     key: p.key, pair: p.pair, positive_pole: p.posName, negative_pole: p.negName,
     applicable, stereotypicality_score: stereoScore,
-    neg_groups: document.getElementById('negGroups').value.trim(),
     pos_groups: document.getElementById('posGroups').value.trim(),
+    neg_groups: document.getElementById('negGroups').value.trim(),
     note: document.getElementById('noteField').value.trim(),
     annotator: annotatorName, timestamp: new Date().toISOString(), skipped: false
   };
@@ -452,7 +452,7 @@ function getRows() {
     return {
       key: p.key, pair: p.pair, positive_pole: p.posName, negative_pole: p.negName,
       applicable: a?.applicable ?? '', stereotypicality_score: a?.stereotypicality_score ?? '',
-      neg_groups: a?.neg_groups ?? '', pos_groups: a?.pos_groups ?? '',
+       pos_groups: a?.pos_groups ?? '', neg_groups: a?.neg_groups ?? '',
       note: a?.note ?? '', annotator: a?.annotator ?? '',
       timestamp: a?.timestamp ?? '', skipped: a?.skipped ?? ''
     };
@@ -468,7 +468,7 @@ function exportJSON() {
 }
 
 function exportCSV() {
-  const cols = ['key','pair','positive_pole','negative_pole','applicable','stereotypicality_score','neg_groups','pos_groups','note','annotator','timestamp','skipped'];
+  const cols = ['key','pair','positive_pole','negative_pole','applicable','stereotypicality_score','pos_groups','neg_groups','note','annotator','timestamp','skipped'];
   const rows = [cols, ...getRows().map(r => cols.map(c => '"' + String(r[c] ?? '').replace(/"/g, '""') + '"'))];
   dl('annotations_' + annotatorName.replace(/\s+/g, '_') + '.csv', rows.map(r => r.join(',')).join('\n'), 'text/csv');
   showAlert('CSV downloaded. Please send this file back.');
