@@ -79,14 +79,11 @@
     border: 0.5px solid var(--border-md);
     background: rgba(255,255,255,0.5); color: var(--text);
   }
-  @media (prefers-color-scheme: dark) {
-    .pole textarea { background: rgba(0,0,0,0.3); }
-  }
+  @media (prefers-color-scheme: dark) { .pole textarea { background: rgba(0,0,0,0.3); } }
   .pole textarea:focus { border-color: var(--text-secondary); }
   .pole textarea::placeholder { color: var(--text-tertiary); }
   .applicable-row {
-    padding: 1rem 1.25rem;
-    border-top: 0.5px solid var(--border);
+    padding: 1rem 1.25rem; border-top: 0.5px solid var(--border);
     display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
   }
   .ar-label { font-size: 14px; font-weight: 600; color: var(--text); flex: 1; min-width: 160px; }
@@ -104,18 +101,37 @@
 
   /* Stereotypicality slider */
   .stereo-row {
-    padding: 1rem 1.25rem;
-    border-top: 0.5px solid var(--border);
-    background: var(--warning-bg);
-    border-left: 3px solid var(--warning-border);
+    padding: 1rem 1.25rem; border-top: 0.5px solid var(--border);
+    background: var(--warning-bg); border-left: 3px solid var(--warning-border);
   }
-  .stereo-header { font-size: 14px; font-weight: 600; color: var(--warning-text); margin-bottom: 4px; }
-  .stereo-sub { font-size: 12px; color: var(--warning-text); opacity: 0.85; margin-bottom: 12px; line-height: 1.5; }
-  .slider-wrap { display: flex; align-items: center; gap: 12px; }
-  .slider-wrap input[type=range] { flex: 1; accent-color: var(--warning-border); }
-  .slider-score {
-    font-size: 22px; font-weight: 600; color: var(--warning-text);
-    min-width: 28px; text-align: center;
+  .stereo-header { font-size: 14px; font-weight: 600; color: var(--warning-text); margin-bottom: 2px; }
+  .stereo-sub { font-size: 12px; color: var(--warning-text); opacity: 0.85; margin-bottom: 14px; line-height: 1.5; }
+
+  .score-bubble-wrap { display: flex; justify-content: center; margin-bottom: 8px; }
+  .score-bubble {
+    width: 52px; height: 52px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px; font-weight: 600;
+    border: 2px solid var(--warning-border);
+    background: var(--bg); color: var(--warning-text);
+    transition: background 0.15s, color 0.15s;
+  }
+  .score-bubble.unset {
+    background: var(--bg-secondary); color: var(--text-tertiary);
+    border-color: var(--border-md); font-size: 14px; font-weight: 400;
+  }
+  .score-bubble.set {
+    background: var(--warning-border); color: #412402;
+  }
+
+  .slider-row { display: flex; align-items: center; gap: 10px; }
+  .slider-row input[type=range] { flex: 1; accent-color: var(--warning-border); cursor: pointer; }
+  .slider-end-label { font-size: 12px; color: var(--warning-text); opacity: 0.8; white-space: nowrap; min-width: 54px; }
+  .slider-end-label.right { text-align: right; }
+
+  .stereo-nudge {
+    margin-top: 8px; font-size: 12px; color: var(--warning-text);
+    opacity: 0.85; text-align: center; font-style: italic;
   }
 
   .note-row { padding: 1rem 1.25rem; border-top: 0.5px solid var(--border); }
@@ -252,16 +268,21 @@
         </div>
       </div>
 
-      <!-- Stereotypicality slider — shown only when applicable = Yes -->
+      <!-- Stereotypicality slider -->
       <div class="stereo-row hidden" id="stereoRow">
         <div class="stereo-header">How stereotypical is this pair?</div>
-        <div class="stereo-sub">Rate how strongly this antonym pair evokes stereotypical associations about groups of people (1 = very weak, 5 = very strong).</div>
-        <div class="slider-wrap">
-          <span style="font-size:12px;color:var(--warning-text);white-space:nowrap;">1 — weak</span>
-          <input type="range" id="stereoSlider" min="1" max="5" step="1" value="3" oninput="updateSliderDisplay()" />
-          <span style="font-size:12px;color:var(--warning-text);white-space:nowrap;">5 — strong</span>
-          <div class="slider-score" id="sliderScore">3</div>
+        <div class="stereo-sub">Rate how strongly this antonym pair evokes stereotypical associations about groups of people.</div>
+
+        <div class="score-bubble-wrap">
+          <div class="score-bubble unset" id="scoreBubble">drag</div>
         </div>
+
+        <div class="slider-row">
+          <span class="slider-end-label">1 — weak</span>
+          <input type="range" id="stereoSlider" min="1" max="5" step="1" oninput="onSliderInput()" />
+          <span class="slider-end-label right">5 — strong</span>
+        </div>
+        <div class="stereo-nudge" id="stereoNudge">&#8593; drag the slider to set a score before saving</div>
       </div>
 
       <div class="note-row">
@@ -299,6 +320,7 @@ const PAIRS = [{"key":"a01769843-a01770903","pair":"persuasive|dissuasive","posN
 
 let annotations = {}, currentIndex = 0, annotatorName = '';
 let applicable = null;
+let stereoTouched = false;
 
 function startSession() {
   const err = document.getElementById('setupErr');
@@ -318,6 +340,7 @@ function showItem(idx) {
   if (idx >= PAIRS.length) { showDone(); return; }
   const p = PAIRS[idx];
   applicable = null;
+  stereoTouched = false;
   const words = p.pair.split('|');
   document.getElementById('pairTitle').textContent = words[0] + ' \u2194 ' + words[1];
   document.getElementById('negName').textContent = p.negName;
@@ -330,8 +353,14 @@ function showItem(idx) {
   document.getElementById('noteField').value = ex?.note || '';
   if (ex) applicable = ex.applicable || null;
   const savedScore = ex?.stereotypicality_score;
-  document.getElementById('stereoSlider').value = (savedScore && savedScore > 0) ? savedScore : 3;
-  updateSliderDisplay();
+  if (savedScore && savedScore > 0) {
+    document.getElementById('stereoSlider').value = savedScore;
+    stereoTouched = true;
+  } else {
+    document.getElementById('stereoSlider').value = 3;
+    stereoTouched = false;
+  }
+  updateBubble();
   renderToggle();
   document.getElementById('pfill').style.width = Math.round((idx / PAIRS.length) * 100) + '%';
   document.getElementById('plabel').textContent = (idx + 1) + ' / ' + PAIRS.length;
@@ -341,25 +370,40 @@ function showItem(idx) {
   document.getElementById('doneMsg').classList.add('hidden');
 }
 
-function updateSliderDisplay() {
-  document.getElementById('sliderScore').textContent = document.getElementById('stereoSlider').value;
+function onSliderInput() {
+  stereoTouched = true;
+  updateBubble();
+}
+
+function updateBubble() {
+  const bubble = document.getElementById('scoreBubble');
+  const nudge = document.getElementById('stereoNudge');
+  if (stereoTouched) {
+    const val = document.getElementById('stereoSlider').value;
+    bubble.textContent = val;
+    bubble.className = 'score-bubble set';
+    nudge.style.visibility = 'hidden';
+  } else {
+    bubble.textContent = 'drag';
+    bubble.className = 'score-bubble unset';
+    nudge.style.visibility = 'visible';
+  }
 }
 
 function renderToggle() {
   document.getElementById('tog-yes').className = 'tog-btn' + (applicable === 'Yes' ? ' sel-yes' : '');
   document.getElementById('tog-no').className  = 'tog-btn' + (applicable === 'No'  ? ' sel-no'  : '');
   const stereoRow = document.getElementById('stereoRow');
-  if (applicable === 'Yes') {
-    stereoRow.classList.remove('hidden');
-  } else {
-    stereoRow.classList.add('hidden');
-  }
+  applicable === 'Yes' ? stereoRow.classList.remove('hidden') : stereoRow.classList.add('hidden');
 }
 
 function setApplicable(val) { applicable = val; renderToggle(); }
 
 function saveAndNext() {
   if (!applicable) { alert('Please mark whether this pair is applicable to humans.'); return; }
+  if (applicable === 'Yes' && !stereoTouched) {
+    alert('Please drag the slider to set a stereotypicality score before saving.'); return;
+  }
   const p = PAIRS[currentIndex];
   const stereoScore = applicable === 'Yes' ? parseInt(document.getElementById('stereoSlider').value) : 0;
   annotations[p.key] = {
@@ -382,8 +426,7 @@ function skipItem() {
   annotations[p.key] = {
     key: p.key, pair: p.pair,
     positive_pole: p.posName, negative_pole: p.negName,
-    applicable: null,
-    stereotypicality_score: null,
+    applicable: null, stereotypicality_score: null,
     neg_groups: document.getElementById('negGroups').value.trim(),
     pos_groups: document.getElementById('posGroups').value.trim(),
     note: document.getElementById('noteField').value.trim(),
