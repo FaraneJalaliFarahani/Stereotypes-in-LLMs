@@ -95,15 +95,12 @@
   .tog-btn:hover { border-color: var(--text-secondary); }
   .tog-btn.sel-yes { background: var(--success-bg); color: var(--success-text); border-color: var(--success-border); }
   .tog-btn.sel-no  { background: var(--danger-bg);  color: var(--danger-text);  border-color: var(--danger-border); }
-
-  /* Stereotypicality slider */
   .stereo-row {
     padding: 1rem 1.25rem; border-top: 0.5px solid var(--border);
     background: var(--warning-bg); border-left: 3px solid var(--warning-border);
   }
   .stereo-header { font-size: 14px; font-weight: 600; color: var(--warning-text); margin-bottom: 2px; }
   .stereo-sub { font-size: 12px; color: var(--warning-text); opacity: 0.85; margin-bottom: 14px; line-height: 1.5; }
-
   .score-bubble-wrap { display: flex; justify-content: center; margin-bottom: 8px; }
   .score-bubble {
     width: 52px; height: 52px; border-radius: 50%;
@@ -113,24 +110,13 @@
     background: var(--bg); color: var(--warning-text);
     transition: background 0.15s, color 0.15s;
   }
-  .score-bubble.unset {
-    background: var(--bg-secondary); color: var(--text-tertiary);
-    border-color: var(--border-md); font-size: 14px; font-weight: 400;
-  }
-  .score-bubble.set {
-    background: var(--warning-border); color: #412402;
-  }
-
+  .score-bubble.unset { background: var(--bg-secondary); color: var(--text-tertiary); border-color: var(--border-md); font-size: 14px; font-weight: 400; }
+  .score-bubble.set   { background: var(--warning-border); color: #412402; }
   .slider-row { display: flex; align-items: center; gap: 10px; }
   .slider-row input[type=range] { flex: 1; accent-color: var(--warning-border); cursor: pointer; }
   .slider-end-label { font-size: 12px; color: var(--warning-text); opacity: 0.8; white-space: nowrap; min-width: 54px; }
   .slider-end-label.right { text-align: right; }
-
-  .stereo-nudge {
-    margin-top: 8px; font-size: 12px; color: var(--warning-text);
-    opacity: 0.85; text-align: center; font-style: italic;
-  }
-
+  .stereo-nudge { margin-top: 8px; font-size: 12px; color: var(--warning-text); opacity: 0.85; text-align: center; font-style: italic; }
   .note-row { padding: 1rem 1.25rem; border-top: 0.5px solid var(--border); }
   .note-row label { font-size: 13px; color: var(--text-secondary); display: block; margin-bottom: 5px; }
   .note-row textarea { width: 100%; font-size: 13px; font-family: var(--font); min-height: 48px; resize: none; padding: 7px 10px; background: var(--bg); color: var(--text); border: 0.5px solid var(--border-md); border-radius: var(--radius-md); outline: none; }
@@ -160,8 +146,6 @@
   .warn-note { font-size: 13px; color: var(--warning-text); background: var(--warning-bg); border: 0.5px solid var(--warning-border); border-radius: var(--radius-md); padding: 10px 14px; margin-bottom: 1rem; line-height: 1.6; }
   .welcome-note { font-size: 13px; color: var(--text-secondary); padding: 10px 14px; background: var(--bg-secondary); border-radius: var(--radius-md); border: 0.5px solid var(--border); margin-bottom: 1rem; }
   .err-text { font-size: 13px; color: var(--danger-text); margin-top: 8px; }
-
-  /* Loading state */
   .loading-msg { text-align: center; padding: 3rem 1rem; color: var(--text-secondary); font-size: 15px; }
   .load-err { font-size: 13px; color: var(--danger-text); background: var(--danger-bg); border: 0.5px solid var(--danger-border); border-radius: var(--radius-md); padding: 10px 14px; margin-bottom: 1rem; line-height: 1.6; }
 </style>
@@ -174,7 +158,6 @@
     <span class="badge" id="modeLabel">Ready</span>
   </div>
 
-  <!-- Loading state shown while fetching JSON -->
   <div id="loadingMsg" class="loading-msg">Loading pairs from example_axes.json…</div>
   <div id="loadErr" class="load-err hidden"></div>
 
@@ -236,12 +219,10 @@
 
   <div id="annotationSection" class="hidden">
     <div class="card" id="mainCard">
-
       <div class="progress-row">
         <div class="ptrack"><div class="pfill" id="pfill" style="width:0%"></div></div>
         <span class="plabel" id="plabel">— / —</span>
       </div>
-
       <div class="pair-section">
         <div class="pair-title" id="pairTitle">—</div>
         <div class="pair-grid">
@@ -259,7 +240,6 @@
           </div>
         </div>
       </div>
-
       <div class="applicable-row">
         <div class="ar-label">
           Applicable to humans?
@@ -270,16 +250,12 @@
           <button class="tog-btn" id="tog-no"  onclick="setApplicable('No')">Not applicable</button>
         </div>
       </div>
-
-      <!-- Stereotypicality slider -->
       <div class="stereo-row hidden" id="stereoRow">
         <div class="stereo-header">How stereotypical is this pair?</div>
         <div class="stereo-sub">Rate how strongly this antonym pair evokes stereotypical associations about groups of people.</div>
-
         <div class="score-bubble-wrap">
           <div class="score-bubble unset" id="scoreBubble">drag</div>
         </div>
-
         <div class="slider-row">
           <span class="slider-end-label">1 — weak</span>
           <input type="range" id="stereoSlider" min="1" max="5" step="1" oninput="onSliderInput()" />
@@ -287,12 +263,10 @@
         </div>
         <div class="stereo-nudge" id="stereoNudge">&#8593; drag the slider to set a score before saving</div>
       </div>
-
       <div class="note-row">
         <label>Notes <span style="color:var(--text-tertiary);font-size:12px">(optional)</span></label>
         <textarea id="noteField" placeholder="Any other comments about this pair…"></textarea>
       </div>
-
       <div class="nav-row">
         <div class="btn-row">
           <button class="btn btn-sm" id="prevBtn" onclick="navigate(-1)" disabled>&#8592; Prev</button>
@@ -302,11 +276,9 @@
         <button class="btn btn-sm btn-primary" onclick="saveAndNext()">Save &amp; next &#8594;</button>
       </div>
     </div>
-
     <div class="done-state hidden" id="doneMsg">
       &#10003; All pairs reviewed! Export your annotations below and send the file back.
     </div>
-
     <div class="export-bar" style="margin-top:1rem;">
       <span>Export your annotations</span>
       <div class="btn-row">
@@ -321,51 +293,87 @@
 <script>
 let PAIRS = [];
 let annotations = {}, currentIndex = 0, annotatorName = '';
-let applicable = null;
-let stereoTouched = false;
+let applicable = null, stereoTouched = false;
 
-/* ── Load pairs from example_axes.json ── */
+/* ── Parse the flat string format from example_axes.json ──
+   Each value looks like:
+   "Antonym Pair: lower-class.a.01|upper-class.a.01\n  Positive: lower-class, low-class → ...\n  Negative: upper-class → ...\n  Domain: ..."
+*/
+function parseEntry(key, raw) {
+  const lines = raw.split('\n').map(s => s.trim()).filter(Boolean);
+
+  // Extract the pair line: "Antonym Pair: word1.x.xx|word2.x.xx"
+  const pairLine = lines.find(l => l.startsWith('Antonym Pair:')) || '';
+  const pairRaw  = pairLine.replace('Antonym Pair:', '').trim(); // e.g. "lower-class.a.01|upper-class.a.01"
+
+  // Strip sense tags (e.g. ".a.01") → keep just the word
+  const cleanWord = w => w.replace(/\.[a-z]\.\d+$/, '').trim();
+  const parts = pairRaw.split('|');
+  const posWordRaw = parts[0] || '';
+  const negWordRaw = parts[1] || '';
+  const posWord = cleanWord(posWordRaw);
+  const negWord = cleanWord(negWordRaw);
+
+  // Extract definitions from "Positive: word, aliases → definition" lines
+  const extractDef = (prefix) => {
+    const line = lines.find(l => l.startsWith(prefix + ':')) || '';
+    const body = line.replace(prefix + ':', '').trim();
+    // Definition comes after "→"
+    const arrowIdx = body.indexOf('→');
+    return arrowIdx >= 0 ? body.slice(arrowIdx + 1).trim() : body;
+  };
+
+  const posDef = extractDef('Positive');
+  const negDef = extractDef('Negative');
+
+  // Build a clean pair string for the title display
+  const pair = posWord + '|' + negWord;
+
+  return {
+    key,
+    pair,
+    posName: posWord,
+    posDef,
+    negName: negWord,
+    negDef
+  };
+}
+
 async function loadPairs() {
   try {
     const res = await fetch('example_axes.json');
-    if (!res.ok) throw new Error('HTTP ' + res.status + ': could not fetch example_axes.json');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
 
-    /* Accept either a plain array or an object with an "axes" / "pairs" key */
     if (Array.isArray(data)) {
+      // Already a structured array
       PAIRS = data;
-    } else if (Array.isArray(data.axes)) {
-      PAIRS = data.axes;
-    } else if (Array.isArray(data.pairs)) {
-      PAIRS = data.pairs;
+    } else if (typeof data === 'object' && data !== null) {
+      // It's a key→string object — parse each entry
+      PAIRS = Object.entries(data).map(([key, val]) => parseEntry(key, val));
     } else {
-      throw new Error('example_axes.json must be an array or have an "axes" or "pairs" key containing an array.');
+      throw new Error('Unrecognised format.');
     }
 
-    if (PAIRS.length === 0) throw new Error('example_axes.json contains no pairs.');
+    if (PAIRS.length === 0) throw new Error('No pairs found in example_axes.json.');
 
-    /* Update dynamic count in the welcome note */
     document.getElementById('welcomeNote').innerHTML =
       'This dataset contains <strong>' + PAIRS.length + ' antonym pairs</strong>. When done, export your annotations and send the file back.';
     document.getElementById('stTotal').textContent = PAIRS.length;
     document.getElementById('stLeft').textContent  = PAIRS.length;
-
-    /* Hide loader, show setup */
     document.getElementById('loadingMsg').classList.add('hidden');
     document.getElementById('setupPanel').classList.remove('hidden');
 
   } catch (err) {
     document.getElementById('loadingMsg').classList.add('hidden');
-    const errEl = document.getElementById('loadErr');
-    errEl.classList.remove('hidden');
-    errEl.textContent = '⚠ Could not load example_axes.json — ' + err.message +
-      '. Make sure the file is in the same folder as this HTML file and you are opening it via a local server (not file://).';
+    const el = document.getElementById('loadErr');
+    el.classList.remove('hidden');
+    el.textContent = '⚠ Could not load example_axes.json — ' + err.message;
   }
 }
 
 loadPairs();
 
-/* ── Session ── */
 function startSession() {
   const err = document.getElementById('setupErr');
   annotatorName = document.getElementById('annotatorName').value.trim();
@@ -383,8 +391,7 @@ function startSession() {
 function showItem(idx) {
   if (idx >= PAIRS.length) { showDone(); return; }
   const p = PAIRS[idx];
-  applicable = null;
-  stereoTouched = false;
+  applicable = null; stereoTouched = false;
   const words = p.pair.split('|');
   document.getElementById('pairTitle').textContent = words[0] + ' \u2194 ' + words[1];
   document.getElementById('negName').textContent = p.negName;
@@ -397,15 +404,9 @@ function showItem(idx) {
   document.getElementById('noteField').value = ex?.note || '';
   if (ex) applicable = ex.applicable || null;
   const savedScore = ex?.stereotypicality_score;
-  if (savedScore && savedScore > 0) {
-    document.getElementById('stereoSlider').value = savedScore;
-    stereoTouched = true;
-  } else {
-    document.getElementById('stereoSlider').value = 3;
-    stereoTouched = false;
-  }
-  updateBubble();
-  renderToggle();
+  if (savedScore && savedScore > 0) { document.getElementById('stereoSlider').value = savedScore; stereoTouched = true; }
+  else { document.getElementById('stereoSlider').value = 3; stereoTouched = false; }
+  updateBubble(); renderToggle();
   document.getElementById('pfill').style.width = Math.round((idx / PAIRS.length) * 100) + '%';
   document.getElementById('plabel').textContent = (idx + 1) + ' / ' + PAIRS.length;
   document.getElementById('annTag').textContent = annotatorName;
@@ -414,10 +415,7 @@ function showItem(idx) {
   document.getElementById('doneMsg').classList.add('hidden');
 }
 
-function onSliderInput() {
-  stereoTouched = true;
-  updateBubble();
-}
+function onSliderInput() { stereoTouched = true; updateBubble(); }
 
 function updateBubble() {
   const bubble = document.getElementById('scoreBubble');
@@ -436,39 +434,32 @@ function updateBubble() {
 function renderToggle() {
   document.getElementById('tog-yes').className = 'tog-btn' + (applicable === 'Yes' ? ' sel-yes' : '');
   document.getElementById('tog-no').className  = 'tog-btn' + (applicable === 'No'  ? ' sel-no'  : '');
-  const stereoRow = document.getElementById('stereoRow');
-  applicable === 'Yes' ? stereoRow.classList.remove('hidden') : stereoRow.classList.add('hidden');
+  document.getElementById('stereoRow').classList.toggle('hidden', applicable !== 'Yes');
 }
 
 function setApplicable(val) { applicable = val; renderToggle(); }
 
 function saveAndNext() {
   if (!applicable) { alert('Please mark whether this pair is applicable to humans.'); return; }
-  if (applicable === 'Yes' && !stereoTouched) {
-    alert('Please drag the slider to set a stereotypicality score before saving.'); return;
-  }
+  if (applicable === 'Yes' && !stereoTouched) { alert('Please drag the slider to set a stereotypicality score before saving.'); return; }
   const p = PAIRS[currentIndex];
   const stereoScore = applicable === 'Yes' ? parseInt(document.getElementById('stereoSlider').value) : 0;
   annotations[p.key] = {
-    key: p.key, pair: p.pair,
-    positive_pole: p.posName, negative_pole: p.negName,
-    applicable,
-    stereotypicality_score: stereoScore,
+    key: p.key, pair: p.pair, positive_pole: p.posName, negative_pole: p.negName,
+    applicable, stereotypicality_score: stereoScore,
     neg_groups: document.getElementById('negGroups').value.trim(),
     pos_groups: document.getElementById('posGroups').value.trim(),
     note: document.getElementById('noteField').value.trim(),
     annotator: annotatorName, timestamp: new Date().toISOString(), skipped: false
   };
   updateStats();
-  if (currentIndex < PAIRS.length - 1) { currentIndex++; showItem(currentIndex); }
-  else showDone();
+  if (currentIndex < PAIRS.length - 1) { currentIndex++; showItem(currentIndex); } else showDone();
 }
 
 function skipItem() {
   const p = PAIRS[currentIndex];
   annotations[p.key] = {
-    key: p.key, pair: p.pair,
-    positive_pole: p.posName, negative_pole: p.negName,
+    key: p.key, pair: p.pair, positive_pole: p.posName, negative_pole: p.negName,
     applicable: null, stereotypicality_score: null,
     neg_groups: document.getElementById('negGroups').value.trim(),
     pos_groups: document.getElementById('posGroups').value.trim(),
@@ -476,8 +467,7 @@ function skipItem() {
     annotator: annotatorName, timestamp: new Date().toISOString(), skipped: true
   };
   updateStats();
-  if (currentIndex < PAIRS.length - 1) { currentIndex++; showItem(currentIndex); }
-  else showDone();
+  if (currentIndex < PAIRS.length - 1) { currentIndex++; showItem(currentIndex); } else showDone();
 }
 
 function navigate(dir) {
@@ -501,26 +491,19 @@ function getRows() {
   return PAIRS.map(p => {
     const a = annotations[p.key];
     return {
-      key: p.key, pair: p.pair,
-      positive_pole: p.posName, negative_pole: p.negName,
-      applicable:             a?.applicable             ?? '',
-      stereotypicality_score: a?.stereotypicality_score ?? '',
-      neg_groups:             a?.neg_groups             ?? '',
-      pos_groups:             a?.pos_groups             ?? '',
-      note:                   a?.note                   ?? '',
-      annotator:              a?.annotator              ?? '',
-      timestamp:              a?.timestamp              ?? '',
-      skipped:                a?.skipped                ?? ''
+      key: p.key, pair: p.pair, positive_pole: p.posName, negative_pole: p.negName,
+      applicable: a?.applicable ?? '', stereotypicality_score: a?.stereotypicality_score ?? '',
+      neg_groups: a?.neg_groups ?? '', pos_groups: a?.pos_groups ?? '',
+      note: a?.note ?? '', annotator: a?.annotator ?? '',
+      timestamp: a?.timestamp ?? '', skipped: a?.skipped ?? ''
     };
   });
 }
 
 function exportJSON() {
-  const data = {
-    annotator: annotatorName, exported_at: new Date().toISOString(),
+  const data = { annotator: annotatorName, exported_at: new Date().toISOString(),
     total: PAIRS.length, annotated: Object.values(annotations).filter(a => !a.skipped).length,
-    annotations: getRows()
-  };
+    annotations: getRows() };
   dl('annotations_' + annotatorName.replace(/\s+/g, '_') + '.json', JSON.stringify(data, null, 2), 'application/json');
   showAlert('JSON downloaded. Please send this file back.');
 }
@@ -533,8 +516,7 @@ function exportCSV() {
 }
 
 function dl(name, content, type) {
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([content], { type }));
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([content], { type }));
   a.download = name; a.click();
 }
 
