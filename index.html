@@ -37,9 +37,9 @@
   .panel h2 { font-size: 11px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 1rem; }
   .field { margin-bottom: 12px; }
   .field label { display: block; font-size: 13px; color: var(--text-secondary); margin-bottom: 5px; }
-  .field input { width: 100%; padding: 8px 10px; font-size: 14px; font-family: var(--font); background: var(--bg); color: var(--text); border: 0.5px solid var(--border-md); border-radius: var(--radius-md); outline: none; transition: border-color 0.15s; }
+  .field input { width: 100%; max-width: 320px; padding: 8px 10px; font-size: 14px; font-family: var(--font); background: var(--bg); color: var(--text); border: 0.5px solid var(--border-md); border-radius: var(--radius-md); outline: none; }
   .field input:focus { border-color: var(--text-secondary); }
-  .btn { padding: 8px 18px; border-radius: var(--radius-md); font-size: 14px; font-family: var(--font); cursor: pointer; border: 0.5px solid var(--border-md); background: var(--bg); color: var(--text); transition: background 0.15s; white-space: nowrap; }
+  .btn { padding: 8px 18px; border-radius: var(--radius-md); font-size: 14px; font-family: var(--font); cursor: pointer; border: 0.5px solid var(--border-md); background: var(--bg); color: var(--text); white-space: nowrap; }
   .btn:hover { background: var(--bg-secondary); }
   .btn:disabled { opacity: 0.4; cursor: not-allowed; }
   .btn-primary { background: var(--text); color: var(--bg); border-color: var(--text); }
@@ -57,30 +57,59 @@
   .ptrack { flex: 1; height: 4px; background: var(--bg-secondary); border-radius: 2px; overflow: hidden; }
   .pfill { height: 100%; background: var(--text); border-radius: 2px; transition: width 0.3s; }
   .plabel { font-size: 13px; color: var(--text-secondary); white-space: nowrap; }
-  .pair-section { padding: 1.25rem 1.25rem 1rem; }
-  .pair-title { font-size: 13px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; }
-  .pair-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+  /* Pair + poles */
+  .pair-section { padding: 1.25rem 1.25rem 1.1rem; }
+  .pair-title { font-size: 22px; font-weight: 600; color: var(--text); margin-bottom: 16px; letter-spacing: -0.01em; }
+  .pair-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   @media (max-width: 540px) { .pair-grid { grid-template-columns: 1fr; } }
-  .pole { border-radius: var(--radius-md); padding: 1rem 1.1rem; }
-  .pole.pos { background: var(--info-bg); border: 0.5px solid var(--info-border); }
+  .pole { border-radius: var(--radius-md); padding: 1rem 1.1rem; display: flex; flex-direction: column; gap: 8px; }
   .pole.neg { background: var(--danger-bg); border: 0.5px solid var(--danger-border); }
-  .pole-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
-  .pole.pos .pole-label { color: var(--info-text); }
+  .pole.pos { background: var(--info-bg);   border: 0.5px solid var(--info-border); }
+  .pole-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
   .pole.neg .pole-label { color: var(--danger-text); }
-  .pole-name { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
-  .pole-def { font-size: 13px; color: var(--text-secondary); line-height: 1.55; }
-  .questions { padding: 1.1rem 1.25rem; border-top: 0.5px solid var(--border); display: flex; flex-direction: column; gap: 1.1rem; }
-  .question-block .ql { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
-  .question-block .qs { font-size: 12px; color: var(--text-secondary); margin-bottom: 10px; }
-  .choice-row { display: flex; gap: 8px; flex-wrap: wrap; }
-  .choice-btn { padding: 6px 22px; border-radius: var(--radius-md); font-size: 14px; font-family: var(--font); cursor: pointer; border: 0.5px solid var(--border-md); background: var(--bg-secondary); color: var(--text); transition: all 0.12s; }
-  .choice-btn:hover { border-color: var(--text-secondary); }
-  .choice-btn.sel-yes { background: var(--success-bg); color: var(--success-text); border-color: var(--success-border); }
-  .choice-btn.sel-no { background: var(--danger-bg); color: var(--danger-text); border-color: var(--danger-border); }
-  .choice-btn.sel-unsure { background: var(--warning-bg); color: var(--warning-text); border-color: var(--warning-border); }
-  .note-row { padding: 0 1.25rem 1rem; }
+  .pole.pos .pole-label { color: var(--info-text); }
+  .pole-name { font-size: 17px; font-weight: 600; color: var(--text); }
+  .pole-def  { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .pole-input-label { font-size: 11px; margin-top: 4px; }
+  .pole.neg .pole-input-label { color: var(--danger-text); }
+  .pole.pos .pole-input-label { color: var(--info-text); }
+  .pole textarea {
+    width: 100%; font-size: 13px; font-family: var(--font);
+    min-height: 68px; resize: vertical; padding: 7px 9px;
+    border-radius: var(--radius-md); outline: none; line-height: 1.5;
+    border: 0.5px solid var(--border-md);
+    background: rgba(255,255,255,0.5); color: var(--text);
+  }
+  @media (prefers-color-scheme: dark) {
+    .pole textarea { background: rgba(0,0,0,0.3); }
+  }
+  .pole textarea:focus { border-color: var(--text-secondary); }
+  .pole textarea::placeholder { color: var(--text-tertiary); }
+
+  /* Applicable toggle */
+  .applicable-row {
+    padding: 1rem 1.25rem;
+    border-top: 0.5px solid var(--border);
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  }
+  .ar-label { font-size: 14px; font-weight: 600; color: var(--text); flex: 1; min-width: 160px; }
+  .ar-sub { font-size: 12px; color: var(--text-secondary); display: block; font-weight: 400; margin-top: 2px; }
+  .toggle-group { display: flex; gap: 6px; }
+  .tog-btn {
+    padding: 6px 18px; border-radius: var(--radius-md); font-size: 13px;
+    font-family: var(--font); cursor: pointer;
+    border: 0.5px solid var(--border-md);
+    background: var(--bg-secondary); color: var(--text);
+  }
+  .tog-btn:hover { border-color: var(--text-secondary); }
+  .tog-btn.sel-yes { background: var(--success-bg); color: var(--success-text); border-color: var(--success-border); }
+  .tog-btn.sel-no  { background: var(--danger-bg);  color: var(--danger-text);  border-color: var(--danger-border); }
+
+  /* Notes + nav */
+  .note-row { padding: 1rem 1.25rem; border-top: 0.5px solid var(--border); }
   .note-row label { font-size: 13px; color: var(--text-secondary); display: block; margin-bottom: 5px; }
-  .note-row textarea { width: 100%; font-size: 13px; font-family: var(--font); min-height: 52px; resize: none; padding: 7px 10px; background: var(--bg); color: var(--text); border: 0.5px solid var(--border-md); border-radius: var(--radius-md); outline: none; }
+  .note-row textarea { width: 100%; font-size: 13px; font-family: var(--font); min-height: 48px; resize: none; padding: 7px 10px; background: var(--bg); color: var(--text); border: 0.5px solid var(--border-md); border-radius: var(--radius-md); outline: none; }
   .note-row textarea:focus { border-color: var(--text-secondary); }
   .nav-row { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.25rem; border-top: 0.5px solid var(--border); flex-wrap: wrap; gap: 8px; }
   .ann-tag { font-size: 12px; color: var(--text-tertiary); }
@@ -88,52 +117,27 @@
   .export-bar > span { font-size: 14px; color: var(--text-secondary); }
   .alert-msg { font-size: 13px; color: var(--success-text); background: var(--success-bg); border: 0.5px solid var(--success-border); border-radius: var(--radius-md); padding: 5px 14px; display: inline-block; margin-top: 8px; }
   .done-state { text-align: center; padding: 3rem 1rem; color: var(--text-secondary); font-size: 15px; }
-  .loading-state { text-align: center; padding: 3rem 1rem; color: var(--text-secondary); font-size: 15px; }
-  .loading-state .spinner { width: 28px; height: 28px; border: 2px solid var(--border-md); border-top-color: var(--text); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 1rem; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .error-box { background: var(--danger-bg); border: 0.5px solid var(--danger-border); border-radius: var(--radius-md); padding: 1rem 1.25rem; margin-bottom: 1rem; }
-  .error-box p { font-size: 14px; color: var(--danger-text); line-height: 1.6; }
-  .error-box code { font-family: monospace; font-size: 12px; background: rgba(0,0,0,0.06); padding: 1px 5px; border-radius: 4px; }
-  .instruction-block { display: flex; flex-direction: column; gap: 0; margin-bottom: 1.25rem; border: 0.5px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+
+  /* Instructions */
+  .instruction-block { display: flex; flex-direction: column; margin-bottom: 1.25rem; border: 0.5px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
   .inst-section { padding: 1.1rem 1.25rem; border-bottom: 0.5px solid var(--border); }
   .inst-section:last-child { border-bottom: none; }
   .inst-section p { font-size: 13px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 0.5rem; }
   .inst-section p:last-child { margin-bottom: 0; }
   .inst-heading { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
   .inst-section strong { color: var(--text); font-weight: 600; }
-  .inst-section em { font-style: italic; }
-  .cite { font-size: 11px; color: var(--text-tertiary); }
-  .axis-visual { display: flex; align-items: stretch; margin: 10px 0; border-radius: var(--radius-md); overflow: hidden; border: 0.5px solid var(--border); }
-  .axis-neg { background: var(--danger-bg); padding: 8px 14px; flex: 1; text-align: center; border-right: 0.5px solid var(--danger-border); }
-  .axis-neg .aword { font-size: 15px; font-weight: 600; color: var(--danger-text); }
-  .axis-neg .albl { font-size: 10px; color: var(--danger-text); opacity: 0.7; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px; }
-  .axis-mid { padding: 8px 16px; background: var(--bg-secondary); text-align: center; border-right: 0.5px solid var(--border); white-space: nowrap; }
-  .axis-mid .albl { font-size: 10px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; }
-  .axis-mid .aname { font-size: 12px; font-weight: 600; color: var(--text); margin-top: 2px; }
-  .axis-pos { background: var(--info-bg); padding: 8px 14px; flex: 1; text-align: center; }
-  .axis-pos .aword { font-size: 15px; font-weight: 600; color: var(--info-text); }
-  .axis-pos .albl { font-size: 10px; color: var(--info-text); opacity: 0.7; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px; }
-  .group-bars { margin: 10px 0 4px; display: flex; flex-direction: column; gap: 5px; }
-  .gbar-row { display: flex; align-items: center; gap: 8px; }
-  .gbar-label { font-size: 11px; color: var(--text-secondary); min-width: 120px; text-align: right; }
-  .gbar-track { flex: 1; height: 18px; background: var(--bg-secondary); border-radius: 3px; overflow: hidden; border: 0.5px solid var(--border); display: flex; }
-  .gbar-fill-neg { background: var(--danger-bg); height: 100%; display: flex; align-items: center; justify-content: flex-end; padding-right: 6px; font-size: 10px; color: var(--danger-text); font-weight: 600; }
-  .gbar-fill-pos { background: var(--info-bg); height: 100%; display: flex; align-items: center; padding-left: 6px; font-size: 10px; color: var(--info-text); font-weight: 600; margin-left: auto; }
-  .examples-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 2px; }
-  .example-box { background: var(--success-bg); border: 0.5px solid var(--success-border); border-radius: var(--radius-md); padding: 10px 14px; }
-  .example-box-no { background: var(--bg-secondary); border: 0.5px solid var(--border-md); }
-  .example-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--success-text); margin-bottom: 5px; }
+  .examples-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 6px; }
+  @media (max-width: 500px) { .examples-grid { grid-template-columns: 1fr; } }
+  .example-box    { background: var(--success-bg); border: 0.5px solid var(--success-border); border-radius: var(--radius-md); padding: 10px 14px; }
+  .example-box-no { background: var(--bg-secondary); border: 0.5px solid var(--border-md); border-radius: var(--radius-md); padding: 10px 14px; }
+  .example-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--success-text); margin-bottom: 6px; }
   .example-box-no .example-label { color: var(--text-secondary); }
-  .eg-list { padding-left: 1rem; display: flex; flex-direction: column; gap: 4px; margin-top: 6px; }
-  .eg-list li { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .eg-list { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+  .eg-list li { font-size: 12px; color: var(--text-secondary); line-height: 1.55; }
   .eg-list li em { color: var(--text); font-style: normal; font-weight: 600; }
-  .task-list { padding-left: 1.2rem; margin: 8px 0; display: flex; flex-direction: column; gap: 6px; }
-  .task-list li { font-size: 13px; color: var(--text-secondary); line-height: 1.65; }
-  .task-list li strong { color: var(--text); font-weight: 600; }
-  .q-badge { display: inline-block; font-size: 10px; font-weight: 600; padding: 1px 7px; border-radius: 99px; margin-right: 4px; vertical-align: middle; }
-  .q1-badge { background: var(--info-bg); color: var(--info-text); }
-  .q2-badge { background: var(--warning-bg); color: var(--warning-text); }
   .warn-note { font-size: 13px; color: var(--warning-text); background: var(--warning-bg); border: 0.5px solid var(--warning-border); border-radius: var(--radius-md); padding: 10px 14px; margin-bottom: 1rem; line-height: 1.6; }
+  .welcome-note { font-size: 13px; color: var(--text-secondary); padding: 10px 14px; background: var(--bg-secondary); border-radius: var(--radius-md); border: 0.5px solid var(--border); margin-bottom: 1rem; }
+  .err-text { font-size: 13px; color: var(--danger-text); margin-top: 8px; }
 </style>
 </head>
 <body>
@@ -141,110 +145,118 @@
 
   <div class="header">
     <h1>Antonym pair annotation</h1>
-    <span class="badge" id="modeLabel">Loading…</span>
+    <span class="badge" id="modeLabel">Ready</span>
   </div>
 
-  <div class="loading-state" id="loadingState">
-    <div class="spinner"></div>
-    Loading dataset…
-  </div>
-
-  <div id="errorBox" class="hidden"></div>
-
-  <div class="panel hidden" id="setupPanel">
+  <!-- SETUP -->
+  <div class="panel" id="setupPanel">
     <h2>Before you begin — please read carefully</h2>
-
     <div class="instruction-block">
-
       <div class="inst-section">
-        <p>A <strong>semantic axis</strong> can be defined by a pair of antonymous adjectives, e.g., <em>poor</em> vs. <em>rich</em>. Position of a social group (e.g., "CEOs", "homeless people") on that semantic axis serves as a measure of stereotype association. For example, CEOs are expected to be associated closer to the <em>rich</em> pole, while homeless people are associated closer to the <em>poor</em> pole.</p>
- </div>
+        <p>In this annotation task, you are given two opposite (antonym) adjectives. We want you to <strong>write down the groups of people that come to mind</strong> when you think about each word.</p>
+        <p>For example, for the antonyms <strong>poor</strong> and <strong>rich</strong>, you might write "homeless people" under <em>poor</em> and "billionaires, CEOs" under <em>rich</em>. This reflects a stereotype that exists about those groups. There are no right or wrong answers — we are interested in your genuine, spontaneous associations.</p>
+      </div>
       <div class="inst-section">
         <div class="inst-heading">Examples</div>
         <div class="examples-grid">
           <div class="example-box">
-            <div class="example-label">Stereotypical axes</div>
+            <div class="example-label">Groups come to mind</div>
             <ul class="eg-list">
-              <li><em>unfriendly ↔ friendly</em> — warmth; social groups differ in perceived warmth</li>
-              <li><em>immoral ↔ moral</em> — morality; moral character varies by different social group</li>
+              <li><em>unfriendly ↔ friendly</em> — e.g. "politicians" vs "nurses"</li>
+              <li><em>immoral ↔ moral</em> — e.g. "criminals" vs "priests"</li>
             </ul>
           </div>
-          <div class="example-box example-box-no">
-            <div class="example-label">Non-stereotypical axes</div>
+          <div class="example-box-no">
+            <div class="example-label">No groups come to mind</div>
             <ul class="eg-list">
-              <li><em>abaxial ↔ adaxial</em> — plant anatomy; no social group mapping</li>
-              <li><em>basiscopic ↔ acroscopic</em> — purely biological; no social group mapping</li>
+              <li><em>increased ↔ decreased</em> — a quantity, not about people</li>
+              <li><em>concave ↔ convex</em> — geometry, no people involved</li>
             </ul>
           </div>
         </div>
       </div>
-
       <div class="inst-section">
-        <div class="inst-heading">Your task</div>
-        <p>For each antonym pair, consider the <strong>semantic axis</strong> it constructs. You will see the <span style="color:var(--danger-text);font-weight:600;">negative pole</span> on the left and the <span style="color:var(--info-text);font-weight:600;">positive pole</span> on the right. Answer two questions <strong>in order</strong>:</p>
-        <ol class="task-list">
-          <li><span class="q-badge q1-badge">Q1</span> <strong>Is this semantic axis related to humans?</strong> — Does it primarily describe traits, behaviours, or categories that apply to humans? This is a <strong>prerequisite</strong> of a semantic axis to be considered stereotypical.</li>
-          <li><span class="q-badge q2-badge">Q2</span> <strong>Is this semantic axis stereotypical?</strong> — From <strong>your perspective</strong>, are different social groups associated with different positions along this axis? Would you expect certain groups to be closer to one pole than the other?</li>
-        </ol>
-        <p>Use <strong>Unsure</strong> when you genuinely cannot decide. Optional notes are available for any pair.</p>
+        <div class="inst-heading">What to do</div>
+        <p>For each adjective you will see a <strong>text box</strong> — write any groups of people that spontaneously come to mind for that word. Separate multiple groups with commas. Leave it empty if nothing comes to mind.</p>
+        <p>You will also see a toggle: <strong>Applicable to humans / Not applicable</strong>. If the words describe a purely physical, chemical, or biological phenomenon with no relevance to people, mark it <em>Not applicable</em>.</p>
       </div>
-
     </div>
-
     <div class="warn-note">
-      <strong>&#9888; Important:</strong> Please complete the annotation <strong>in one sitting</strong> without interruption. Taking breaks may shift your perspective and affect consistency across annotations. Progress is <strong>not saved</strong> if the browser tab is closed — export your annotations before closing.
+      <strong>&#9888; Important:</strong> Please complete the annotation <strong>in one sitting</strong> without interruption. Taking breaks may shift your perspective and affect consistency. Progress is <strong>not saved</strong> if the browser tab is closed — export before closing.
     </div>
-
-    <div id="welcomeNote" style="font-size:13px;color:var(--text-secondary);padding:10px 14px;background:var(--bg-secondary);border-radius:var(--radius-md);border:0.5px solid var(--border);margin-bottom:1rem;"></div>
-
-    <div class="field" style="max-width:320px;">
+    <div class="welcome-note">This dataset contains <strong>110 antonym pairs</strong>. When done, export your annotations and send the file back.</div>
+    <div class="field">
       <label>Your name</label>
       <input type="text" id="annotatorName" placeholder="e.g. Alice" />
     </div>
     <div class="btn-row">
       <button class="btn btn-primary" onclick="startSession()">Start annotating</button>
     </div>
-    <div style="font-size:13px;color:var(--danger-text);margin-top:8px;" id="setupErr"></div>
+    <div class="err-text" id="setupErr"></div>
   </div>
 
+  <!-- STATS -->
   <div id="statsSection" class="hidden">
     <div class="stats-row">
-      <div class="stat"><div class="sv" id="stTotal">0</div><div class="sl">Total pairs</div></div>
+      <div class="stat"><div class="sv" id="stTotal">110</div><div class="sl">Total pairs</div></div>
       <div class="stat"><div class="sv" id="stDone">0</div><div class="sl">Annotated</div></div>
       <div class="stat"><div class="sv" id="stSkip">0</div><div class="sl">Skipped</div></div>
-      <div class="stat"><div class="sv" id="stLeft">0</div><div class="sl">Remaining</div></div>
+      <div class="stat"><div class="sv" id="stLeft">110</div><div class="sl">Remaining</div></div>
     </div>
   </div>
 
+  <!-- ANNOTATION -->
   <div id="annotationSection" class="hidden">
     <div class="card" id="mainCard">
+
       <div class="progress-row">
         <div class="ptrack"><div class="pfill" id="pfill" style="width:0%"></div></div>
-        <span class="plabel" id="plabel">0 / 0</span>
+        <span class="plabel" id="plabel">1 / 110</span>
       </div>
+
+      <!-- Poles with text boxes -->
       <div class="pair-section">
         <div class="pair-title" id="pairTitle">—</div>
         <div class="pair-grid">
           <div class="pole neg">
-            <div class="pole-label">Negative pole</div>
+            <div class="pole-label">One end</div>
             <div class="pole-name" id="negName">—</div>
-            <div class="pole-def" id="negDef">—</div>
+            <div class="pole-def"  id="negDef"></div>
+            <div class="pole-input-label">Groups that come to mind:</div>
+            <textarea id="negGroups" placeholder="e.g. homeless people, single parents…"></textarea>
           </div>
           <div class="pole pos">
-            <div class="pole-label">Positive pole</div>
+            <div class="pole-label">Other end</div>
             <div class="pole-name" id="posName">—</div>
-            <div class="pole-def" id="posDef">—</div>
+            <div class="pole-def"  id="posDef"></div>
+            <div class="pole-input-label">Groups that come to mind:</div>
+            <textarea id="posGroups" placeholder="e.g. billionaires, CEOs…"></textarea>
           </div>
         </div>
       </div>
-      <div class="questions"></div>
-      <div class="note-row">
-        <label>Notes (optional)</label>
-        <textarea id="noteField" placeholder="Any comments about this pair..."></textarea>
+
+      <!-- Applicable toggle -->
+      <div class="applicable-row">
+        <div class="ar-label">
+          Applicable to humans?
+          <span class="ar-sub">Do these words describe something about people at all?</span>
+        </div>
+        <div class="toggle-group">
+          <button class="tog-btn" id="tog-yes" onclick="setApplicable('Yes')">Yes</button>
+          <button class="tog-btn" id="tog-no"  onclick="setApplicable('No')">Not applicable</button>
+        </div>
       </div>
+
+      <!-- Notes -->
+      <div class="note-row">
+        <label>Notes <span style="color:var(--text-tertiary);font-size:12px">(optional)</span></label>
+        <textarea id="noteField" placeholder="Any other comments about this pair…"></textarea>
+      </div>
+
+      <!-- Nav -->
       <div class="nav-row">
         <div class="btn-row">
-          <button class="btn btn-sm" id="prevBtn" onclick="navigate(-1)">&#8592; Prev</button>
+          <button class="btn btn-sm" id="prevBtn" onclick="navigate(-1)" disabled>&#8592; Prev</button>
           <button class="btn btn-sm" onclick="skipItem()">Skip</button>
         </div>
         <span class="ann-tag" id="annTag"></span>
@@ -268,227 +280,151 @@
 
 </div>
 <script>
-  const CONFIG = {
-    datasetURL: "https://raw.githubusercontent.com/FaraneJalaliFarahani/Stereotypes-in-LLMs/main/stratified_axes.json",
-    datasetName: "Stereotypes-in-LLMs antonym pairs",
-    questions: [
-      {
-        id: "human_related",
-        label: "Q1. Is this semantic axis related to humans?",
-        description: "Does it primarily describe traits, behaviours, or categories that apply to humans? (prerequisite for stereotypicality)"
-      },
-      {
-        id: "stereotypical",
-        label: "Q2. Is this semantic axis stereotypical?",
-        description: "From your perspective, are different social groups associated with different positions along this axis?"
-      }
-    ]
+const PAIRS = [{"key":"a01769843-a01770903","pair":"persuasive|dissuasive","posName":"persuasive","posDef":"intended or having the power to induce action or belief","negName":"dissuasive","negDef":"deterring from action"},{"key":"a01290766-a01290947","pair":"inaugural|exaugural","posName":"inaugural","posDef":"occurring at or characteristic of a formal investiture or induction","negName":"exaugural","negDef":"occurring at or marking the close of a term of office"},{"key":"a00259568-a00261245","pair":"lower-class|upper-class","posName":"lower-class","posDef":"occupying the lowest socioeconomic position in a society","negName":"upper-class","negDef":"occupying the highest socioeconomic position in a society"},{"key":"a02213270-a02213377","pair":"scripted|unscripted","posName":"scripted","posDef":"written as for a film or play or broadcast","negName":"unscripted","negDef":"not furnished with or using a script"},{"key":"a00306314-a00307474","pair":"capable|incapable","posName":"capable","posDef":"having capacity or ability","negName":"incapable","negDef":"lacking capacity or ability"},{"key":"a00262792-a00264776","pair":"brave|cowardly","posName":"brave","posDef":"possessing or displaying courage; able to face and deal with danger or fear without flinching","negName":"cowardly","negDef":"lacking courage; ignobly timid and faint-hearted"},{"key":"a00336831-a00337404","pair":"certain|uncertain","posName":"certain","posDef":"having or feeling no doubt or uncertainty; confident and assured","negName":"uncertain","negDef":"lacking or indicating lack of confidence or assurance"},{"key":"a00502180-a00503321","pair":"compact|loose","posName":"compact","posDef":"closely and firmly united or packed together","negName":"loose","negDef":"not compact or dense in structure or arrangement"},{"key":"a01825671-a01827535","pair":"powerful|powerless","posName":"powerful","posDef":"having great power or force or potency or effect","negName":"powerless","negDef":"lacking power"},{"key":"a00438707-a00439588","pair":"smart|stupid","posName":"smart","posDef":"showing mental alertness and calculation and resourcefulness","negName":"stupid","negDef":"lacking or marked by lack of intellectual acuity"},{"key":"a00180655-a00180835","pair":"autoecious|heteroecious","posName":"autoecious","posDef":"of parasites; completing the entire life cycle on a single host","negName":"heteroecious","negDef":"of parasites; passing through different stages of the life cycle on different host species"},{"key":"a01074650-a01076793","pair":"friendly|unfriendly","posName":"friendly","posDef":"characteristic of or befitting a friend","negName":"unfriendly","negDef":"not disposed to friendship or friendliness"},{"key":"a01218341-a01218797","pair":"high-rise|low-rise","posName":"high-rise","posDef":"used of buildings of many stories equipped with elevators; tall","negName":"low-rise","negDef":"used of buildings of one or only a few stories and usually no elevator; low"},{"key":"a01334398-a01336587","pair":"intelligent|unintelligent","posName":"intelligent","posDef":"having the capacity for thought and reason especially to a high degree","negName":"unintelligent","negDef":"lacking intelligence"},{"key":"a00102201-a00103696","pair":"ambiguous|unambiguous","posName":"ambiguous","posDef":"having more than one possible meaning","negName":"unambiguous","negDef":"having or exhibiting a single clearly defined meaning"},{"key":"a01783158-a01784017","pair":"religious|irreligious","posName":"religious","posDef":"having or showing belief in and reverence for a deity","negName":"irreligious","negDef":"hostile or indifferent to religion"},{"key":"a01093323-a01093956","pair":"rigged|unrigged","posName":"rigged","posDef":"fitted or equipped with necessary rigging (sails and shrouds and stays etc)","negName":"unrigged","negDef":"stripped of rigging"},{"key":"a01977155-a01978003","pair":"mindful|unmindful","posName":"mindful","posDef":"bearing in mind; attentive to","negName":"unmindful","negDef":"not mindful or attentive"},{"key":"a02401590-a02402268","pair":"temperate|intemperate","posName":"temperate","posDef":"not extreme in behavior","negName":"intemperate","negDef":"excessive in behavior"},{"key":"a01361414-a01361863","pair":"glad|sad","posName":"glad","posDef":"showing or causing joy and pleasure; especially made happy","negName":"sad","negDef":"experiencing or showing sorrow or unhappiness"},{"key":"a01725712-a01727439","pair":"passionate|passionless","posName":"passionate","posDef":"having or expressing strong emotions","negName":"passionless","negDef":"not passionate"},{"key":"a02462619-a02463154","pair":"trustful|distrustful","posName":"trustful","posDef":"inclined to believe or confide readily; full of trust","negName":"distrustful","negDef":"having or showing distrust"},{"key":"a00356339-a00356648","pair":"mutable|immutable","posName":"mutable","posDef":"capable of or tending to change in form or quality or nature","negName":"immutable","negDef":"not subject or susceptible to change or variation in form or quality or nature"},{"key":"a02383380-a02383831","pair":"taciturn|voluble","posName":"taciturn","posDef":"habitually reserved and uncommunicative","negName":"voluble","negDef":"marked by a ready flow of speech"},{"key":"a00757236-a00757408","pair":"saturated|unsaturated","posName":"saturated","posDef":"used especially of organic compounds; having all available valence bonds filled","negName":"unsaturated","negDef":"used of a compound containing atoms sharing more than one valence bond"},{"key":"a01689880-a01691073","pair":"orthodox|unorthodox","posName":"orthodox","posDef":"adhering to what is commonly accepted","negName":"unorthodox","negDef":"breaking with convention or tradition"},{"key":"a01501113-a01502099","pair":"melodious|unmelodious","posName":"melodious","posDef":"containing or constituting or characterized by pleasing melody","negName":"unmelodious","negDef":"lacking melody"},{"key":"a01233347-a01234167","pair":"vertical|inclined","posName":"vertical","posDef":"at right angles to the plane of the horizon or a base line","negName":"inclined","negDef":"at an angle to the horizontal or vertical position"},{"key":"a00077645-a00081671","pair":"afraid|unafraid","posName":"afraid","posDef":"filled with fear or apprehension","negName":"unafraid","negDef":"oblivious of dangers or perils or calmly resolute in facing them"},{"key":"a01147433-a01147622","pair":"haploid|diploid","posName":"haploid","posDef":"of a cell or organism having a single set of chromosomes","negName":"diploid","negDef":"of a cell or organism having two sets of chromosomes or twice the haploid number"},{"key":"a02488118-a02488445","pair":"upmarket|downmarket","posName":"upmarket","posDef":"designed for consumers with high incomes","negName":"downmarket","negDef":"designed for low-income consumers"},{"key":"a02086115-a02086356","pair":"conscientious|unconscientious","posName":"conscientious","posDef":"guided by or in accordance with conscience or sense of right and wrong","negName":"unconscientious","negDef":"not conscientious"},{"key":"a00069531-a00070583","pair":"aesthetic|inaesthetic","posName":"aesthetic","posDef":"concerning or characterized by an appreciation of beauty or good taste","negName":"inaesthetic","negDef":"violating aesthetic canons or requirements; deficient in tastefulness or beauty"},{"key":"a01487627-a01488066","pair":"material|immaterial","posName":"material","posDef":"directly relevant to a matter especially a law case","negName":"immaterial","negDef":"of no importance or relevance especially to a law case"},{"key":"a00678024-a00678473","pair":"annual|perennial","posName":"annual","posDef":"completing its life cycle within a year","negName":"perennial","negDef":"lasting three seasons or more"},{"key":"a01195536-a01198019","pair":"helpful|unhelpful","posName":"helpful","posDef":"providing assistance or serving a useful function","negName":"unhelpful","negDef":"providing no assistance"},{"key":"a00880207-a00881735","pair":"increased|decreased","posName":"increased","posDef":"made greater in size or amount or degree","negName":"decreased","negDef":"made less in size or amount or degree"},{"key":"a01408593-a01408738","pair":"leptorrhine|catarrhine","posName":"leptorrhine","posDef":"having a long narrow nose","negName":"catarrhine","negDef":"of or related to Old World monkeys that have nostrils together and opening downward"},{"key":"a01030022-a01030826","pair":"curly|straight","posName":"curly","posDef":"(of hair) having curls or waves","negName":"straight","negDef":"(of hair) having no waves or curls"},{"key":"a01319874-a01320988","pair":"innocent|guilty","posName":"innocent","posDef":"free from evil or guilt","negName":"guilty","negDef":"responsible for or chargeable with a reprehensible act"},{"key":"a00681409-a00681548","pair":"datable|undatable","posName":"datable","posDef":"that can be given a date","negName":"undatable","negDef":"not capable of being given a date"},{"key":"a01170069-a01170136","pair":"pyretic|antipyretic","posName":"pyretic","posDef":"causing fever","negName":"antipyretic","negDef":"preventing or alleviating fever"},{"key":"a02506555-a02507968","pair":"varied|unvaried","posName":"varied","posDef":"characterized by variety","negName":"unvaried","negDef":"lacking variety"},{"key":"a00101609-a00101800","pair":"altruistic|egoistic","posName":"altruistic","posDef":"showing unselfish concern for the welfare of others","negName":"egoistic","negDef":"limited to or caring only about yourself and your own needs"},{"key":"a02750752-a02751367","pair":"ionic|nonionic","posName":"ionic","posDef":"containing or involving or occurring in the form of ions","negName":"nonionic","negDef":"not ionic"},{"key":"a00535452-a00537339","pair":"concave|convex","posName":"concave","posDef":"curving inward","negName":"convex","negDef":"curving or bulging outward"},{"key":"a01551130-a01551461","pair":"principled|unprincipled","posName":"principled","posDef":"based on or manifesting objectively defined standards of rightness or morality","negName":"unprincipled","negDef":"lacking principles or moral scruples"},{"key":"a02595255-a02595357","pair":"invertible|non-invertible","posName":"invertible","posDef":"having an additive or multiplicative inverse","negName":"non-invertible","negDef":"not admitting an additive or multiplicative inverse"},{"key":"a00064479-a00065488","pair":"advantageous|disadvantageous","posName":"advantageous","posDef":"giving an advantage","negName":"disadvantageous","negDef":"constituting a disadvantage"},{"key":"a01220311-a01220487","pair":"heterologous|autologous","posName":"heterologous","posDef":"derived from organisms of a different but related species","negName":"autologous","negDef":"derived from organisms of the selfsame individual"},{"key":"a00771373-a00772360","pair":"discerning|undiscerning","posName":"discerning","posDef":"having or revealing keen insight and good judgment","negName":"undiscerning","negDef":"lacking discernment"},{"key":"a01650883-a01651044","pair":"on-line|off-line","posName":"on-line","posDef":"on a regular route of a railroad or bus or airline system","negName":"off-line","negDef":"not on a regular route of a transportation system"},{"key":"a00685638-a00686081","pair":"decisive|indecisive","posName":"decisive","posDef":"characterized by decision and firmness","negName":"indecisive","negDef":"characterized by lack of decision and firmness"},{"key":"a00157925-a00158407","pair":"attached|unattached","posName":"attached","posDef":"associated in an exclusive sexual relationship","negName":"unattached","negDef":"not associated in an exclusive sexual relationship"},{"key":"a00284575-a00284930","pair":"dimmed|undimmed","posName":"dimmed","posDef":"made dim or less bright","negName":"undimmed","negDef":"not made dim or less bright"},{"key":"a00109016-a00109133","pair":"anticlinal|synclinal","posName":"anticlinal","posDef":"sloping downward away from a common crest","negName":"synclinal","negDef":"sloping downward toward each other to create a trough"},{"key":"a01738746-a01738895","pair":"patronized|unpatronized","posName":"patronized","posDef":"having patronage or clients","negName":"unpatronized","negDef":"having little patronage or few clients"},{"key":"a01107206-a01107521","pair":"federal|unitary","posName":"federal","posDef":"characterized by a form of government in which power is divided between one central and several regional authorities","negName":"unitary","negDef":"characterized by a form of government in which power is held by one central authority"},{"key":"a00166146-a00169164","pair":"attractive|unattractive","posName":"attractive","posDef":"pleasing to the eye or mind especially through beauty or charm","negName":"unattractive","negDef":"lacking beauty or charm"},{"key":"a00574114-a00574308","pair":"priestly|unpriestly","posName":"priestly","posDef":"befitting or characteristic of a priest or the priesthood","negName":"unpriestly","negDef":"not priestly; unbefitting a priest"},{"key":"a00190115-a00191603","pair":"aware|unaware","posName":"aware","posDef":"having or showing knowledge or understanding or realization or perception","negName":"unaware","negDef":"not aware"},{"key":"a01904845-a01905377","pair":"pure|impure","posName":"pure","posDef":"having no faults; sinless","negName":"impure","negDef":"immoral or obscene"},{"key":"a01643620-a01646941","pair":"old|young","posName":"old","posDef":"having lived for a relatively long time or attained a specific age","negName":"young","negDef":"in an early period of life or development or growth"},{"key":"a02348482-a02348678","pair":"superior|inferior","posName":"superior","posDef":"having an orbit farther from the sun than the Earth's orbit","negName":"inferior","negDef":"having an orbit between the sun and the Earth's orbit"},{"key":"a00309021-a00311663","pair":"careful|careless","posName":"careful","posDef":"exercising caution or showing care or attention","negName":"careless","negDef":"marked by lack of attention or consideration or forethought or thoroughness; not careful"},{"key":"a02321009-a02324397","pair":"strong|weak","posName":"strong","posDef":"having strength or power greater than average or expected","negName":"weak","negDef":"wanting in physical strength"},{"key":"a00639842-a00640283","pair":"courteous|discourteous","posName":"courteous","posDef":"characterized by courtesy and gracious good manners","negName":"discourteous","negDef":"showing no courtesy; rude"},{"key":"a01839829-a01840366","pair":"precocious|retarded","posName":"precocious","posDef":"characterized by exceptionally early development or maturity","negName":"retarded","negDef":"relatively slow in mental or emotional or physical development"},{"key":"a00583239-a00583990","pair":"constant|inconstant","posName":"constant","posDef":"steadfast in purpose or devotion or affection","negName":"inconstant","negDef":"likely to change frequently often without apparent or cogent reason; variable"},{"key":"a00588797-a00589624","pair":"contented|discontented","posName":"contented","posDef":"satisfied or showing satisfaction with things as they are","negName":"discontented","negDef":"showing or experiencing dissatisfaction or restless longing"},{"key":"a00605516-a00608421","pair":"conventional|unconventional","posName":"conventional","posDef":"following accepted customs and proprieties","negName":"unconventional","negDef":"not conventional or conformist"},{"key":"a01947266-a01949149","pair":"refined|unrefined","posName":"refined","posDef":"(used of persons and their behavior) cultivated and genteel","negName":"unrefined","negDef":"(used of persons and their behavior) not refined; uncouth"},{"key":"a02494594-a02494716","pair":"uptown|downtown","posName":"uptown","posDef":"of or located in the upper part of a town","negName":"downtown","negDef":"of or located in the lower part of a town, or in the business center"},{"key":"a02015571-a02016001","pair":"rewarding|unrewarding","posName":"rewarding","posDef":"providing personal satisfaction","negName":"unrewarding","negDef":"not rewarding; not providing personal satisfaction"},{"key":"a00350069-a00350384","pair":"modifiable|unmodifiable","posName":"modifiable","posDef":"capable of being modified in form or character or strength","negName":"unmodifiable","negDef":"incapable of being modified in form or character or strength"},{"key":"a00808191-a00810481","pair":"dynamic|undynamic","posName":"dynamic","posDef":"characterized by action or forcefulness or force of personality","negName":"undynamic","negDef":"characterized by an absence of force or forcefulness"},{"key":"a02353707-a02354129","pair":"assisted|unassisted","posName":"assisted","posDef":"having help; often used as a combining form","negName":"unassisted","negDef":"lacking help"},{"key":"a02554267-a02554546","pair":"wet|dry","posName":"wet","posDef":"producing or secreting milk","negName":"dry","negDef":"not producing milk"},{"key":"a01332386-a01333718","pair":"intellectual|nonintellectual","posName":"intellectual","posDef":"appealing to or using the intellect","negName":"nonintellectual","negDef":"not intellectual"},{"key":"a02510879-a02512922","pair":"violent|nonviolent","posName":"violent","posDef":"acting with or marked by or resulting from great force or energy or emotional intensity","negName":"nonviolent","negDef":"abstaining (on principle) from the use of violence"},{"key":"a01830134-a01830871","pair":"influential|uninfluential","posName":"influential","posDef":"having or exercising influence or power","negName":"uninfluential","negDef":"not influential"},{"key":"a00884778-a00885415","pair":"enterprising|unenterprising","posName":"enterprising","posDef":"marked by imagination, initiative, and readiness to undertake new projects","negName":"unenterprising","negDef":"lacking in enterprise; not bold or venturesome"},{"key":"a02533313-a02533540","pair":"warm-hearted|cold-hearted","posName":"warm-hearted","posDef":"marked by warmth of feeling like kindness and sympathy and generosity","negName":"cold-hearted","negDef":"lacking in sympathy or feeling"},{"key":"a01409581-a01410363","pair":"like|unlike","posName":"like","posDef":"resembling or similar; having the same or some of the same characteristics","negName":"unlike","negDef":"marked by dissimilarity"},{"key":"a00870614-a00870827","pair":"endocentric|exocentric","posName":"endocentric","posDef":"fulfilling the grammatical role of one of its constituents","negName":"exocentric","negDef":"not fulfilling the same grammatical role of any of its constituents"},{"key":"a01918984-a01919931","pair":"quiet|noisy","posName":"quiet","posDef":"free of noise or uproar; or making little if any sound","negName":"noisy","negDef":"full of or characterized by loud and nonmusical sounds"},{"key":"a02593735-a02593861","pair":"idiographic|nomothetic","posName":"idiographic","posDef":"relating to or involving the study of individuals","negName":"nomothetic","negDef":"relating to or involving the search for abstract universal principles"},{"key":"a00858917-a00860611","pair":"empirical|theoretical","posName":"empirical","posDef":"derived from experiment and observation rather than theory","negName":"theoretical","negDef":"concerned primarily with theories or hypotheses rather than practical considerations"},{"key":"a01146493-a01147044","pair":"grateful|ungrateful","posName":"grateful","posDef":"feeling or showing gratitude","negName":"ungrateful","negDef":"not feeling or showing gratitude"},{"key":"a01382086-a01391351","pair":"large|small","posName":"large","posDef":"above average in size or number or quantity or magnitude or extent","negName":"small","negDef":"limited or below average in number or quantity or magnitude or extent"},{"key":"a02417895-a02418538","pair":"thinkable|unthinkable","posName":"thinkable","posDef":"capable of being conceived or imagined or considered","negName":"unthinkable","negDef":"incapable of being conceived or considered"},{"key":"a02626829-a02626995","pair":"anodic|cathodic","posName":"anodic","posDef":"of or at or relating to an anode","negName":"cathodic","negDef":"of or at or pertaining to a cathode"},{"key":"a00724081-a00724861","pair":"reliable|unreliable","posName":"reliable","posDef":"worthy of reliance or trust","negName":"unreliable","negDef":"not worthy of reliance or trust"},{"key":"a00682932-a00683185","pair":"decent|indecent","posName":"decent","posDef":"conforming to conventions of sexual behavior","negName":"indecent","negDef":"offensive to good taste especially in sexual matters"},{"key":"a00633410-a00633778","pair":"right|wrong","posName":"right","posDef":"correct in opinion or judgment","negName":"wrong","negDef":"based on or acting or judging in error"},{"key":"a00872510-a00872906","pair":"endothermic|exothermic","posName":"endothermic","posDef":"(of a chemical reaction) occurring or formed with absorption of heat","negName":"exothermic","negDef":"(of a chemical reaction) occurring or formed with the liberation of heat"},{"key":"a01239862-a01240029","pair":"standing|seated","posName":"standing","posDef":"(of persons) on the feet; having the torso in an erect position supported by straight legs","negName":"seated","negDef":"(of persons) having the torso erect and legs bent with the body supported on the buttocks"},{"key":"a01270175-a01271700","pair":"hurried|unhurried","posName":"hurried","posDef":"moving rapidly or performed quickly or in great haste","negName":"unhurried","negDef":"relaxed and leisurely; without hurry or haste"},{"key":"a01982646-a01983797","pair":"reputable|disreputable","posName":"reputable","posDef":"having a good reputation","negName":"disreputable","negDef":"lacking respectability in character or behavior or appearance"},{"key":"a00529266-a00531342","pair":"composed|discomposed","posName":"composed","posDef":"serenely self-possessed and free from agitation especially in times of stress","negName":"discomposed","negDef":"having your composure disturbed"},{"key":"a02073443-a02074092","pair":"sane|insane","posName":"sane","posDef":"mentally healthy; free from mental disorder","negName":"insane","negDef":"afflicted with or characteristic of mental derangement"},{"key":"a02131072-a02134999","pair":"sexy|unsexy","posName":"sexy","posDef":"marked by or tending to arouse sexual desire or interest","negName":"unsexy","negDef":"not sexually aroused or arousing"},{"key":"a01484987-a01485502","pair":"womanly|unwomanly","posName":"womanly","posDef":"befitting or characteristic of a woman especially a mature woman","negName":"unwomanly","negDef":"not womanly"},{"key":"a01889256-a01892953","pair":"proud|humble","posName":"proud","posDef":"feeling self-respect or pleasure in something by which you measure your self-worth","negName":"humble","negDef":"marked by meekness or modesty; not arrogant or prideful"},{"key":"a00025238-a00025728","pair":"acidic|alkaline","posName":"acidic","posDef":"being or containing an acid; of a solution having an excess of hydrogen atoms (pH less than 7)","negName":"alkaline","negDef":"relating to or containing an alkali; having a pH greater than 7"},{"key":"a02685539-a02686159","pair":"extracellular|intracellular","posName":"extracellular","posDef":"located or occurring outside a cell or cells","negName":"intracellular","negDef":"located or occurring within a cell or cells"},{"key":"a00286578-a00287640","pair":"broad-minded|narrow-minded","posName":"broad-minded","posDef":"inclined to respect views and beliefs that differ from your own","negName":"narrow-minded","negDef":"lacking tolerance or flexibility or breadth of view"},{"key":"a02409849-a02410156","pair":"thermoplastic|thermosetting","posName":"thermoplastic","posDef":"having the property of softening or fusing when heated and hardening when cooled","negName":"thermosetting","negDef":"having the property of becoming permanently hard and rigid when heated or cured"},{"key":"a01099536-a01100082","pair":"specified|unspecified","posName":"specified","posDef":"clearly and explicitly stated","negName":"unspecified","negDef":"not stated explicitly or in detail"},{"key":"a02021905-a02022953","pair":"rich|poor","posName":"rich","posDef":"possessing material wealth","negName":"poor","negDef":"having little money or few possessions"}];
+
+let annotations = {}, currentIndex = 0, annotatorName = '';
+let applicable = null;
+
+function startSession() {
+  const err = document.getElementById('setupErr');
+  annotatorName = document.getElementById('annotatorName').value.trim();
+  if (!annotatorName) { err.textContent = 'Please enter your name.'; return; }
+  err.textContent = '';
+  document.getElementById('setupPanel').classList.add('hidden');
+  document.getElementById('statsSection').classList.remove('hidden');
+  document.getElementById('annotationSection').classList.remove('hidden');
+  document.getElementById('modeLabel').textContent = annotatorName;
+  currentIndex = 0;
+  showItem(0);
+  updateStats();
+}
+
+function showItem(idx) {
+  if (idx >= PAIRS.length) { showDone(); return; }
+  const p = PAIRS[idx];
+  applicable = null;
+  const words = p.pair.split('|');
+  document.getElementById('pairTitle').textContent = words[0] + ' \u2194 ' + words[1];
+  document.getElementById('negName').textContent = p.negName;
+  document.getElementById('negDef').textContent  = p.negDef;
+  document.getElementById('posName').textContent = p.posName;
+  document.getElementById('posDef').textContent  = p.posDef;
+  const ex = annotations[p.key];
+  document.getElementById('negGroups').value = ex?.neg_groups || '';
+  document.getElementById('posGroups').value = ex?.pos_groups || '';
+  document.getElementById('noteField').value = ex?.note || '';
+  if (ex) applicable = ex.applicable || null;
+  renderToggle();
+  document.getElementById('pfill').style.width = Math.round((idx / PAIRS.length) * 100) + '%';
+  document.getElementById('plabel').textContent = (idx + 1) + ' / ' + PAIRS.length;
+  document.getElementById('annTag').textContent = annotatorName;
+  document.getElementById('prevBtn').disabled = idx === 0;
+  document.getElementById('mainCard').classList.remove('hidden');
+  document.getElementById('doneMsg').classList.add('hidden');
+}
+
+function renderToggle() {
+  document.getElementById('tog-yes').className = 'tog-btn' + (applicable === 'Yes' ? ' sel-yes' : '');
+  document.getElementById('tog-no').className  = 'tog-btn' + (applicable === 'No'  ? ' sel-no'  : '');
+}
+
+function setApplicable(val) { applicable = val; renderToggle(); }
+
+function saveAndNext() {
+  if (!applicable) { alert('Please mark whether this pair is applicable to humans.'); return; }
+  const p = PAIRS[currentIndex];
+  annotations[p.key] = {
+    key: p.key, pair: p.pair,
+    positive_pole: p.posName, negative_pole: p.negName,
+    applicable,
+    neg_groups: document.getElementById('negGroups').value.trim(),
+    pos_groups: document.getElementById('posGroups').value.trim(),
+    note: document.getElementById('noteField').value.trim(),
+    annotator: annotatorName, timestamp: new Date().toISOString(), skipped: false
   };
+  updateStats();
+  if (currentIndex < PAIRS.length - 1) { currentIndex++; showItem(currentIndex); }
+  else showDone();
+}
 
-  let pairs = [], annotations = {}, currentIndex = 0;
-  let annotatorName = '';
-  let answers = {};
+function skipItem() {
+  const p = PAIRS[currentIndex];
+  annotations[p.key] = {
+    key: p.key, pair: p.pair,
+    positive_pole: p.posName, negative_pole: p.negName,
+    applicable: null,
+    neg_groups: document.getElementById('negGroups').value.trim(),
+    pos_groups: document.getElementById('posGroups').value.trim(),
+    note: document.getElementById('noteField').value.trim(),
+    annotator: annotatorName, timestamp: new Date().toISOString(), skipped: true
+  };
+  updateStats();
+  if (currentIndex < PAIRS.length - 1) { currentIndex++; showItem(currentIndex); }
+  else showDone();
+}
 
-  async function boot() {
-    try {
-      const res = await fetch(CONFIG.datasetURL);
-      if (!res.ok) throw new Error(`HTTP ${res.status} — could not load dataset`);
-      const data = await res.json();
-      pairs = Object.entries(data).map(([k, v]) => parseEntry(k, v));
-      if (!pairs.length) throw new Error("Dataset is empty.");
-      document.getElementById('loadingState').classList.add('hidden');
-      document.getElementById('modeLabel').textContent = 'Ready';
-      document.getElementById('welcomeNote').innerHTML =
-        `This dataset contains <strong>${pairs.length} antonym pairs</strong>. ` +
-        `For each pair you will answer ${CONFIG.questions.length} question(s). ` +
-        `When done, export your annotations and send the file back.`;
-      document.getElementById('setupPanel').classList.remove('hidden');
-    } catch(e) {
-      document.getElementById('loadingState').classList.add('hidden');
-      document.getElementById('modeLabel').textContent = 'Error';
-      document.getElementById('errorBox').innerHTML =
-        `<div class="error-box"><p>&#9888; Could not load the dataset.<br>
-        <strong>Reason:</strong> ${e.message}<br><br>
-        Check that <code>${CONFIG.datasetURL}</code> is correct and publicly accessible.</p></div>`;
-      document.getElementById('errorBox').classList.remove('hidden');
-    }
-  }
+function navigate(dir) {
+  const next = currentIndex + dir;
+  if (next >= 0 && next < PAIRS.length) { currentIndex = next; showItem(currentIndex); }
+}
 
-  function parseEntry(key, raw) {
-    const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
-    const get = prefix => lines.find(l => l.startsWith(prefix)) || '';
-    function parsePole(line) {
-      const after = line.replace(/^(Positive|Negative):\s*/, '');
-      const i = after.indexOf('\u2192');
-      return { name: i > -1 ? after.slice(0, i).trim() : after, def: i > -1 ? after.slice(i+1).trim() : '' };
-    }
+function showDone() {
+  document.getElementById('mainCard').classList.add('hidden');
+  document.getElementById('doneMsg').classList.remove('hidden');
+}
+
+function updateStats() {
+  const vals = Object.values(annotations);
+  document.getElementById('stDone').textContent = vals.filter(a => !a.skipped).length;
+  document.getElementById('stSkip').textContent = vals.filter(a => a.skipped).length;
+  document.getElementById('stLeft').textContent = PAIRS.length - vals.length;
+}
+
+function getRows() {
+  return PAIRS.map(p => {
+    const a = annotations[p.key];
     return {
-      key,
-      pairName: get('Antonym Pair:').replace('Antonym Pair:', '').trim(),
-      pos: parsePole(get('Positive:')),
-      neg: parsePole(get('Negative:')),
-      domain: get('Domain:').replace('Domain:', '').trim(),
-      conf: get('Confidence:').replace('Confidence:', '').trim()
+      key: p.key, pair: p.pair,
+      positive_pole: p.posName, negative_pole: p.negName,
+      applicable:  a?.applicable  ?? '',
+      neg_groups:  a?.neg_groups  ?? '',
+      pos_groups:  a?.pos_groups  ?? '',
+      note:        a?.note        ?? '',
+      annotator:   a?.annotator   ?? '',
+      timestamp:   a?.timestamp   ?? '',
+      skipped:     a?.skipped     ?? ''
     };
-  }
+  });
+}
 
-  (function buildQuestions() {
-    const container = document.querySelector('.questions');
-    container.innerHTML = '';
-    CONFIG.questions.forEach(q => {
-      container.innerHTML += `
-        <div class="question-block">
-          <div class="ql">${q.label}</div>
-          <div class="qs">${q.description}</div>
-          <div class="choice-row">
-            <button class="choice-btn" id="${q.id}-yes" onclick="setQ('${q.id}','Yes')">Yes</button>
-            <button class="choice-btn" id="${q.id}-no" onclick="setQ('${q.id}','No')">No</button>
-            <button class="choice-btn" id="${q.id}-unsure" onclick="setQ('${q.id}','Unsure')">Unsure</button>
-          </div>
-        </div>`;
-    });
-  })();
+function exportJSON() {
+  const data = {
+    annotator: annotatorName, exported_at: new Date().toISOString(),
+    total: PAIRS.length, annotated: Object.values(annotations).filter(a => !a.skipped).length,
+    annotations: getRows()
+  };
+  dl('annotations_' + annotatorName.replace(/\s+/g, '_') + '.json', JSON.stringify(data, null, 2), 'application/json');
+  showAlert('JSON downloaded. Please send this file back.');
+}
 
-  function startSession() {
-    const err = document.getElementById('setupErr');
-    annotatorName = document.getElementById('annotatorName').value.trim();
-    if (!annotatorName) { err.textContent = 'Please enter your name.'; return; }
-    err.textContent = '';
-    document.getElementById('setupPanel').classList.add('hidden');
-    document.getElementById('statsSection').classList.remove('hidden');
-    document.getElementById('annotationSection').classList.remove('hidden');
-    document.getElementById('modeLabel').textContent = annotatorName;
-    CONFIG.questions.forEach(q => answers[q.id] = null);
-    currentIndex = 0;
-    showItem(0);
-    updateStats();
-  }
+function exportCSV() {
+  const cols = ['key','pair','positive_pole','negative_pole','applicable','neg_groups','pos_groups','note','annotator','timestamp','skipped'];
+  const rows = [cols, ...getRows().map(r => cols.map(c => '"' + String(r[c] ?? '').replace(/"/g, '""') + '"'))];
+  dl('annotations_' + annotatorName.replace(/\s+/g, '_') + '.csv', rows.map(r => r.join(',')).join('\n'), 'text/csv');
+  showAlert('CSV downloaded. Please send this file back.');
+}
 
-  function showItem(idx) {
-    if (idx >= pairs.length) { showDone(); return; }
-    const p = pairs[idx];
-    CONFIG.questions.forEach(q => answers[q.id] = null);
-    document.getElementById('pairTitle').textContent = p.pairName;
-    document.getElementById('posName').textContent = p.pos.name;
-    document.getElementById('posDef').textContent = p.pos.def;
-    document.getElementById('negName').textContent = p.neg.name;
-    document.getElementById('negDef').textContent = p.neg.def;
-    const ex = annotations[p.key];
-    document.getElementById('noteField').value = ex?.note || '';
-    if (ex) CONFIG.questions.forEach(q => answers[q.id] = ex[q.id] || null);
-    renderChoices();
-    document.getElementById('pfill').style.width = Math.round((idx / pairs.length) * 100) + '%';
-    document.getElementById('plabel').textContent = (idx + 1) + ' / ' + pairs.length;
-    document.getElementById('annTag').textContent = annotatorName;
-    document.getElementById('prevBtn').disabled = idx === 0;
-    document.getElementById('mainCard').classList.remove('hidden');
-    document.getElementById('doneMsg').classList.add('hidden');
-  }
+function dl(name, content, type) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([content], { type }));
+  a.download = name; a.click();
+}
 
-  function renderChoices() {
-    CONFIG.questions.forEach(q => {
-      ['yes','no','unsure'].forEach(opt => {
-        const btn = document.getElementById(q.id + '-' + opt);
-        if (!btn) return;
-        btn.className = 'choice-btn';
-        const val = opt.charAt(0).toUpperCase() + opt.slice(1);
-        if (answers[q.id] === val) btn.classList.add('sel-' + opt);
-      });
-    });
-  }
-
-  function setQ(qid, val) { answers[qid] = val; renderChoices(); }
-
-  function saveAndNext() {
-    const unanswered = CONFIG.questions.find(q => !answers[q.id]);
-    if (unanswered) { alert('Please answer: ' + unanswered.label); return; }
-    const p = pairs[currentIndex];
-    const record = {
-      key: p.key, pair: p.pairName,
-      positive_pole: p.pos.name, negative_pole: p.neg.name,
-      note: document.getElementById('noteField').value.trim(),
-      annotator: annotatorName, timestamp: new Date().toISOString(), skipped: false
-    };
-    CONFIG.questions.forEach(q => record[q.id] = answers[q.id]);
-    annotations[p.key] = record;
-    updateStats();
-    if (currentIndex < pairs.length - 1) { currentIndex++; showItem(currentIndex); }
-    else showDone();
-  }
-
-  function skipItem() {
-    const p = pairs[currentIndex];
-    const record = {
-      key: p.key, pair: p.pairName, positive_pole: p.pos.name, negative_pole: p.neg.name,
-      note: document.getElementById('noteField').value.trim(),
-      annotator: annotatorName, timestamp: new Date().toISOString(), skipped: true
-    };
-    CONFIG.questions.forEach(q => record[q.id] = null);
-    annotations[p.key] = record;
-    updateStats();
-    if (currentIndex < pairs.length - 1) { currentIndex++; showItem(currentIndex); }
-    else showDone();
-  }
-
-  function navigate(dir) {
-    const next = currentIndex + dir;
-    if (next >= 0 && next < pairs.length) { currentIndex = next; showItem(currentIndex); }
-  }
-
-  function showDone() {
-    document.getElementById('mainCard').classList.add('hidden');
-    document.getElementById('doneMsg').classList.remove('hidden');
-  }
-
-  function updateStats() {
-    const vals = Object.values(annotations);
-    document.getElementById('stTotal').textContent = pairs.length;
-    document.getElementById('stDone').textContent = vals.filter(a => !a.skipped).length;
-    document.getElementById('stSkip').textContent = vals.filter(a => a.skipped).length;
-    document.getElementById('stLeft').textContent = pairs.length - vals.length;
-  }
-
-  function getRows() {
-    const qids = CONFIG.questions.map(q => q.id);
-    return pairs.map(p => {
-      const a = annotations[p.key];
-      const row = { key: p.key, pair: p.pairName, positive_pole: p.pos.name, negative_pole: p.neg.name };
-      qids.forEach(qid => row[qid] = a?.[qid] ?? '');
-      row.note = a?.note ?? '';
-      row.annotator = a?.annotator ?? '';
-      row.timestamp = a?.timestamp ?? '';
-      row.skipped = a?.skipped ?? '';
-      return row;
-    });
-  }
-
-  function exportJSON() {
-    const data = { annotator: annotatorName, dataset: CONFIG.datasetURL, exported_at: new Date().toISOString(), total: pairs.length, annotated: Object.values(annotations).filter(a=>!a.skipped).length, annotations: getRows() };
-    dl('annotations_' + annotatorName.replace(/\s+/g,'_') + '.json', JSON.stringify(data, null, 2), 'application/json');
-    showAlert('JSON downloaded. Please send this file back.');
-  }
-
-  function exportCSV() {
-    const qids = CONFIG.questions.map(q => q.id);
-    const cols = ['key','pair','positive_pole','negative_pole',...qids,'note','annotator','timestamp','skipped'];
-    const rows = [cols, ...getRows().map(r => cols.map(c => '"' + String(r[c]??'').replace(/"/g,'""') + '"'))];
-    dl('annotations_' + annotatorName.replace(/\s+/g,'_') + '.csv', rows.map(r=>r.join(',')).join('\n'), 'text/csv');
-    showAlert('CSV downloaded. Please send this file back.');
-  }
-
-  function dl(name, content, type) {
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(new Blob([content], {type}));
-    a.download = name; a.click();
-  }
-
-  function showAlert(msg) {
-    const el = document.getElementById('exportAlert');
-    el.innerHTML = '<span class="alert-msg">' + msg + '</span>';
-    setTimeout(() => el.innerHTML = '', 4000);
-  }
-
-  boot();
+function showAlert(msg) {
+  const el = document.getElementById('exportAlert');
+  el.innerHTML = '<span class="alert-msg">' + msg + '</span>';
+  setTimeout(() => el.innerHTML = '', 4000);
+}
 </script>
 </body>
 </html>
