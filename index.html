@@ -57,8 +57,6 @@
   .ptrack { flex: 1; height: 4px; background: var(--bg-secondary); border-radius: 2px; overflow: hidden; }
   .pfill { height: 100%; background: var(--text); border-radius: 2px; transition: width 0.3s; }
   .plabel { font-size: 13px; color: var(--text-secondary); white-space: nowrap; }
-
-  /* Pair + poles */
   .pair-section { padding: 1.25rem 1.25rem 1.1rem; }
   .pair-title { font-size: 22px; font-weight: 600; color: var(--text); margin-bottom: 16px; letter-spacing: -0.01em; }
   .pair-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -86,8 +84,6 @@
   }
   .pole textarea:focus { border-color: var(--text-secondary); }
   .pole textarea::placeholder { color: var(--text-tertiary); }
-
-  /* Applicable toggle */
   .applicable-row {
     padding: 1rem 1.25rem;
     border-top: 0.5px solid var(--border);
@@ -106,7 +102,22 @@
   .tog-btn.sel-yes { background: var(--success-bg); color: var(--success-text); border-color: var(--success-border); }
   .tog-btn.sel-no  { background: var(--danger-bg);  color: var(--danger-text);  border-color: var(--danger-border); }
 
-  /* Notes + nav */
+  /* Stereotypicality slider */
+  .stereo-row {
+    padding: 1rem 1.25rem;
+    border-top: 0.5px solid var(--border);
+    background: var(--warning-bg);
+    border-left: 3px solid var(--warning-border);
+  }
+  .stereo-header { font-size: 14px; font-weight: 600; color: var(--warning-text); margin-bottom: 4px; }
+  .stereo-sub { font-size: 12px; color: var(--warning-text); opacity: 0.85; margin-bottom: 12px; line-height: 1.5; }
+  .slider-wrap { display: flex; align-items: center; gap: 12px; }
+  .slider-wrap input[type=range] { flex: 1; accent-color: var(--warning-border); }
+  .slider-score {
+    font-size: 22px; font-weight: 600; color: var(--warning-text);
+    min-width: 28px; text-align: center;
+  }
+
   .note-row { padding: 1rem 1.25rem; border-top: 0.5px solid var(--border); }
   .note-row label { font-size: 13px; color: var(--text-secondary); display: block; margin-bottom: 5px; }
   .note-row textarea { width: 100%; font-size: 13px; font-family: var(--font); min-height: 48px; resize: none; padding: 7px 10px; background: var(--bg); color: var(--text); border: 0.5px solid var(--border-md); border-radius: var(--radius-md); outline: none; }
@@ -117,8 +128,6 @@
   .export-bar > span { font-size: 14px; color: var(--text-secondary); }
   .alert-msg { font-size: 13px; color: var(--success-text); background: var(--success-bg); border: 0.5px solid var(--success-border); border-radius: var(--radius-md); padding: 5px 14px; display: inline-block; margin-top: 8px; }
   .done-state { text-align: center; padding: 3rem 1rem; color: var(--text-secondary); font-size: 15px; }
-
-  /* Instructions */
   .instruction-block { display: flex; flex-direction: column; margin-bottom: 1.25rem; border: 0.5px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
   .inst-section { padding: 1.1rem 1.25rem; border-bottom: 0.5px solid var(--border); }
   .inst-section:last-child { border-bottom: none; }
@@ -148,7 +157,6 @@
     <span class="badge" id="modeLabel">Ready</span>
   </div>
 
-  <!-- SETUP -->
   <div class="panel" id="setupPanel">
     <h2>Before you begin — please read carefully</h2>
     <div class="instruction-block">
@@ -179,6 +187,7 @@
         <div class="inst-heading">What to do</div>
         <p>For each adjective you will see a <strong>text box</strong> — write any groups of people that spontaneously come to mind for that word. Separate multiple groups with commas. Leave it empty if nothing comes to mind.</p>
         <p>You will also see a toggle: <strong>Applicable to humans / Not applicable</strong>. If the words describe a purely physical, chemical, or biological phenomenon with no relevance to people, mark it <em>Not applicable</em>.</p>
+        <p>If you mark a pair as applicable, you will be asked to rate <strong>how stereotypical</strong> the associations are on a scale from 1 (very weak) to 5 (very strong).</p>
       </div>
     </div>
     <div class="warn-note">
@@ -195,7 +204,6 @@
     <div class="err-text" id="setupErr"></div>
   </div>
 
-  <!-- STATS -->
   <div id="statsSection" class="hidden">
     <div class="stats-row">
       <div class="stat"><div class="sv" id="stTotal">110</div><div class="sl">Total pairs</div></div>
@@ -205,7 +213,6 @@
     </div>
   </div>
 
-  <!-- ANNOTATION -->
   <div id="annotationSection" class="hidden">
     <div class="card" id="mainCard">
 
@@ -214,7 +221,6 @@
         <span class="plabel" id="plabel">1 / 110</span>
       </div>
 
-      <!-- Poles with text boxes -->
       <div class="pair-section">
         <div class="pair-title" id="pairTitle">—</div>
         <div class="pair-grid">
@@ -235,7 +241,6 @@
         </div>
       </div>
 
-      <!-- Applicable toggle -->
       <div class="applicable-row">
         <div class="ar-label">
           Applicable to humans?
@@ -247,13 +252,23 @@
         </div>
       </div>
 
-      <!-- Notes -->
+      <!-- Stereotypicality slider — shown only when applicable = Yes -->
+      <div class="stereo-row hidden" id="stereoRow">
+        <div class="stereo-header">How stereotypical is this pair?</div>
+        <div class="stereo-sub">Rate how strongly this antonym pair evokes stereotypical associations about groups of people (1 = very weak, 5 = very strong).</div>
+        <div class="slider-wrap">
+          <span style="font-size:12px;color:var(--warning-text);white-space:nowrap;">1 — weak</span>
+          <input type="range" id="stereoSlider" min="1" max="5" step="1" value="3" oninput="updateSliderDisplay()" />
+          <span style="font-size:12px;color:var(--warning-text);white-space:nowrap;">5 — strong</span>
+          <div class="slider-score" id="sliderScore">3</div>
+        </div>
+      </div>
+
       <div class="note-row">
         <label>Notes <span style="color:var(--text-tertiary);font-size:12px">(optional)</span></label>
         <textarea id="noteField" placeholder="Any other comments about this pair…"></textarea>
       </div>
 
-      <!-- Nav -->
       <div class="nav-row">
         <div class="btn-row">
           <button class="btn btn-sm" id="prevBtn" onclick="navigate(-1)" disabled>&#8592; Prev</button>
@@ -314,6 +329,9 @@ function showItem(idx) {
   document.getElementById('posGroups').value = ex?.pos_groups || '';
   document.getElementById('noteField').value = ex?.note || '';
   if (ex) applicable = ex.applicable || null;
+  const savedScore = ex?.stereotypicality_score;
+  document.getElementById('stereoSlider').value = (savedScore && savedScore > 0) ? savedScore : 3;
+  updateSliderDisplay();
   renderToggle();
   document.getElementById('pfill').style.width = Math.round((idx / PAIRS.length) * 100) + '%';
   document.getElementById('plabel').textContent = (idx + 1) + ' / ' + PAIRS.length;
@@ -323,9 +341,19 @@ function showItem(idx) {
   document.getElementById('doneMsg').classList.add('hidden');
 }
 
+function updateSliderDisplay() {
+  document.getElementById('sliderScore').textContent = document.getElementById('stereoSlider').value;
+}
+
 function renderToggle() {
   document.getElementById('tog-yes').className = 'tog-btn' + (applicable === 'Yes' ? ' sel-yes' : '');
   document.getElementById('tog-no').className  = 'tog-btn' + (applicable === 'No'  ? ' sel-no'  : '');
+  const stereoRow = document.getElementById('stereoRow');
+  if (applicable === 'Yes') {
+    stereoRow.classList.remove('hidden');
+  } else {
+    stereoRow.classList.add('hidden');
+  }
 }
 
 function setApplicable(val) { applicable = val; renderToggle(); }
@@ -333,10 +361,12 @@ function setApplicable(val) { applicable = val; renderToggle(); }
 function saveAndNext() {
   if (!applicable) { alert('Please mark whether this pair is applicable to humans.'); return; }
   const p = PAIRS[currentIndex];
+  const stereoScore = applicable === 'Yes' ? parseInt(document.getElementById('stereoSlider').value) : 0;
   annotations[p.key] = {
     key: p.key, pair: p.pair,
     positive_pole: p.posName, negative_pole: p.negName,
     applicable,
+    stereotypicality_score: stereoScore,
     neg_groups: document.getElementById('negGroups').value.trim(),
     pos_groups: document.getElementById('posGroups').value.trim(),
     note: document.getElementById('noteField').value.trim(),
@@ -353,6 +383,7 @@ function skipItem() {
     key: p.key, pair: p.pair,
     positive_pole: p.posName, negative_pole: p.negName,
     applicable: null,
+    stereotypicality_score: null,
     neg_groups: document.getElementById('negGroups').value.trim(),
     pos_groups: document.getElementById('posGroups').value.trim(),
     note: document.getElementById('noteField').value.trim(),
@@ -386,13 +417,14 @@ function getRows() {
     return {
       key: p.key, pair: p.pair,
       positive_pole: p.posName, negative_pole: p.negName,
-      applicable:  a?.applicable  ?? '',
-      neg_groups:  a?.neg_groups  ?? '',
-      pos_groups:  a?.pos_groups  ?? '',
-      note:        a?.note        ?? '',
-      annotator:   a?.annotator   ?? '',
-      timestamp:   a?.timestamp   ?? '',
-      skipped:     a?.skipped     ?? ''
+      applicable:             a?.applicable             ?? '',
+      stereotypicality_score: a?.stereotypicality_score ?? '',
+      neg_groups:             a?.neg_groups             ?? '',
+      pos_groups:             a?.pos_groups             ?? '',
+      note:                   a?.note                   ?? '',
+      annotator:              a?.annotator              ?? '',
+      timestamp:              a?.timestamp              ?? '',
+      skipped:                a?.skipped                ?? ''
     };
   });
 }
@@ -408,7 +440,7 @@ function exportJSON() {
 }
 
 function exportCSV() {
-  const cols = ['key','pair','positive_pole','negative_pole','applicable','neg_groups','pos_groups','note','annotator','timestamp','skipped'];
+  const cols = ['key','pair','positive_pole','negative_pole','applicable','stereotypicality_score','neg_groups','pos_groups','note','annotator','timestamp','skipped'];
   const rows = [cols, ...getRows().map(r => cols.map(c => '"' + String(r[c] ?? '').replace(/"/g, '""') + '"'))];
   dl('annotations_' + annotatorName.replace(/\s+/g, '_') + '.csv', rows.map(r => r.join(',')).join('\n'), 'text/csv');
   showAlert('CSV downloaded. Please send this file back.');
