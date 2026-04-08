@@ -255,11 +255,16 @@
         <div class="score-bubble-wrap">
           <div class="score-bubble unset" id="scoreBubble">drag</div>
         </div>
-        <div class="slider-row">
-          <span class="slider-end-label">1 — no stereotype</span>
-          <input type="range" id="stereoSlider" min="1" max="5" step="1" oninput="onSliderInput()" />
-          <span class="slider-end-label right">5 — very strong and widely recognized stereotype</span>
-        </div>
+       <div class="slider-row">
+         <input type="range" id="stereoSlider" min="1" max="5" step="1" oninput="onSliderInput()" />
+       </div>
+       <div style="display: flex; justify-content: space-between; margin-top: 8px; font-size: 11px;">
+         <div style="text-align: center;"><strong>1</strong><br>no stereotype</div>
+         <div style="text-align: center;"><strong>2</strong><br>weak</div>
+         <div style="text-align: center;"><strong>3</strong><br>moderate</div>
+         <div style="text-align: center;"><strong>4</strong><br>strong</div>
+         <div style="text-align: center;"><strong>5</strong><br>very strong & widely recognized</div>
+       </div>
         <div class="stereo-nudge" id="stereoNudge">&#8593; drag the slider to set a score before saving</div>
       </div>
       <div class="note-row">
