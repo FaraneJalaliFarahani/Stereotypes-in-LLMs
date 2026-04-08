@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Antonym Pair Annotation Tool</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #ffffff; --bg-secondary: #f5f5f4; --bg-tertiary: #eeece9;
+    --text: #1a1a1a; --text-secondary: #6b6b6b; --text-tertiary: #9a9a9a;
+    --border: rgba(0,0,0,0.12); --border-md: rgba(0,0,0,0.22);
+    --radius-md: 8px; --radius-lg: 12px;
+    --info-bg: #e6f1fb; --info-border: #b5d4f4; --info-text: #0c447c;
+    --danger-bg: #fcebeb; --danger-border: #f7c1c1; --danger-text: #791f1f;
+    --success-bg: #eaf3de; --success-border: #c0dd97; --success-text: #27500a;
+    --warning-bg: #faeeda; --warning-border: #fac775; --warning-text: #633806;
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1b; --bg-secondary: #252524; --bg-tertiary: #2e2e2c;
+      --text: #f0ede8; --text-secondary: #a8a39c; --text-tertiary: #6e6a65;
+      --border: rgba(255,255,255,0.1); --border-md: rgba(255,255,255,0.2);
+      --info-bg: #042c53; --info-border: #185fa5; --info-text: #b5d4f4;
+      --danger-bg: #501313; --danger-border: #a32d2d; --danger-text: #f7c1c1;
+      --success-bg: #173404; --success-border: #3b6d11; --success-text: #c0dd97;
+      --warning-bg: #412402; --warning-border: #854f0b; --warning-text: #fac775;
+    }
+  }
+  body { font-family: var(--font); background: var(--bg-tertiary); color: var(--text); min-height: 100vh; padding: 2rem 1rem 4rem; }
+  .app { max-width: 860px; margin: 0 auto; }
+  .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 0.5px solid var(--border); }
+  .header h1 { font-size: 20px; font-weight: 600; color: var(--text); }
+  .badge { font-size: 12px; padding: 3px 10px; border-radius: var(--radius-md); background: var(--bg-secondary); color: var(--text-secondary); border: 0.5px solid var(--border); }
+  .panel { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 1.5rem; }
+  .panel h2 { font-size: 11px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 1rem; }
+  .field { margin-bottom: 12px; }
+  .field label { display: block; font-size: 13px; color: var(--text-secondary); margin-bottom: 5px; }
+  .field input { width: 100%; padding: 8px 10px; font-size: 14px; font-family: var(--font); background: var(--bg); color: var(--text); border: 0.5px solid var(--border-md); border-radius: var(--radius-md); outline: none; transition: border-color 0.15s; }
+  .field input:focus { border-color: var(--text-secondary); }
+  .btn { padding: 8px 18px; border-radius: var(--radius-md); font-size: 14px; font-family: var(--font); cursor: pointer; border: 0.5px solid var(--border-md); background: var(--bg); color: var(--text); transition: background 0.15s; white-space: nowrap; }
+  .btn:hover { background: var(--bg-secondary); }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-primary { background: var(--text); color: var(--bg); border-color: var(--text); }
+  .btn-primary:hover { opacity: 0.85; background: var(--text); }
+  .btn-sm { padding: 5px 14px; font-size: 13px; }
+  .btn-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .hidden { display: none !important; }
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 1.5rem; }
+  @media (max-width: 480px) { .stats-row { grid-template-columns: repeat(2, 1fr); } }
+  .stat { background: var(--bg); border-radius: var(--radius-md); padding: 0.75rem 1rem; border: 0.5px solid var(--border); }
+  .stat .sv { font-size: 24px; font-weight: 600; color: var(--text); }
+  .stat .sl { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+  .card { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 1rem; }
+  .progress-row { display: flex; align-items: center; gap: 12px; padding: 0.9rem 1.25rem; border-bottom: 0.5px solid var(--border); }
+  .ptrack { flex: 1; height: 4px; background: var(--bg-secondary); border-radius: 2px; overflow: hidden; }
+  .pfill { height: 100%; background: var(--text); border-radius: 2px; transition: width 0.3s; }
+  .plabel { font-size: 13px; color: var(--text-secondary); white-space: nowrap; }
+  .pair-section { padding: 1.25rem 1.25rem 1rem; }
+  .pair-title { font-size: 13px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; }
+  .pair-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 540px) { .pair-grid { grid-template-columns: 1fr; } }
+  .pole { border-radius: var(--radius-md); padding: 1rem 1.1rem; }
+  .pole.pos { background: var(--info-bg); border: 0.5px solid var(--info-border); }
+  .pole.neg { background: var(--danger-bg); border: 0.5px solid var(--danger-border); }
+  .pole-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+  .pole.pos .pole-label { color: var(--info-text); }
+  .pole.neg .pole-label { color: var(--danger-text); }
+  .pole-name { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .pole-def { font-size: 13px; color: var(--text-secondary); line-height: 1.55; }
+  .questions { padding: 1.1rem 1.25rem; border-top: 0.5px solid var(--border); display: flex; flex-direction: column; gap: 1.1rem; }
+  .question-block .ql { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+  .question-block .qs { font-size: 12px; color: var(--text-secondary); margin-bottom: 10px; }
+  .choice-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .choice-btn { padding: 6px 22px; border-radius: var(--radius-md); font-size: 14px; font-family: var(--font); cursor: pointer; border: 0.5px solid var(--border-md); background: var(--bg-secondary); color: var(--text); transition: all 0.12s; }
+  .choice-btn:hover { border-color: var(--text-secondary); }
+  .choice-btn.sel-yes { background: var(--success-bg); color: var(--success-text); border-color: var(--success-border); }
+  .choice-btn.sel-no { background: var(--danger-bg); color: var(--danger-text); border-color: var(--danger-border); }
+  .choice-btn.sel-unsure { background: var(--warning-bg); color: var(--warning-text); border-color: var(--warning-border); }
+  .note-row { padding: 0 1.25rem 1rem; }
+  .note-row label { font-size: 13px; color: var(--text-secondary); display: block; margin-bottom: 5px; }
+  .note-row textarea { width: 100%; font-size: 13px; font-family: var(--font); min-height: 52px; resize: none; padding: 7px 10px; background: var(--bg); color: var(--text); border: 0.5px solid var(--border-md); border-radius: var(--radius-md); outline: none; }
+  .note-row textarea:focus { border-color: var(--text-secondary); }
+  .nav-row { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.25rem; border-top: 0.5px solid var(--border); flex-wrap: wrap; gap: 8px; }
+  .ann-tag { font-size: 12px; color: var(--text-tertiary); }
+  .export-bar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-top: 0.5rem; }
+  .export-bar > span { font-size: 14px; color: var(--text-secondary); }
+  .alert-msg { font-size: 13px; color: var(--success-text); background: var(--success-bg); border: 0.5px solid var(--success-border); border-radius: var(--radius-md); padding: 5px 14px; display: inline-block; margin-top: 8px; }
+  .done-state { text-align: center; padding: 3rem 1rem; color: var(--text-secondary); font-size: 15px; }
+  .loading-state { text-align: center; padding: 3rem 1rem; color: var(--text-secondary); font-size: 15px; }
+  .loading-state .spinner { width: 28px; height: 28px; border: 2px solid var(--border-md); border-top-color: var(--text); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 1rem; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .error-box { background: var(--danger-bg); border: 0.5px solid var(--danger-border); border-radius: var(--radius-md); padding: 1rem 1.25rem; margin-bottom: 1rem; }
+  .error-box p { font-size: 14px; color: var(--danger-text); line-height: 1.6; }
+  .error-box code { font-family: monospace; font-size: 12px; background: rgba(0,0,0,0.06); padding: 1px 5px; border-radius: 4px; }
+  .instruction-block { display: flex; flex-direction: column; gap: 0; margin-bottom: 1.25rem; border: 0.5px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+  .inst-section { padding: 1.1rem 1.25rem; border-bottom: 0.5px solid var(--border); }
+  .inst-section:last-child { border-bottom: none; }
+  .inst-section p { font-size: 13px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 0.5rem; }
+  .inst-section p:last-child { margin-bottom: 0; }
+  .inst-heading { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .inst-section strong { color: var(--text); font-weight: 600; }
+  .inst-section em { font-style: italic; }
+  .cite { font-size: 11px; color: var(--text-tertiary); }
+  .axis-visual { display: flex; align-items: stretch; margin: 10px 0; border-radius: var(--radius-md); overflow: hidden; border: 0.5px solid var(--border); }
+  .axis-neg { background: var(--danger-bg); padding: 8px 14px; flex: 1; text-align: center; border-right: 0.5px solid var(--danger-border); }
+  .axis-neg .aword { font-size: 15px; font-weight: 600; color: var(--danger-text); }
+  .axis-neg .albl { font-size: 10px; color: var(--danger-text); opacity: 0.7; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px; }
+  .axis-mid { padding: 8px 16px; background: var(--bg-secondary); text-align: center; border-right: 0.5px solid var(--border); white-space: nowrap; }
+  .axis-mid .albl { font-size: 10px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; }
+  .axis-mid .aname { font-size: 12px; font-weight: 600; color: var(--text); margin-top: 2px; }
+  .axis-pos { background: var(--info-bg); padding: 8px 14px; flex: 1; text-align: center; }
+  .axis-pos .aword { font-size: 15px; font-weight: 600; color: var(--info-text); }
+  .axis-pos .albl { font-size: 10px; color: var(--info-text); opacity: 0.7; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px; }
+  .group-bars { margin: 10px 0 4px; display: flex; flex-direction: column; gap: 5px; }
+  .gbar-row { display: flex; align-items: center; gap: 8px; }
+  .gbar-label { font-size: 11px; color: var(--text-secondary); min-width: 120px; text-align: right; }
+  .gbar-track { flex: 1; height: 18px; background: var(--bg-secondary); border-radius: 3px; overflow: hidden; border: 0.5px solid var(--border); display: flex; }
+  .gbar-fill-neg { background: var(--danger-bg); height: 100%; display: flex; align-items: center; justify-content: flex-end; padding-right: 6px; font-size: 10px; color: var(--danger-text); font-weight: 600; }
+  .gbar-fill-pos { background: var(--info-bg); height: 100%; display: flex; align-items: center; padding-left: 6px; font-size: 10px; color: var(--info-text); font-weight: 600; margin-left: auto; }
+  .examples-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 2px; }
+  .example-box { background: var(--success-bg); border: 0.5px solid var(--success-border); border-radius: var(--radius-md); padding: 10px 14px; }
+  .example-box-no { background: var(--bg-secondary); border: 0.5px solid var(--border-md); }
+  .example-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--success-text); margin-bottom: 5px; }
+  .example-box-no .example-label { color: var(--text-secondary); }
+  .eg-list { padding-left: 1rem; display: flex; flex-direction: column; gap: 4px; margin-top: 6px; }
+  .eg-list li { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .eg-list li em { color: var(--text); font-style: normal; font-weight: 600; }
+  .task-list { padding-left: 1.2rem; margin: 8px 0; display: flex; flex-direction: column; gap: 6px; }
+  .task-list li { font-size: 13px; color: var(--text-secondary); line-height: 1.65; }
+  .task-list li strong { color: var(--text); font-weight: 600; }
+  .q-badge { display: inline-block; font-size: 10px; font-weight: 600; padding: 1px 7px; border-radius: 99px; margin-right: 4px; vertical-align: middle; }
+  .q1-badge { background: var(--info-bg); color: var(--info-text); }
+  .q2-badge { background: var(--warning-bg); color: var(--warning-text); }
+  .warn-note { font-size: 13px; color: var(--warning-text); background: var(--warning-bg); border: 0.5px solid var(--warning-border); border-radius: var(--radius-md); padding: 10px 14px; margin-bottom: 1rem; line-height: 1.6; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="header">
+    <h1>Antonym pair annotation</h1>
+    <span class="badge" id="modeLabel">Loading…</span>
+  </div>
+
+  <div class="loading-state" id="loadingState">
+    <div class="spinner"></div>
+    Loading dataset…
+  </div>
+
+  <div id="errorBox" class="hidden"></div>
+
+  <div class="panel hidden" id="setupPanel">
+    <h2>Before you begin — please read carefully</h2>
+
+    <div class="instruction-block">
+
+      <div class="inst-section">
+        <p>A <strong>semantic axis</strong> can be defined by a pair of antonymous adjectives, e.g., <em>poor</em> vs. <em>rich</em>. Position of a social group (e.g., "CEOs", "homeless people") on that semantic axis serves as a measure of stereotype association. For example, CEOs are expected to be associated closer to the <em>rich</em> pole, while homeless people are associated closer to the <em>poor</em> pole.</p>
+ </div>
+      <div class="inst-section">
+        <div class="inst-heading">Examples</div>
+        <div class="examples-grid">
+          <div class="example-box">
+            <div class="example-label">Stereotypical axes</div>
+            <ul class="eg-list">
+              <li><em>unfriendly ↔ friendly</em> — warmth; social groups differ in perceived warmth</li>
+              <li><em>immoral ↔ moral</em> — morality; moral character varies by different social group</li>
+            </ul>
+          </div>
+          <div class="example-box example-box-no">
+            <div class="example-label">Non-stereotypical axes</div>
+            <ul class="eg-list">
+              <li><em>abaxial ↔ adaxial</em> — plant anatomy; no social group mapping</li>
+              <li><em>basiscopic ↔ acroscopic</em> — purely biological; no social group mapping</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="inst-section">
+        <div class="inst-heading">Your task</div>
+        <p>For each antonym pair, consider the <strong>semantic axis</strong> it constructs. You will see the <span style="color:var(--danger-text);font-weight:600;">negative pole</span> on the left and the <span style="color:var(--info-text);font-weight:600;">positive pole</span> on the right. Answer two questions <strong>in order</strong>:</p>
+        <ol class="task-list">
+          <li><span class="q-badge q1-badge">Q1</span> <strong>Is this semantic axis related to humans?</strong> — Does it primarily describe traits, behaviours, or categories that apply to humans? This is a <strong>prerequisite</strong> of a semantic axis to be considered stereotypical.</li>
+          <li><span class="q-badge q2-badge">Q2</span> <strong>Is this semantic axis stereotypical?</strong> — From <strong>your perspective</strong>, are different social groups associated with different positions along this axis? Would you expect certain groups to be closer to one pole than the other?</li>
+        </ol>
+        <p>Use <strong>Unsure</strong> when you genuinely cannot decide. Optional notes are available for any pair.</p>
+      </div>
+
+    </div>
+
+    <div class="warn-note">
+      <strong>&#9888; Important:</strong> Please complete the annotation <strong>in one sitting</strong> without interruption. Taking breaks may shift your perspective and affect consistency across annotations. Progress is <strong>not saved</strong> if the browser tab is closed — export your annotations before closing.
+    </div>
+
+    <div id="welcomeNote" style="font-size:13px;color:var(--text-secondary);padding:10px 14px;background:var(--bg-secondary);border-radius:var(--radius-md);border:0.5px solid var(--border);margin-bottom:1rem;"></div>
+
+    <div class="field" style="max-width:320px;">
+      <label>Your name</label>
+      <input type="text" id="annotatorName" placeholder="e.g. Alice" />
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="startSession()">Start annotating</button>
+    </div>
+    <div style="font-size:13px;color:var(--danger-text);margin-top:8px;" id="setupErr"></div>
+  </div>
+
+  <div id="statsSection" class="hidden">
+    <div class="stats-row">
+      <div class="stat"><div class="sv" id="stTotal">0</div><div class="sl">Total pairs</div></div>
+      <div class="stat"><div class="sv" id="stDone">0</div><div class="sl">Annotated</div></div>
+      <div class="stat"><div class="sv" id="stSkip">0</div><div class="sl">Skipped</div></div>
+      <div class="stat"><div class="sv" id="stLeft">0</div><div class="sl">Remaining</div></div>
+    </div>
+  </div>
+
+  <div id="annotationSection" class="hidden">
+    <div class="card" id="mainCard">
+      <div class="progress-row">
+        <div class="ptrack"><div class="pfill" id="pfill" style="width:0%"></div></div>
+        <span class="plabel" id="plabel">0 / 0</span>
+      </div>
+      <div class="pair-section">
+        <div class="pair-title" id="pairTitle">—</div>
+        <div class="pair-grid">
+          <div class="pole neg">
+            <div class="pole-label">Negative pole</div>
+            <div class="pole-name" id="negName">—</div>
+            <div class="pole-def" id="negDef">—</div>
+          </div>
+          <div class="pole pos">
+            <div class="pole-label">Positive pole</div>
+            <div class="pole-name" id="posName">—</div>
+            <div class="pole-def" id="posDef">—</div>
+          </div>
+        </div>
+      </div>
+      <div class="questions"></div>
+      <div class="note-row">
+        <label>Notes (optional)</label>
+        <textarea id="noteField" placeholder="Any comments about this pair..."></textarea>
+      </div>
+      <div class="nav-row">
+        <div class="btn-row">
+          <button class="btn btn-sm" id="prevBtn" onclick="navigate(-1)">&#8592; Prev</button>
+          <button class="btn btn-sm" onclick="skipItem()">Skip</button>
+        </div>
+        <span class="ann-tag" id="annTag"></span>
+        <button class="btn btn-sm btn-primary" onclick="saveAndNext()">Save &amp; next &#8594;</button>
+      </div>
+    </div>
+
+    <div class="done-state hidden" id="doneMsg">
+      &#10003; All pairs reviewed! Export your annotations below and send the file back.
+    </div>
+
+    <div class="export-bar" style="margin-top:1rem;">
+      <span>Export your annotations</span>
+      <div class="btn-row">
+        <button class="btn btn-sm" onclick="exportJSON()">Download JSON</button>
+        <button class="btn btn-sm" onclick="exportCSV()">Download CSV</button>
+      </div>
+    </div>
+    <div id="exportAlert"></div>
+  </div>
+
+</div>
+<script>
+  const CONFIG = {
+    datasetURL: "https://raw.githubusercontent.com/FaraneJalaliFarahani/Stereotypes-in-LLMs/main/stratified_axes.json",
+    datasetName: "Stereotypes-in-LLMs antonym pairs",
+    questions: [
+      {
+        id: "human_related",
+        label: "Q1. Is this semantic axis related to humans?",
+        description: "Does it primarily describe traits, behaviours, or categories that apply to humans? (prerequisite for stereotypicality)"
+      },
+      {
+        id: "stereotypical",
+        label: "Q2. Is this semantic axis stereotypical?",
+        description: "From your perspective, are different social groups associated with different positions along this axis?"
+      }
+    ]
+  };
+
+  let pairs = [], annotations = {}, currentIndex = 0;
+  let annotatorName = '';
+  let answers = {};
+
+  async function boot() {
+    try {
+      const res = await fetch(CONFIG.datasetURL);
+      if (!res.ok) throw new Error(`HTTP ${res.status} — could not load dataset`);
+      const data = await res.json();
+      pairs = Object.entries(data).map(([k, v]) => parseEntry(k, v));
+      if (!pairs.length) throw new Error("Dataset is empty.");
+      document.getElementById('loadingState').classList.add('hidden');
+      document.getElementById('modeLabel').textContent = 'Ready';
+      document.getElementById('welcomeNote').innerHTML =
+        `This dataset contains <strong>${pairs.length} antonym pairs</strong>. ` +
+        `For each pair you will answer ${CONFIG.questions.length} question(s). ` +
+        `When done, export your annotations and send the file back.`;
+      document.getElementById('setupPanel').classList.remove('hidden');
+    } catch(e) {
+      document.getElementById('loadingState').classList.add('hidden');
+      document.getElementById('modeLabel').textContent = 'Error';
+      document.getElementById('errorBox').innerHTML =
+        `<div class="error-box"><p>&#9888; Could not load the dataset.<br>
+        <strong>Reason:</strong> ${e.message}<br><br>
+        Check that <code>${CONFIG.datasetURL}</code> is correct and publicly accessible.</p></div>`;
+      document.getElementById('errorBox').classList.remove('hidden');
+    }
+  }
+
+  function parseEntry(key, raw) {
+    const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
+    const get = prefix => lines.find(l => l.startsWith(prefix)) || '';
+    function parsePole(line) {
+      const after = line.replace(/^(Positive|Negative):\s*/, '');
+      const i = after.indexOf('\u2192');
+      return { name: i > -1 ? after.slice(0, i).trim() : after, def: i > -1 ? after.slice(i+1).trim() : '' };
+    }
+    return {
+      key,
+      pairName: get('Antonym Pair:').replace('Antonym Pair:', '').trim(),
+      pos: parsePole(get('Positive:')),
+      neg: parsePole(get('Negative:')),
+      domain: get('Domain:').replace('Domain:', '').trim(),
+      conf: get('Confidence:').replace('Confidence:', '').trim()
+    };
+  }
+
+  (function buildQuestions() {
+    const container = document.querySelector('.questions');
+    container.innerHTML = '';
+    CONFIG.questions.forEach(q => {
+      container.innerHTML += `
+        <div class="question-block">
+          <div class="ql">${q.label}</div>
+          <div class="qs">${q.description}</div>
+          <div class="choice-row">
+            <button class="choice-btn" id="${q.id}-yes" onclick="setQ('${q.id}','Yes')">Yes</button>
+            <button class="choice-btn" id="${q.id}-no" onclick="setQ('${q.id}','No')">No</button>
+            <button class="choice-btn" id="${q.id}-unsure" onclick="setQ('${q.id}','Unsure')">Unsure</button>
+          </div>
+        </div>`;
+    });
+  })();
+
+  function startSession() {
+    const err = document.getElementById('setupErr');
+    annotatorName = document.getElementById('annotatorName').value.trim();
+    if (!annotatorName) { err.textContent = 'Please enter your name.'; return; }
+    err.textContent = '';
+    document.getElementById('setupPanel').classList.add('hidden');
+    document.getElementById('statsSection').classList.remove('hidden');
+    document.getElementById('annotationSection').classList.remove('hidden');
+    document.getElementById('modeLabel').textContent = annotatorName;
+    CONFIG.questions.forEach(q => answers[q.id] = null);
+    currentIndex = 0;
+    showItem(0);
+    updateStats();
+  }
+
+  function showItem(idx) {
+    if (idx >= pairs.length) { showDone(); return; }
+    const p = pairs[idx];
+    CONFIG.questions.forEach(q => answers[q.id] = null);
+    document.getElementById('pairTitle').textContent = p.pairName;
+    document.getElementById('posName').textContent = p.pos.name;
+    document.getElementById('posDef').textContent = p.pos.def;
+    document.getElementById('negName').textContent = p.neg.name;
+    document.getElementById('negDef').textContent = p.neg.def;
+    const ex = annotations[p.key];
+    document.getElementById('noteField').value = ex?.note || '';
+    if (ex) CONFIG.questions.forEach(q => answers[q.id] = ex[q.id] || null);
+    renderChoices();
+    document.getElementById('pfill').style.width = Math.round((idx / pairs.length) * 100) + '%';
+    document.getElementById('plabel').textContent = (idx + 1) + ' / ' + pairs.length;
+    document.getElementById('annTag').textContent = annotatorName;
+    document.getElementById('prevBtn').disabled = idx === 0;
+    document.getElementById('mainCard').classList.remove('hidden');
+    document.getElementById('doneMsg').classList.add('hidden');
+  }
+
+  function renderChoices() {
+    CONFIG.questions.forEach(q => {
+      ['yes','no','unsure'].forEach(opt => {
+        const btn = document.getElementById(q.id + '-' + opt);
+        if (!btn) return;
+        btn.className = 'choice-btn';
+        const val = opt.charAt(0).toUpperCase() + opt.slice(1);
+        if (answers[q.id] === val) btn.classList.add('sel-' + opt);
+      });
+    });
+  }
+
+  function setQ(qid, val) { answers[qid] = val; renderChoices(); }
+
+  function saveAndNext() {
+    const unanswered = CONFIG.questions.find(q => !answers[q.id]);
+    if (unanswered) { alert('Please answer: ' + unanswered.label); return; }
+    const p = pairs[currentIndex];
+    const record = {
+      key: p.key, pair: p.pairName,
+      positive_pole: p.pos.name, negative_pole: p.neg.name,
+      note: document.getElementById('noteField').value.trim(),
+      annotator: annotatorName, timestamp: new Date().toISOString(), skipped: false
+    };
+    CONFIG.questions.forEach(q => record[q.id] = answers[q.id]);
+    annotations[p.key] = record;
+    updateStats();
+    if (currentIndex < pairs.length - 1) { currentIndex++; showItem(currentIndex); }
+    else showDone();
+  }
+
+  function skipItem() {
+    const p = pairs[currentIndex];
+    const record = {
+      key: p.key, pair: p.pairName, positive_pole: p.pos.name, negative_pole: p.neg.name,
+      note: document.getElementById('noteField').value.trim(),
+      annotator: annotatorName, timestamp: new Date().toISOString(), skipped: true
+    };
+    CONFIG.questions.forEach(q => record[q.id] = null);
+    annotations[p.key] = record;
+    updateStats();
+    if (currentIndex < pairs.length - 1) { currentIndex++; showItem(currentIndex); }
+    else showDone();
+  }
+
+  function navigate(dir) {
+    const next = currentIndex + dir;
+    if (next >= 0 && next < pairs.length) { currentIndex = next; showItem(currentIndex); }
+  }
+
+  function showDone() {
+    document.getElementById('mainCard').classList.add('hidden');
+    document.getElementById('doneMsg').classList.remove('hidden');
+  }
+
+  function updateStats() {
+    const vals = Object.values(annotations);
+    document.getElementById('stTotal').textContent = pairs.length;
+    document.getElementById('stDone').textContent = vals.filter(a => !a.skipped).length;
+    document.getElementById('stSkip').textContent = vals.filter(a => a.skipped).length;
+    document.getElementById('stLeft').textContent = pairs.length - vals.length;
+  }
+
+  function getRows() {
+    const qids = CONFIG.questions.map(q => q.id);
+    return pairs.map(p => {
+      const a = annotations[p.key];
+      const row = { key: p.key, pair: p.pairName, positive_pole: p.pos.name, negative_pole: p.neg.name };
+      qids.forEach(qid => row[qid] = a?.[qid] ?? '');
+      row.note = a?.note ?? '';
+      row.annotator = a?.annotator ?? '';
+      row.timestamp = a?.timestamp ?? '';
+      row.skipped = a?.skipped ?? '';
+      return row;
+    });
+  }
+
+  function exportJSON() {
+    const data = { annotator: annotatorName, dataset: CONFIG.datasetURL, exported_at: new Date().toISOString(), total: pairs.length, annotated: Object.values(annotations).filter(a=>!a.skipped).length, annotations: getRows() };
+    dl('annotations_' + annotatorName.replace(/\s+/g,'_') + '.json', JSON.stringify(data, null, 2), 'application/json');
+    showAlert('JSON downloaded. Please send this file back.');
+  }
+
+  function exportCSV() {
+    const qids = CONFIG.questions.map(q => q.id);
+    const cols = ['key','pair','positive_pole','negative_pole',...qids,'note','annotator','timestamp','skipped'];
+    const rows = [cols, ...getRows().map(r => cols.map(c => '"' + String(r[c]??'').replace(/"/g,'""') + '"'))];
+    dl('annotations_' + annotatorName.replace(/\s+/g,'_') + '.csv', rows.map(r=>r.join(',')).join('\n'), 'text/csv');
+    showAlert('CSV downloaded. Please send this file back.');
+  }
+
+  function dl(name, content, type) {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([content], {type}));
+    a.download = name; a.click();
+  }
+
+  function showAlert(msg) {
+    const el = document.getElementById('exportAlert');
+    el.innerHTML = '<span class="alert-msg">' + msg + '</span>';
+    setTimeout(() => el.innerHTML = '', 4000);
+  }
+
+  boot();
+</script>
+</body>
+</html>
