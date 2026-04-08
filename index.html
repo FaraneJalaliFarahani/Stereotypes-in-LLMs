@@ -165,7 +165,7 @@
     <h2>Before you begin — please read carefully</h2>
     <div class="instruction-block">
       <div class="inst-section">
-        <p>In this annotation task, you are given two opposite adjectives. We want you to <strong>write down the groups of people that come to mind</strong> when you think about each adjective For example, for the adjective <strong>poor</strong> and <strong>rich</strong>, you might write "homeless people" under <em>poor</em> and "CEOs" under <em>rich</em>. This reflects a stereotype you have about those groups of people in your mind. </p>
+        <p>In this annotation task, you are given two opposite adjectives. We want you to <strong>write down the groups of people that come to mind</strong> when you think about each adjective. For example, for the adjectives <strong>poor</strong> and <strong>rich</strong>, you might write "homeless people" under <em>poor</em> and "CEOs" under <em>rich</em>. This reflects a stereotype you have about those groups of people in your mind.</p>
       </div>
       <div class="inst-section">
         <div class="inst-heading">Examples</div>
@@ -188,7 +188,7 @@
       </div>
       <div class="inst-section">
         <div class="inst-heading">What to do</div>
-        <p>For each adjective, you will see a <strong>text box</strong> — write any groups of people that spontaneously come to mind for that adjective. Separate multiple groups with <strong>commas<strong>. Leave it empty if nothing comes to mind.</p>
+        <p>For each adjective, you will see a <strong>text box</strong> — write any groups of people that spontaneously come to mind for that adjective. Separate multiple groups with <strong>commas</strong>. Leave it empty if nothing comes to mind.</p>
         <p>You will also see a toggle: <strong>Applicable to humans / Not applicable</strong>. If the adjective describes something not relevant to people, such as a purely physical, chemical, or biological phenomenon, mark it <em>Not applicable</em>.</p>
         <p>If you mark a pair as applicable, you will be asked to rate <strong>how stereotypical</strong> the associations are on a scale from 1 (very weak) to 5 (very strong).</p>
       </div>
@@ -294,48 +294,21 @@ let PAIRS = [];
 let annotations = {}, currentIndex = 0, annotatorName = '';
 let applicable = null, stereoTouched = false;
 
-/* ── Parse the flat string format from example_axes.json ──
-   Each value looks like:
-   "Antonym Pair: lower-class.a.01|upper-class.a.01\n  Positive: lower-class, low-class → ...\n  Negative: upper-class → ...\n  Domain: ..."
-*/
 function parseEntry(key, raw) {
   const lines = raw.split('\n').map(s => s.trim()).filter(Boolean);
-
-  // Extract the pair line: "Antonym Pair: word1.x.xx|word2.x.xx"
   const pairLine = lines.find(l => l.startsWith('Antonym Pair:')) || '';
-  const pairRaw  = pairLine.replace('Antonym Pair:', '').trim(); // e.g. "lower-class.a.01|upper-class.a.01"
-
-  // Strip sense tags (e.g. ".a.01") → keep just the word
+  const pairRaw  = pairLine.replace('Antonym Pair:', '').trim();
   const cleanWord = w => w.replace(/\.[a-z]\.\d+$/, '').trim();
   const parts = pairRaw.split('|');
-  const posWordRaw = parts[0] || '';
-  const negWordRaw = parts[1] || '';
-  const posWord = cleanWord(posWordRaw);
-  const negWord = cleanWord(negWordRaw);
-
-  // Extract definitions from "Positive: word, aliases → definition" lines
+  const posWord = cleanWord(parts[0] || '');
+  const negWord = cleanWord(parts[1] || '');
   const extractDef = (prefix) => {
     const line = lines.find(l => l.startsWith(prefix + ':')) || '';
     const body = line.replace(prefix + ':', '').trim();
-    // Definition comes after "→"
     const arrowIdx = body.indexOf('→');
     return arrowIdx >= 0 ? body.slice(arrowIdx + 1).trim() : body;
   };
-
-  const posDef = extractDef('Positive');
-  const negDef = extractDef('Negative');
-
-  // Build a clean pair string for the title display
-  const pair = posWord + '|' + negWord;
-
-  return {
-    key,
-    pair,
-    posName: posWord,
-    posDef,
-    negName: negWord,
-    negDef
-  };
+  return { key, pair: posWord + '|' + negWord, posName: posWord, posDef: extractDef('Positive'), negName: negWord, negDef: extractDef('Negative') };
 }
 
 async function loadPairs() {
@@ -343,26 +316,15 @@ async function loadPairs() {
     const res = await fetch('example_axes.json');
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
-
-    if (Array.isArray(data)) {
-      // Already a structured array
-      PAIRS = data;
-    } else if (typeof data === 'object' && data !== null) {
-      // It's a key→string object — parse each entry
-      PAIRS = Object.entries(data).map(([key, val]) => parseEntry(key, val));
-    } else {
-      throw new Error('Unrecognised format.');
-    }
-
+    if (Array.isArray(data)) { PAIRS = data; }
+    else if (typeof data === 'object' && data !== null) { PAIRS = Object.entries(data).map(([k, v]) => parseEntry(k, v)); }
+    else { throw new Error('Unrecognised format.'); }
     if (PAIRS.length === 0) throw new Error('No pairs found in example_axes.json.');
-
-    document.getElementById('welcomeNote').innerHTML =
-      'This dataset contains <strong>' + PAIRS.length + ' antonym pairs</strong>. When done, export your annotations and send the file back.';
+    document.getElementById('welcomeNote').innerHTML = 'This dataset contains <strong>' + PAIRS.length + ' antonym pairs</strong>. When done, export your annotations and send the file back.';
     document.getElementById('stTotal').textContent = PAIRS.length;
     document.getElementById('stLeft').textContent  = PAIRS.length;
     document.getElementById('loadingMsg').classList.add('hidden');
     document.getElementById('setupPanel').classList.remove('hidden');
-
   } catch (err) {
     document.getElementById('loadingMsg').classList.add('hidden');
     const el = document.getElementById('loadErr');
@@ -382,9 +344,7 @@ function startSession() {
   document.getElementById('statsSection').classList.remove('hidden');
   document.getElementById('annotationSection').classList.remove('hidden');
   document.getElementById('modeLabel').textContent = annotatorName;
-  currentIndex = 0;
-  showItem(0);
-  updateStats();
+  currentIndex = 0; showItem(0); updateStats();
 }
 
 function showItem(idx) {
