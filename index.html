@@ -137,7 +137,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 <body>
 <div class="app">
   <div class="header">
-    <h1>Semantic Axis Annotation</h1>
+    <h1>Antonym Pair Annotation</h1>
     <span class="tag" id="modeLabel">Ready</span>
   </div>
 
@@ -145,7 +145,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   <div class="card" id="setupPanel">
     <div class="inst-block">
       <h3>Instructions</h3>
-      <p>You will see a series of <strong>antonym pairs</strong> (two opposite adjectives). For each pair, you will rate <strong>one word</strong> on a 1–5 scale between the two poles.</p>
+      <p>You will see <strong>antonym pairs</strong> (two opposite adjectives). For each pair, you will rate <strong>one word</strong> on a 1–5 scale between the two adjectives. </p>
       <div class="inst-example">
         <div class="ex-label">Example</div>
         <p>Antonym pair: <strong>poor ↔ rich</strong></p>
@@ -204,7 +204,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
         <div class="ri-word" id="word1">—</div>
         <div class="ri-question" id="q1">—</div>
         <div class="ri-scale" id="scaleWrap1">
-          <span class="ri-pole left" id="pole1L">—</span>
+        
           <div class="ri-btns" id="btns1">
             <button class="ri-btn" data-val="1" onclick="setScore(0,1)">1</button>
             <button class="ri-btn" data-val="2" onclick="setScore(0,2)">2</button>
@@ -212,7 +212,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
             <button class="ri-btn" data-val="4" onclick="setScore(0,4)">4</button>
             <button class="ri-btn" data-val="5" onclick="setScore(0,5)">5</button>
           </div>
-          <span class="ri-pole right" id="pole1R">—</span>
+       
         </div>
         <div class="ri-labels" id="labels1">
           <span id="lbl1a">—</span><span>somewhat <span id="lbl1c">—</span></span><span> neutral </span><span>somewhat <span id="lbl1d">—</span></span><span id="lbl1b">—</span>
@@ -229,7 +229,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
         <div class="ri-word" id="word2">—</div>
         <div class="ri-question" id="q2">—</div>
         <div class="ri-scale" id="scaleWrap2">
-          <span class="ri-pole left" id="pole2L">—</span>
+   
           <div class="ri-btns" id="btns2">
             <button class="ri-btn" data-val="1" onclick="setScore(1,1)">1</button>
             <button class="ri-btn" data-val="2" onclick="setScore(1,2)">2</button>
@@ -237,7 +237,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
             <button class="ri-btn" data-val="4" onclick="setScore(1,4)">4</button>
             <button class="ri-btn" data-val="5" onclick="setScore(1,5)">5</button>
           </div>
-          <span class="ri-pole right" id="pole2R">—</span>
+  
         </div>
         <div class="ri-labels" id="labels2">
           <span id="lbl2a">—</span><span>somewhat <span id="lbl2c">—</span></span><span>3 (neither)</span><span>somewhat <span id="lbl2d">—</span></span><span id="lbl2b">—</span>
