@@ -4,146 +4,200 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Stereotype Axis Annotation</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  :root{
-    --bg:#faf9f7;--bg-card:#fff;--bg-sec:#f0eee9;--bg-tri:#e8e5df;--bg-hover:#f5f3ef;
-    --text:#1b1918;--text2:#6e6862;--text3:#9e9690;
-    --bdr:rgba(0,0,0,.08);--bdr-md:rgba(0,0,0,.14);
-    --accent:#c25832;--accent-lt:#f6ebe6;--accent-dk:#983f22;
-    --neg-bg:#fdf0ea;--neg-bdr:#f0c5a8;--neg-tx:#8b3a14;
-    --pos-bg:#e8f0f6;--pos-bdr:#a8c8e0;--pos-tx:#1a4a6c;
-    --ok-bg:#eaf3de;--ok-bdr:#b5d49a;--ok-tx:#2d5a0e;
-    --warn-bg:#fef6e6;--warn-bdr:#f0c96e;--warn-tx:#6e4a08;
-    --err-tx:#7a1f1f;--err-bg:#fceaea;
-    --r:10px;--r-lg:14px;--r-xl:18px;
-    --font:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;
-    --mono:'DM Mono','SF Mono',monospace;
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #faf9f7; --bg-card: #ffffff; --bg-secondary: #f0eee9;
+    --bg-tertiary: #e8e5df; --bg-hover: #f5f3ef;
+    --text: #1b1918; --text-secondary: #6e6862; --text-tertiary: #9e9690;
+    --border: rgba(0,0,0,0.08); --border-md: rgba(0,0,0,0.14);
+    --accent: #c25832; --accent-light: #f6ebe6; --accent-dark: #983f22;
+    --neg-bg: #fdf0ea; --neg-border: #f0c5a8; --neg-text: #8b3a14;
+    --pos-bg: #e8f0f6; --pos-border: #a8c8e0; --pos-text: #1a4a6c;
+    --na-bg: #f3f0eb; --na-border: #d5cfc5; --na-text: #6e6862;
+    --success-bg: #eaf3de; --success-border: #b5d49a; --success-text: #2d5a0e;
+    --warn-bg: #fef6e6; --warn-border: #f0c96e; --warn-text: #6e4a08;
+    --danger-bg: #fceaea; --danger-text: #7a1f1f;
+    --radius: 10px; --radius-lg: 14px; --radius-xl: 18px;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.03);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
+    --font: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --mono: 'DM Mono', 'SF Mono', monospace;
   }
-  @media(prefers-color-scheme:dark){:root{
-    --bg:#1a1917;--bg-card:#232220;--bg-sec:#2a2927;--bg-tri:#333230;--bg-hover:#2e2d2b;
-    --text:#ede9e3;--text2:#a8a29a;--text3:#716b63;
-    --bdr:rgba(255,255,255,.07);--bdr-md:rgba(255,255,255,.13);
-    --accent:#e07050;--accent-lt:#3a2218;--accent-dk:#f09878;
-    --neg-bg:#2e1e14;--neg-bdr:#6e3a1a;--neg-tx:#f0b888;
-    --pos-bg:#142030;--pos-bdr:#2a5878;--pos-tx:#90c0e0;
-    --ok-bg:#1a2e0a;--ok-bdr:#3a6818;--ok-tx:#b0d090;
-    --warn-bg:#2e2408;--warn-bdr:#6e4a08;--warn-tx:#f0c96e;
-    --err-tx:#f0a0a0;--err-bg:#3a1818;
-  }}
-  body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh}
-  .app{max-width:680px;margin:0 auto;padding:2rem 1.25rem 4rem}
-  .hidden{display:none!important}
-  .header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:2rem;padding-bottom:1rem;border-bottom:1px solid var(--bdr)}
-  .header h1{font-size:21px;font-weight:600;letter-spacing:-.02em}
-  .tag{font-family:var(--mono);font-size:11px;padding:3px 10px;border-radius:20px;background:var(--bg-sec);color:var(--text2);border:1px solid var(--bdr)}
-  .card{background:var(--bg-card);border:1px solid var(--bdr);border-radius:var(--r-xl);box-shadow:0 1px 3px rgba(0,0,0,.04);overflow:hidden;margin-bottom:1.25rem}
-  .btn{display:inline-flex;align-items:center;gap:6px;padding:9px 20px;border-radius:var(--r);font-size:14px;font-weight:500;font-family:var(--font);cursor:pointer;border:1px solid var(--bdr-md);background:var(--bg-card);color:var(--text);transition:all .15s;white-space:nowrap}
-  .btn:hover{background:var(--bg-hover);border-color:var(--text3)}
-  .btn:disabled{opacity:.35;cursor:not-allowed}
-  .btn-primary{background:var(--accent);color:#fff;border-color:var(--accent)}
-  .btn-primary:hover{background:var(--accent-dk);border-color:var(--accent-dk)}
-  .btn-sm{padding:6px 14px;font-size:13px}
-  .btn-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-  .field{margin-bottom:14px}
-  .field label{display:block;font-size:13px;color:var(--text2);margin-bottom:5px;font-weight:500}
-  .field input{width:100%;max-width:320px;padding:9px 12px;font-size:14px;font-family:var(--font);background:var(--bg-card);color:var(--text);border:1px solid var(--bdr-md);border-radius:var(--r);outline:none}
-  .field input:focus{border-color:var(--accent)}
-  .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.5rem}
-  .stat{background:var(--bg-card);border-radius:var(--r);padding:.75rem 1rem;border:1px solid var(--bdr);text-align:center}
-  .stat .sv{font-size:26px;font-weight:700;letter-spacing:-.02em}
-  .stat .sl{font-size:11px;color:var(--text2);margin-top:2px;text-transform:uppercase;letter-spacing:.05em;font-weight:500}
-  .progress-row{display:flex;align-items:center;gap:12px;padding:.85rem 1.5rem;border-bottom:1px solid var(--bdr);background:var(--bg-sec)}
-  .ptrack{flex:1;height:4px;background:var(--bg-tri);border-radius:2px;overflow:hidden}
-  .pfill{height:100%;background:var(--accent);border-radius:2px;transition:width .3s ease}
-  .plabel{font-family:var(--mono);font-size:12px;color:var(--text2);white-space:nowrap}
-  .axis-header{padding:1.25rem 1.5rem;border-bottom:1px solid var(--bdr)}
-  .axis-label{font-family:var(--mono);font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
-  .axis-title{font-size:22px;font-weight:600;letter-spacing:-.01em;margin-bottom:14px}
-  .axis-defs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .axis-def{border-radius:var(--r);padding:10px 14px}
-  .axis-def.neg{background:var(--neg-bg);border:1px solid var(--neg-bdr)}
-  .axis-def.pos{background:var(--pos-bg);border:1px solid var(--pos-bdr)}
-  .def-word{font-size:15px;font-weight:600}
-  .axis-def.neg .def-word{color:var(--neg-tx)}
-  .axis-def.pos .def-word{color:var(--pos-tx)}
-  .def-text{font-size:12px;color:var(--text2);margin-top:3px;line-height:1.5}
-  .rating-section{padding:1.25rem 1.5rem}
-  .rating-question{font-size:15px;font-weight:500;margin-bottom:16px;line-height:1.5}
-  .rating-question em{color:var(--accent);font-style:normal;font-weight:600}
-  .na-row{display:flex;align-items:center;gap:8px;margin-bottom:14px}
-  .na-check{width:17px;height:17px;accent-color:var(--accent);cursor:pointer}
-  .na-label{font-size:13px;color:var(--text2);cursor:pointer}
-  .scale-wrap{transition:opacity .2s,max-height .3s;overflow:hidden}
-  .scale-wrap.collapsed{opacity:.15;max-height:0;pointer-events:none;margin:0}
-  .scale-wrap.expanded{opacity:1;max-height:300px}
-  .scale-row{display:flex;align-items:center;gap:0;margin-bottom:6px}
-  .scale-pole{font-size:13px;font-weight:600;min-width:90px}
-  .scale-pole.left{color:var(--neg-tx);text-align:right;padding-right:14px}
-  .scale-pole.right{color:var(--pos-tx);text-align:left;padding-left:14px}
-  .scale-btns{display:flex;gap:6px;flex:1;justify-content:center}
-  .scale-btn{
-    width:52px;height:46px;border-radius:var(--r);
-    border:1px solid var(--bdr-md);background:var(--bg-card);
-    font-size:17px;font-weight:600;font-family:var(--font);
-    color:var(--text3);cursor:pointer;transition:all .12s;
-    display:flex;align-items:center;justify-content:center;
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1a1917; --bg-card: #232220; --bg-secondary: #2a2927;
+      --bg-tertiary: #333230; --bg-hover: #2e2d2b;
+      --text: #ede9e3; --text-secondary: #a8a29a; --text-tertiary: #716b63;
+      --border: rgba(255,255,255,0.07); --border-md: rgba(255,255,255,0.13);
+      --accent: #e07050; --accent-light: #3a2218; --accent-dark: #f09878;
+      --neg-bg: #2e1e14; --neg-border: #6e3a1a; --neg-text: #f0b888;
+      --pos-bg: #142030; --pos-border: #2a5878; --pos-text: #90c0e0;
+      --na-bg: #2a2820; --na-border: #4a4638; --na-text: #a8a29a;
+      --success-bg: #1a2e0a; --success-border: #3a6818; --success-text: #b0d090;
+      --warn-bg: #2e2408; --warn-border: #6e4a08; --warn-text: #f0c96e;
+      --danger-bg: #3a1818; --danger-text: #f0a0a0;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.2); --shadow-md: 0 4px 12px rgba(0,0,0,0.3);
+    }
   }
-  .scale-btn:hover{background:var(--bg-hover);border-color:var(--text3);color:var(--text2)}
-  .scale-btn.a1{background:var(--neg-bg);color:var(--neg-tx);border-color:var(--neg-bdr);box-shadow:0 0 0 2px var(--neg-bdr)}
-  .scale-btn.a2{background:#fdf5ef;color:#9e5a28;border-color:#e0b890;box-shadow:0 0 0 2px #e0b890}
-  .scale-btn.a3{background:var(--bg-tri);color:var(--text);border-color:var(--text3);box-shadow:0 0 0 2px var(--text3)}
-  .scale-btn.a4{background:#eaf0f6;color:#3a6890;border-color:#a0c0d8;box-shadow:0 0 0 2px #a0c0d8}
-  .scale-btn.a5{background:var(--pos-bg);color:var(--pos-tx);border-color:var(--pos-bdr);box-shadow:0 0 0 2px var(--pos-bdr)}
-  @media(prefers-color-scheme:dark){
-    .scale-btn.a2{background:#2a2014;color:#d0a060;border-color:#6e4a20;box-shadow:0 0 0 2px #6e4a20}
-    .scale-btn.a4{background:#182830;color:#80b0d0;border-color:#2a5070;box-shadow:0 0 0 2px #2a5070}
+
+  body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; }
+  .app { max-width: 720px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+
+  /* Header */
+  .header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+  .header h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; }
+  .header .tag { font-family: var(--mono); font-size: 11px; padding: 3px 10px; border-radius: 20px; background: var(--bg-secondary); color: var(--text-secondary); border: 1px solid var(--border); }
+
+  /* Panels & Cards */
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-xl); box-shadow: var(--shadow-sm); overflow: hidden; margin-bottom: 1.25rem; }
+  .card-body { padding: 1.5rem; }
+
+  /* Buttons */
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 20px; border-radius: var(--radius); font-size: 14px; font-weight: 500; font-family: var(--font); cursor: pointer; border: 1px solid var(--border-md); background: var(--bg-card); color: var(--text); transition: all 0.15s; white-space: nowrap; }
+  .btn:hover { background: var(--bg-hover); border-color: var(--text-tertiary); }
+  .btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .btn-primary:hover { background: var(--accent-dark); border-color: var(--accent-dark); }
+  .btn-sm { padding: 6px 14px; font-size: 13px; }
+  .btn-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
+  /* Inputs */
+  .field { margin-bottom: 14px; }
+  .field label { display: block; font-size: 13px; color: var(--text-secondary); margin-bottom: 5px; font-weight: 500; }
+  .field input, .field textarea { width: 100%; padding: 9px 12px; font-size: 14px; font-family: var(--font); background: var(--bg-card); color: var(--text); border: 1px solid var(--border-md); border-radius: var(--radius); outline: none; transition: border-color 0.15s; }
+  .field input:focus, .field textarea:focus { border-color: var(--accent); }
+  .field input { max-width: 320px; }
+  .field textarea { min-height: 48px; resize: none; }
+
+  .hidden { display: none !important; }
+
+  /* Stats */
+  .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem; }
+  .stat { background: var(--bg-card); border-radius: var(--radius); padding: 0.75rem 1rem; border: 1px solid var(--border); text-align: center; }
+  .stat .sv { font-size: 26px; font-weight: 700; color: var(--text); letter-spacing: -0.02em; }
+  .stat .sl { font-size: 11px; color: var(--text-secondary); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 500; }
+
+  /* Progress */
+  .progress-row { display: flex; align-items: center; gap: 12px; padding: 0.85rem 1.5rem; border-bottom: 1px solid var(--border); background: var(--bg-secondary); }
+  .ptrack { flex: 1; height: 4px; background: var(--bg-tertiary); border-radius: 2px; overflow: hidden; }
+  .pfill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s ease; }
+  .plabel { font-family: var(--mono); font-size: 12px; color: var(--text-secondary); white-space: nowrap; }
+
+  /* Axis header */
+  .axis-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); }
+  .axis-label { font-family: var(--mono); font-size: 11px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+  .axis-title { font-size: 20px; font-weight: 600; letter-spacing: -0.01em; }
+  .axis-defs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+  .axis-def { border-radius: var(--radius); padding: 10px 14px; }
+  .axis-def.neg { background: var(--neg-bg); border: 1px solid var(--neg-border); }
+  .axis-def.pos { background: var(--pos-bg); border: 1px solid var(--pos-border); }
+  .axis-def .def-word { font-size: 14px; font-weight: 600; }
+  .axis-def.neg .def-word { color: var(--neg-text); }
+  .axis-def.pos .def-word { color: var(--pos-text); }
+  .axis-def .def-text { font-size: 12px; color: var(--text-secondary); margin-top: 3px; line-height: 1.5; }
+
+  /* Rating item */
+  .rating-item { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); }
+  .rating-item:last-of-type { border-bottom: none; }
+  .rating-item.na-active { opacity: 0.45; }
+  .ri-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; flex-wrap: wrap; }
+  .ri-word { font-size: 17px; font-weight: 600; color: var(--text); }
+  .ri-type { font-family: var(--mono); font-size: 10px; padding: 2px 8px; border-radius: 20px; background: var(--bg-secondary); color: var(--text-tertiary); border: 1px solid var(--border); }
+  .ri-type.social { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
+
+  /* Scale */
+  .scale-row { display: flex; align-items: center; gap: 0; }
+  .scale-label { font-size: 12px; font-weight: 600; white-space: nowrap; min-width: 72px; }
+  .scale-label.left { color: var(--neg-text); text-align: right; padding-right: 10px; }
+  .scale-label.right { color: var(--pos-text); text-align: left; padding-left: 10px; }
+  .scale-btns { display: flex; gap: 4px; flex: 1; justify-content: center; }
+  .scale-btn {
+    width: 44px; height: 40px; border-radius: var(--radius);
+    border: 1px solid var(--border-md); background: var(--bg-card);
+    font-size: 15px; font-weight: 600; font-family: var(--font);
+    color: var(--text-secondary); cursor: pointer; transition: all 0.12s;
+    display: flex; align-items: center; justify-content: center;
   }
-  .scale-desc{display:flex;justify-content:center;gap:6px;margin-top:2px}
-  .scale-desc span{width:52px;text-align:center;font-size:10px;color:var(--text3);line-height:1.3}
-  .suggest-section{padding:1rem 1.5rem;border-top:1px solid var(--bdr);background:var(--warn-bg)}
-  .suggest-title{font-size:13px;font-weight:600;color:var(--warn-tx);margin-bottom:4px}
-  .suggest-sub{font-size:12px;color:var(--warn-tx);opacity:.8;margin-bottom:12px;line-height:1.5}
-  .suggest-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .suggest-field label{font-size:12px;color:var(--warn-tx);font-weight:500;margin-bottom:4px;display:block}
-  .suggest-field input{width:100%;padding:7px 10px;font-size:13px;font-family:var(--font);border:1px solid var(--warn-bdr);border-radius:var(--r);background:rgba(255,255,255,.5);color:var(--text);outline:none}
-  @media(prefers-color-scheme:dark){.suggest-field input{background:rgba(0,0,0,.25)}}
-  .suggest-field input:focus{border-color:var(--accent)}
-  .suggest-field input::placeholder{color:var(--text3)}
-  .note-row{padding:1rem 1.5rem;border-top:1px solid var(--bdr)}
-  .note-row label{font-size:13px;color:var(--text2);display:block;margin-bottom:5px;font-weight:500}
-  .note-row textarea{width:100%;font-size:13px;font-family:var(--font);min-height:40px;resize:none;padding:7px 10px;background:var(--bg-card);color:var(--text);border:1px solid var(--bdr-md);border-radius:var(--r);outline:none}
-  .note-row textarea:focus{border-color:var(--accent)}
-  .nav-row{display:flex;justify-content:space-between;align-items:center;padding:1rem 1.5rem;border-top:1px solid var(--bdr);background:var(--bg-sec);flex-wrap:wrap;gap:8px}
-  .inst-block{padding:1.5rem}
-  .inst-block h3{font-size:15px;font-weight:600;margin-bottom:10px}
-  .inst-block p{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:.75rem}
-  .inst-block p:last-child{margin-bottom:0}
-  .inst-block strong{color:var(--text)}
-  .inst-example{background:var(--bg-sec);border:1px solid var(--bdr);border-radius:var(--r);padding:12px 16px;margin:10px 0}
-  .inst-example p{font-size:13px;margin-bottom:4px}
-  .ex-label{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--text3);margin-bottom:8px}
-  .warn-note{font-size:13px;color:var(--warn-tx);background:var(--warn-bg);border:1px solid var(--warn-bdr);border-radius:var(--r);padding:10px 14px;margin:0 1.5rem 1rem;line-height:1.6}
-  .export-bar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;padding:1rem 0}
-  .export-bar>span{font-size:14px;color:var(--text2);font-weight:500}
-  .alert-msg{font-size:13px;color:var(--ok-tx);background:var(--ok-bg);border:1px solid var(--ok-bdr);border-radius:var(--r);padding:5px 14px;display:inline-block;margin-top:8px}
-  .done-state{text-align:center;padding:3rem 1rem;color:var(--text2);font-size:15px}
-  .err-text{font-size:13px;color:var(--err-tx);margin-top:8px}
-  .load-err{font-size:13px;color:var(--err-tx);background:var(--err-bg);border-radius:var(--r);padding:10px 14px;margin-bottom:1rem;line-height:1.6}
-  @media(max-width:540px){
-    .axis-defs{grid-template-columns:1fr}
-    .suggest-grid{grid-template-columns:1fr}
-    .scale-pole{min-width:60px;font-size:11px}
-    .scale-btn{width:42px;height:40px;font-size:15px}
-    .scale-desc span{width:42px}
+  .scale-btn:hover { background: var(--bg-hover); border-color: var(--text-tertiary); }
+  .scale-btn.active-1 { background: var(--neg-bg); color: var(--neg-text); border-color: var(--neg-border); }
+  .scale-btn.active-2 { background: #fdf5ef; color: #9e5a28; border-color: #e0b890; }
+  @media (prefers-color-scheme: dark) { .scale-btn.active-2 { background: #2a2014; color: #d0a060; border-color: #6e4a20; } }
+  .scale-btn.active-3 { background: var(--bg-tertiary); color: var(--text); border-color: var(--text-tertiary); }
+  .scale-btn.active-4 { background: #eaf0f6; color: #3a6890; border-color: #a0c0d8; }
+  @media (prefers-color-scheme: dark) { .scale-btn.active-4 { background: #182830; color: #80b0d0; border-color: #2a5070; } }
+  .scale-btn.active-5 { background: var(--pos-bg); color: var(--pos-text); border-color: var(--pos-border); }
+
+  .scale-labels-row { display: flex; justify-content: center; margin-top: 4px; }
+  .scale-labels-inner { display: flex; gap: 4px; }
+  .scale-sublabel { width: 44px; text-align: center; font-size: 9px; color: var(--text-tertiary); line-height: 1.3; }
+
+  /* NA toggle */
+  .na-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+  .na-check { width: 16px; height: 16px; accent-color: var(--accent); cursor: pointer; }
+  .na-label { font-size: 12px; color: var(--text-tertiary); cursor: pointer; }
+
+  /* Suggestion fields */
+  .suggest-section { padding: 1rem 1.5rem; border-top: 1px solid var(--border); background: var(--warn-bg); }
+  .suggest-title { font-size: 13px; font-weight: 600; color: var(--warn-text); margin-bottom: 4px; }
+  .suggest-sub { font-size: 12px; color: var(--warn-text); opacity: 0.8; margin-bottom: 12px; line-height: 1.5; }
+  .suggest-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .suggest-field label { font-size: 12px; color: var(--warn-text); font-weight: 500; margin-bottom: 4px; display: block; }
+  .suggest-field input { width: 100%; padding: 7px 10px; font-size: 13px; font-family: var(--font); border: 1px solid var(--warn-border); border-radius: var(--radius); background: rgba(255,255,255,0.5); color: var(--text); outline: none; }
+  @media (prefers-color-scheme: dark) { .suggest-field input { background: rgba(0,0,0,0.25); } }
+  .suggest-field input:focus { border-color: var(--accent); }
+  .suggest-field input::placeholder { color: var(--text-tertiary); }
+
+  /* Notes */
+  .note-row { padding: 1rem 1.5rem; border-top: 1px solid var(--border); }
+  .note-row label { font-size: 13px; color: var(--text-secondary); display: block; margin-bottom: 5px; font-weight: 500; }
+  .note-row textarea { width: 100%; font-size: 13px; font-family: var(--font); min-height: 40px; resize: none; padding: 7px 10px; background: var(--bg-card); color: var(--text); border: 1px solid var(--border-md); border-radius: var(--radius); outline: none; }
+  .note-row textarea:focus { border-color: var(--accent); }
+
+  /* Nav */
+  .nav-row { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; border-top: 1px solid var(--border); background: var(--bg-secondary); flex-wrap: wrap; gap: 8px; }
+
+  /* Instructions */
+  .inst-block { padding: 1.5rem; }
+  .inst-block h3 { font-size: 14px; font-weight: 600; margin-bottom: 10px; color: var(--text); }
+  .inst-block p { font-size: 13px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 0.75rem; }
+  .inst-block p:last-child { margin-bottom: 0; }
+  .inst-block strong { color: var(--text); }
+  .inst-example { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 16px; margin: 10px 0; }
+  .inst-example p { font-size: 13px; margin-bottom: 4px; }
+  .inst-example .ex-label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-tertiary); margin-bottom: 8px; }
+
+  /* Warn */
+  .warn-note { font-size: 13px; color: var(--warn-text); background: var(--warn-bg); border: 1px solid var(--warn-border); border-radius: var(--radius); padding: 10px 14px; margin: 0 1.5rem 1rem; line-height: 1.6; }
+
+  /* Export */
+  .export-bar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; padding: 1rem 0; }
+  .export-bar > span { font-size: 14px; color: var(--text-secondary); font-weight: 500; }
+  .alert-msg { font-size: 13px; color: var(--success-text); background: var(--success-bg); border: 1px solid var(--success-border); border-radius: var(--radius); padding: 5px 14px; display: inline-block; margin-top: 8px; }
+  .done-state { text-align: center; padding: 3rem 1rem; color: var(--text-secondary); font-size: 15px; }
+  .err-text { font-size: 13px; color: var(--danger-text); margin-top: 8px; }
+  .load-err { font-size: 13px; color: var(--danger-text); background: var(--danger-bg); border: 1px solid var(--danger-text); border-radius: var(--radius); padding: 10px 14px; margin-bottom: 1rem; line-height: 1.6; }
+
+  /* Keyboard hints */
+  .kbd-hint { font-size: 11px; color: var(--text-tertiary); text-align: center; margin-top: 6px; }
+  .kbd { font-family: var(--mono); font-size: 10px; padding: 1px 5px; border-radius: 4px; background: var(--bg-secondary); border: 1px solid var(--border-md); color: var(--text-secondary); }
+
+  @media (max-width: 540px) {
+    .axis-defs { grid-template-columns: 1fr; }
+    .suggest-grid { grid-template-columns: 1fr; }
+    .scale-label { min-width: 52px; font-size: 11px; }
+    .scale-btn { width: 38px; height: 36px; font-size: 14px; }
+    .scale-sublabel { width: 38px; }
+    .stats-row { grid-template-columns: repeat(3, 1fr); }
   }
 </style>
 </head>
 <body>
 <div class="app">
+
   <div class="header">
-    <h1>Antonym Pair Annotation</h1>
+    <h1>Semantic Axis Annotation</h1>
     <span class="tag" id="modeLabel">Ready</span>
   </div>
 
@@ -153,20 +207,24 @@
   <div class="card hidden" id="setupPanel">
     <div class="inst-block">
       <h3>Instructions</h3>
-      <p>You will see a series of <strong>antonym pairs</strong> (two opposite adjectives). For each pair, rate the word <strong>"students"</strong> on a 1–5 scale between the two poles.</p>
+      <p>In this task, you will be shown an <strong>antonym pair</strong> (two opposite adjectives) and a set of <strong>words</strong>. For each word, rate where it falls on the scale between the two opposites.</p>
+
       <div class="inst-example">
         <div class="ex-label">Example</div>
-        <p>Antonym pair: <strong>poor ↔ rich</strong></p>
-        <p>→ Are students rather <em>poor</em> or rather <em>rich</em>?</p>
-        <p style="font-family:var(--mono);font-size:12px;color:var(--text3);margin-top:6px">1 (poor) · 2 (leaning poor) · 3 (neither) · 4 (leaning rich) · 5 (rich)</p>
-        <p style="margin-top:8px">If the pair doesn't apply at all (e.g. <em>acidic ↔ alkaline</em> for students), check <strong>Not applicable</strong>.</p>
+        <p>Antonym pair: <strong>poor</strong> ↔ <strong>rich</strong></p>
+        <p>Rate "students": are students rather <em>poor</em> or rather <em>rich</em>?</p>
+        <p style="font-family: var(--mono); font-size: 12px; color: var(--text-tertiary); margin-top: 6px;">1 (poor) — 2 — 3 (neither) — 4 — 5 (rich)</p>
+        <p style="margin-top: 6px;">Rate "tables": the concept of poor/rich does not apply to tables → mark <strong>Not applicable</strong>.</p>
       </div>
-      <p>For some axes you will also be asked to <strong>suggest a word</strong> you would rate at each extreme. This is optional but helpful.</p>
+
+      <p>Some words are <strong>social groups</strong> (e.g., "nurses", "CEOs") and some are <strong>general nouns</strong> (e.g., "tables", "curiosity"). Rate all of them the same way — based on your intuitive associations.</p>
+
+      <p>For a small number of axes, you will also be asked to <strong>suggest a word</strong> that you would rate at each extreme of the scale. This is optional but very helpful.</p>
     </div>
     <div class="warn-note">
-      <strong>⏱ Tip:</strong> Go with your gut — first impressions are best. Don't overthink it.
+      <strong>⏱ Tip:</strong> Go with your gut feeling — first impressions are best. Don't overthink. The task is designed to be quick: roughly <strong>1–2 minutes per axis</strong>.
     </div>
-    <div style="padding:0 1.5rem 1.5rem">
+    <div style="padding: 0 1.5rem 1.5rem;">
       <div class="field">
         <label>Your name</label>
         <input type="text" id="annotatorName" placeholder="e.g. Alice" />
@@ -181,7 +239,7 @@
   <!-- STATS -->
   <div id="statsSection" class="hidden">
     <div class="stats-row">
-      <div class="stat"><div class="sv" id="stTotal">—</div><div class="sl">Antonym pairs</div></div>
+      <div class="stat"><div class="sv" id="stTotal">—</div><div class="sl">Axes</div></div>
       <div class="stat"><div class="sv" id="stDone">0</div><div class="sl">Done</div></div>
       <div class="stat"><div class="sv" id="stLeft">—</div><div class="sl">Remaining</div></div>
     </div>
@@ -197,7 +255,7 @@
 
       <div class="axis-header">
         <div class="axis-label">Antonym Pair <span id="axisIdx"></span></div>
-        
+        <div class="axis-title" id="axisTitle">—</div>
         <div class="axis-defs">
           <div class="axis-def neg">
             <div class="def-word" id="negWord">—</div>
@@ -210,55 +268,25 @@
         </div>
       </div>
 
-      <div class="rating-section">
-        <div class="rating-question">
-          Are <em>students</em> rather <span id="qNeg">—</span> or rather <span id="qPos">—</span>?
-        </div>
-
-        <div class="na-row">
-          <input type="checkbox" class="na-check" id="naCheck" onchange="toggleNA()">
-          <label class="na-label" for="naCheck">Not applicable — this pair does not apply to "students"</label>
-        </div>
-
-        <div class="scale-wrap expanded" id="scaleWrap">
-          <div class="scale-row">
-            <span class="scale-pole left" id="scalePoleL">—</span>
-            <div class="scale-btns" id="scaleBtns">
-              <button class="scale-btn" data-val="1" onclick="setScore(1)">1</button>
-              <button class="scale-btn" data-val="2" onclick="setScore(2)">2</button>
-              <button class="scale-btn" data-val="3" onclick="setScore(3)">3</button>
-              <button class="scale-btn" data-val="4" onclick="setScore(4)">4</button>
-              <button class="scale-btn" data-val="5" onclick="setScore(5)">5</button>
-            </div>
-            <span class="scale-pole right" id="scalePoleR">—</span>
-          </div>
-          <div class="scale-desc" id="scaleDesc">
-            <span id="sd1">—</span>
-            <span>leaning</span>
-            <span>neither</span>
-            <span>leaning</span>
-            <span id="sd5">—</span>
-          </div>
-        </div>
-      </div>
+      <div id="ratingItems"></div>
 
       <div class="suggest-section hidden" id="suggestSection">
         <div class="suggest-title">💡 Word suggestions (optional)</div>
-        <div class="suggest-sub">Can you think of a word you would strongly associate with each pole?</div>
+        <div class="suggest-sub">Can you think of a word that would be a strong example of each pole?</div>
         <div class="suggest-grid">
           <div class="suggest-field">
-            <label>A word you'd rate <strong>1</strong> (<span id="sugNegLbl">—</span>):</label>
+            <label>A word you'd rate <strong>1</strong> (<span id="sugNegLabel">—</span>):</label>
             <input type="text" id="sugNeg" placeholder="e.g. homeless people" />
           </div>
           <div class="suggest-field">
-            <label>A word you'd rate <strong>5</strong> (<span id="sugPosLbl">—</span>):</label>
+            <label>A word you'd rate <strong>5</strong> (<span id="sugPosLabel">—</span>):</label>
             <input type="text" id="sugPos" placeholder="e.g. billionaires" />
           </div>
         </div>
       </div>
 
       <div class="note-row">
-        <label>Notes <span style="color:var(--text3);font-size:11px">(optional)</span></label>
+        <label>Notes <span style="color:var(--text-tertiary);font-size:11px">(optional)</span></label>
         <textarea id="noteField" placeholder="Any thoughts about this axis…"></textarea>
       </div>
 
@@ -266,11 +294,14 @@
         <div class="btn-row">
           <button class="btn btn-sm" id="prevBtn" onclick="navigate(-1)" disabled>← Prev</button>
         </div>
-        <button class="btn btn-sm btn-primary" onclick="saveAndNext()">Save &amp; next →</button>
+        <div class="kbd-hint">Press <span class="kbd">1</span>–<span class="kbd">5</span> to rate · <span class="kbd">N</span> = not applicable · <span class="kbd">Enter</span> = save</div>
+        <button class="btn btn-sm btn-primary" id="saveBtn" onclick="saveAndNext()">Save & next →</button>
       </div>
     </div>
 
-    <div class="done-state hidden" id="doneMsg">✓ All axes reviewed! Export your annotations below.</div>
+    <div class="done-state hidden" id="doneMsg">
+      ✓ All axes reviewed! Export your annotations below.
+    </div>
 
     <div class="export-bar">
       <span>Export annotations</span>
@@ -281,28 +312,88 @@
     </div>
     <div id="exportAlert"></div>
   </div>
+
 </div>
 
 <script>
-const TARGET_WORD = 'students';
-let AXES = [], annotations = {}, currentIndex = 0, annotatorName = '';
-let currentScore = null, currentNA = false;
+// ── Data ──
+let AXES = [];
+let annotations = {};
+let currentIndex = 0;
+let annotatorName = '';
+
+// Each axis has a set of words to rate. We mix social group mentions and random nouns.
+// The data format expected from example_axes.json:
+// Array of objects: { key, pair, posName, posDef, negName, negDef, words: [{word, type}], hasSuggestion: bool }
+// OR the old format which we'll convert.
+
+const SOCIAL_GROUPS = [
+  "nurses", "housewives", "disabled people", "elderly people", "drug addicts",
+  "homeless people", "welfare recipients", "refugees", "undocumented immigrants",
+  "scientists", "rich people", "Asian people", "Jewish people", "upper class people",
+  "Republicans", "men", "career women", "feminists", "unemployed people", "poor people",
+  "Christian people", "Muslim people", "Hindu people", "believers", "atheists",
+  "nonbelievers", "conservatives", "Democrats", "liberals", "gay people",
+  "CEOs", "billionaires", "business executives", "managers", "working class people",
+  "blue-collar workers", "intellectuals", "professors", "engineers", "doctors",
+  "immigrants", "uneducated people", "transgender people", "LGBTQ people",
+  "White people", "Black people", "Hispanic people", "middle class people", "women", "students", "children", "elderly"
+];
+
+const RANDOM_NOUNS = [
+  "tables", "bicycles", "mountains", "curiosity", "thunderstorms",
+  "rectangles", "copper", "notebooks", "gravity", "sandwiches",
+  "elevators", "oxygen", "candles", "velocity", "umbrellas"
+];
+
+// Pick a balanced sample of words for each axis
+function pickWordsForAxis(axisIdx, totalAxes) {
+  // Use a seeded random based on axis key for reproducibility
+  const seed = axisIdx * 7 + 13;
+  const rng = (n) => ((seed * 16807 + n * 48271) % 2147483647) / 2147483647;
+
+  // Pick 5 social groups and 3 random nouns per axis
+  const sg = [...SOCIAL_GROUPS];
+  const rn = [...RANDOM_NOUNS];
+
+  // Shuffle deterministically
+  for (let i = sg.length - 1; i > 0; i--) {
+    const j = Math.floor(rng(i) * (i + 1));
+    [sg[i], sg[j]] = [sg[j], sg[i]];
+  }
+  for (let i = rn.length - 1; i > 0; i--) {
+    const j = Math.floor(rng(i + 1000) * (i + 1));
+    [rn[i], rn[j]] = [rn[j], rn[i]];
+  }
+
+  const words = [];
+  for (let i = 0; i < 5; i++) words.push({ word: sg[i], type: 'social' });
+  for (let i = 0; i < 3; i++) words.push({ word: rn[i], type: 'noun' });
+
+  // Shuffle the combined list
+  for (let i = words.length - 1; i > 0; i--) {
+    const j = Math.floor(rng(i + 2000) * (i + 1));
+    [words[i], words[j]] = [words[j], words[i]];
+  }
+
+  return words;
+}
 
 function parseEntry(key, raw) {
   const lines = raw.split('\n').map(s => s.trim()).filter(Boolean);
   const pairLine = lines.find(l => l.startsWith('Antonym Pair:')) || '';
   const pairRaw = pairLine.replace('Antonym Pair:', '').trim();
-  const clean = w => w.replace(/\.[a-z]\.\d+$/, '').trim();
+  const cleanWord = w => w.replace(/\.[a-z]\.\d+$/, '').trim();
   const parts = pairRaw.split('|');
-  const posWord = clean(parts[0] || '');
-  const negWord = clean(parts[1] || '');
-  const getDef = prefix => {
+  const posWord = cleanWord(parts[0] || '');
+  const negWord = cleanWord(parts[1] || '');
+  const extractDef = (prefix) => {
     const line = lines.find(l => l.startsWith(prefix + ':')) || '';
     const body = line.replace(prefix + ':', '').trim();
-    const i = body.indexOf('\u2192');
-    return i >= 0 ? body.slice(i + 1).trim() : body;
+    const arrowIdx = body.indexOf('→');
+    return arrowIdx >= 0 ? body.slice(arrowIdx + 1).trim() : body;
   };
-  return { key, pair: posWord + '|' + negWord, posName: posWord, negName: negWord, posDef: getDef('Positive'), negDef: getDef('Negative') };
+  return { key, pair: posWord + '|' + negWord, posName: posWord, posDef: extractDef('Positive'), negName: negWord, negDef: extractDef('Negative') };
 }
 
 async function loadPairs() {
@@ -310,116 +401,209 @@ async function loadPairs() {
     const res = await fetch('example_axes.json');
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
-    if (Array.isArray(data)) AXES = data;
-    else if (typeof data === 'object' && data !== null)
-      AXES = Object.entries(data).map(([k, v]) => parseEntry(k, v));
-    else throw new Error('Unrecognised format.');
-    if (!AXES.length) throw new Error('No axes found.');
-    AXES.forEach((ax, i) => { ax.hasSuggestion = i < 10; });
+
+    let rawAxes;
+    if (Array.isArray(data)) { rawAxes = data; }
+    else if (typeof data === 'object' && data !== null) {
+      rawAxes = Object.entries(data).map(([k, v]) => parseEntry(k, v));
+    }
+    else { throw new Error('Unrecognised format.'); }
+
+    if (rawAxes.length === 0) throw new Error('No axes found.');
+
+    // Assign words to each axis. Enable suggestions for first 10 axes (or fewer).
+    AXES = rawAxes.map((ax, idx) => ({
+      ...ax,
+      words: ax.words || pickWordsForAxis(idx, rawAxes.length),
+      hasSuggestion: idx < 10 // enable word suggestion for first 10 axes
+    }));
+
     document.getElementById('stTotal').textContent = AXES.length;
     document.getElementById('stLeft').textContent = AXES.length;
     document.getElementById('setupPanel').classList.remove('hidden');
   } catch (err) {
     const el = document.getElementById('loadErr');
     el.classList.remove('hidden');
-    el.textContent = '\u26a0 Could not load example_axes.json \u2014 ' + err.message;
+    el.textContent = '⚠ Could not load example_axes.json — ' + err.message;
   }
 }
+
 loadPairs();
 
+// ── Session ──
 function startSession() {
+  const err = document.getElementById('setupErr');
   annotatorName = document.getElementById('annotatorName').value.trim();
-  if (!annotatorName) { document.getElementById('setupErr').textContent = 'Please enter your name.'; return; }
-  document.getElementById('setupErr').textContent = '';
+  if (!annotatorName) { err.textContent = 'Please enter your name.'; return; }
+  err.textContent = '';
   document.getElementById('setupPanel').classList.add('hidden');
   document.getElementById('statsSection').classList.remove('hidden');
   document.getElementById('annotationSection').classList.remove('hidden');
   document.getElementById('modeLabel').textContent = annotatorName;
-  currentIndex = 0; showAxis(0); updateStats();
+  currentIndex = 0;
+  showAxis(0);
+  updateStats();
 }
+
+// ── Rating state per axis ──
+let currentRatings = {}; // { wordIdx: { score: 1-5|null, na: bool } }
 
 function showAxis(idx) {
   if (idx >= AXES.length) { showDone(); return; }
   const ax = AXES[idx];
-  document.getElementById('axisTitle').textContent = ax.negName + '  \u2194  ' + ax.posName;
+  const words = ax.words;
+
+  // Axis header
+  document.getElementById('axisTitle').textContent = ax.negName + ' ↔ ' + ax.posName;
   document.getElementById('axisIdx').textContent = '#' + (idx + 1);
   document.getElementById('negWord').textContent = ax.negName;
   document.getElementById('negDef').textContent = ax.negDef;
   document.getElementById('posWord').textContent = ax.posName;
   document.getElementById('posDef').textContent = ax.posDef;
-  document.getElementById('qNeg').textContent = ax.negName;
-  document.getElementById('qPos').textContent = ax.posName;
-  document.getElementById('scalePoleL').textContent = ax.negName;
-  document.getElementById('scalePoleR').textContent = ax.posName;
-  document.getElementById('sd1').textContent = ax.negName;
-  document.getElementById('sd5').textContent = ax.posName;
+
+  // Progress
   document.getElementById('pfill').style.width = Math.round((idx / AXES.length) * 100) + '%';
   document.getElementById('plabel').textContent = (idx + 1) + ' / ' + AXES.length;
   document.getElementById('prevBtn').disabled = idx === 0;
 
+  // Restore or init ratings
   const saved = annotations[ax.key];
-  currentScore = saved?.score ?? null;
-  currentNA = saved?.not_applicable ?? false;
-  document.getElementById('naCheck').checked = currentNA;
-  renderScale(); renderNA();
+  currentRatings = {};
+  words.forEach((w, i) => {
+    if (saved && saved.ratings && saved.ratings[i]) {
+      currentRatings[i] = { ...saved.ratings[i] };
+    } else {
+      currentRatings[i] = { score: null, na: false };
+    }
+  });
 
+  // Build rating items
+  const container = document.getElementById('ratingItems');
+  container.innerHTML = '';
+  words.forEach((w, i) => {
+    const div = document.createElement('div');
+    div.className = 'rating-item' + (currentRatings[i].na ? ' na-active' : '');
+    div.id = 'ri-' + i;
+    div.innerHTML = `
+      <div class="ri-top">
+        <span class="ri-word">${escHtml(w.word)}</span>
+        <span class="ri-type ${w.type === 'social' ? 'social' : ''}">${w.type === 'social' ? 'social group' : 'noun'}</span>
+      </div>
+      <div class="scale-row" id="scale-${i}">
+        <span class="scale-label left">${escHtml(ax.negName)}</span>
+        <div class="scale-btns" id="btns-${i}">
+          ${[1,2,3,4,5].map(v => `<button class="scale-btn ${currentRatings[i].score === v ? 'active-' + v : ''}" data-word="${i}" data-val="${v}" onclick="setScore(${i},${v})">${v}</button>`).join('')}
+        </div>
+        <span class="scale-label right">${escHtml(ax.posName)}</span>
+      </div>
+      <div class="scale-labels-row">
+        <div class="scale-labels-inner">
+          <div class="scale-sublabel">${escHtml(ax.negName)}</div>
+          <div class="scale-sublabel">leaning</div>
+          <div class="scale-sublabel">neither</div>
+          <div class="scale-sublabel">leaning</div>
+          <div class="scale-sublabel">${escHtml(ax.posName)}</div>
+        </div>
+      </div>
+      <div class="na-row">
+        <input type="checkbox" class="na-check" id="na-${i}" ${currentRatings[i].na ? 'checked' : ''} onchange="toggleNA(${i})">
+        <label class="na-label" for="na-${i}">Not applicable — this pair does not apply to "${escHtml(w.word)}"</label>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+
+  // Suggestion section
   const sugSec = document.getElementById('suggestSection');
   if (ax.hasSuggestion) {
     sugSec.classList.remove('hidden');
-    document.getElementById('sugNegLbl').textContent = ax.negName;
-    document.getElementById('sugPosLbl').textContent = ax.posName;
-    document.getElementById('sugNeg').value = saved?.suggest_neg || '';
-    document.getElementById('sugPos').value = saved?.suggest_pos || '';
-  } else { sugSec.classList.add('hidden'); }
+    document.getElementById('sugNegLabel').textContent = ax.negName;
+    document.getElementById('sugPosLabel').textContent = ax.posName;
+    document.getElementById('sugNeg').value = saved?.suggestNeg || '';
+    document.getElementById('sugPos').value = saved?.suggestPos || '';
+  } else {
+    sugSec.classList.add('hidden');
+  }
 
   document.getElementById('noteField').value = saved?.note || '';
   document.getElementById('mainCard').classList.remove('hidden');
   document.getElementById('doneMsg').classList.add('hidden');
+
+  // Focus management
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function setScore(val) {
-  currentScore = val; currentNA = false;
-  document.getElementById('naCheck').checked = false;
-  renderNA(); renderScale();
-}
+function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-function renderScale() {
-  const btns = document.getElementById('scaleBtns').children;
-  for (const b of btns) {
+function setScore(wordIdx, val) {
+  currentRatings[wordIdx].score = val;
+  currentRatings[wordIdx].na = false;
+  document.getElementById('na-' + wordIdx).checked = false;
+  document.getElementById('ri-' + wordIdx).classList.remove('na-active');
+  // Update button styles
+  const btns = document.getElementById('btns-' + wordIdx).children;
+  for (let b of btns) {
     const v = parseInt(b.dataset.val);
-    b.className = 'scale-btn' + (v === currentScore ? ' a' + v : '');
+    b.className = 'scale-btn' + (v === val ? ' active-' + v : '');
   }
 }
 
-function toggleNA() {
-  currentNA = document.getElementById('naCheck').checked;
-  if (currentNA) currentScore = null;
-  renderNA(); renderScale();
-}
-
-function renderNA() {
-  document.getElementById('scaleWrap').className = 'scale-wrap ' + (currentNA ? 'collapsed' : 'expanded');
+function toggleNA(wordIdx) {
+  const checked = document.getElementById('na-' + wordIdx).checked;
+  currentRatings[wordIdx].na = checked;
+  if (checked) {
+    currentRatings[wordIdx].score = null;
+    // Clear button styles
+    const btns = document.getElementById('btns-' + wordIdx).children;
+    for (let b of btns) b.className = 'scale-btn';
+  }
+  document.getElementById('ri-' + wordIdx).classList.toggle('na-active', checked);
 }
 
 function saveAndNext() {
-  if (!currentNA && currentScore === null) { alert('Please select a rating or mark "Not applicable".'); return; }
   const ax = AXES[currentIndex];
+  const words = ax.words;
+
+  // Validate: each word must have a score or be marked NA
+  for (let i = 0; i < words.length; i++) {
+    if (currentRatings[i].score === null && !currentRatings[i].na) {
+      alert(`Please rate "${words[i].word}" or mark it as not applicable.`);
+      return;
+    }
+  }
+
+  // Save
+  const ratings = {};
+  words.forEach((w, i) => {
+    ratings[i] = {
+      word: w.word,
+      type: w.type,
+      score: currentRatings[i].score,
+      not_applicable: currentRatings[i].na
+    };
+  });
+
   annotations[ax.key] = {
-    key: ax.key, pair: ax.pair, negative_pole: ax.negName, positive_pole: ax.posName,
-    target_word: TARGET_WORD, score: currentScore, not_applicable: currentNA,
-    suggest_neg: ax.hasSuggestion ? document.getElementById('sugNeg').value.trim() : null,
-    suggest_pos: ax.hasSuggestion ? document.getElementById('sugPos').value.trim() : null,
+    key: ax.key,
+    pair: ax.pair,
+    positive_pole: ax.posName,
+    negative_pole: ax.negName,
+    ratings,
+    suggestNeg: ax.hasSuggestion ? document.getElementById('sugNeg').value.trim() : null,
+    suggestPos: ax.hasSuggestion ? document.getElementById('sugPos').value.trim() : null,
     note: document.getElementById('noteField').value.trim(),
-    annotator: annotatorName, timestamp: new Date().toISOString()
+    annotator: annotatorName,
+    timestamp: new Date().toISOString()
   };
+
   updateStats();
-  if (currentIndex < AXES.length - 1) { currentIndex++; showAxis(currentIndex); } else showDone();
+  if (currentIndex < AXES.length - 1) { currentIndex++; showAxis(currentIndex); }
+  else showDone();
 }
 
 function navigate(dir) {
-  const n = currentIndex + dir;
-  if (n >= 0 && n < AXES.length) { currentIndex = n; showAxis(currentIndex); }
+  const next = currentIndex + dir;
+  if (next >= 0 && next < AXES.length) { currentIndex = next; showAxis(currentIndex); }
 }
 
 function showDone() {
@@ -434,48 +618,69 @@ function updateStats() {
   document.getElementById('stLeft').textContent = AXES.length - done;
 }
 
-document.addEventListener('keydown', e => {
-  if (document.getElementById('annotationSection').classList.contains('hidden')) return;
-  if (document.getElementById('mainCard').classList.contains('hidden')) return;
-  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-  if (e.key >= '1' && e.key <= '5') { e.preventDefault(); setScore(parseInt(e.key)); }
-  if (e.key === 'n' || e.key === 'N') { e.preventDefault(); document.getElementById('naCheck').checked = !currentNA; toggleNA(); }
-  if (e.key === 'Enter') { e.preventDefault(); saveAndNext(); }
-  if (e.key === 'ArrowLeft') { e.preventDefault(); navigate(-1); }
-  if (e.key === 'ArrowRight') { e.preventDefault(); saveAndNext(); }
+// ── Keyboard shortcuts ──
+document.addEventListener('keydown', (e) => {
+  if (!document.getElementById('annotationSection').classList.contains('hidden') &&
+      !document.getElementById('mainCard').classList.contains('hidden')) {
+    // Don't capture if user is typing in an input/textarea
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+    if (e.key === 'Enter') { e.preventDefault(); saveAndNext(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); navigate(-1); }
+  }
 });
+
+// ── Export ──
+function getRows() {
+  const rows = [];
+  AXES.forEach(ax => {
+    const a = annotations[ax.key];
+    if (!a) {
+      ax.words.forEach(w => {
+        rows.push({
+          axis_key: ax.key, pair: ax.pair, negative_pole: ax.negName, positive_pole: ax.posName,
+          word: w.word, word_type: w.type, score: '', not_applicable: '',
+          suggest_neg: '', suggest_pos: '', note: '', annotator: '', timestamp: ''
+        });
+      });
+    } else {
+      Object.values(a.ratings).forEach(r => {
+        rows.push({
+          axis_key: ax.key, pair: ax.pair, negative_pole: ax.negName, positive_pole: ax.posName,
+          word: r.word, word_type: r.type,
+          score: r.score ?? '', not_applicable: r.not_applicable ? 'yes' : 'no',
+          suggest_neg: a.suggestNeg || '', suggest_pos: a.suggestPos || '',
+          note: a.note || '', annotator: a.annotator || '', timestamp: a.timestamp || ''
+        });
+      });
+    }
+  });
+  return rows;
+}
 
 function exportJSON() {
   const data = {
-    annotator: annotatorName, target_word: TARGET_WORD,
-    exported_at: new Date().toISOString(), total_axes: AXES.length,
+    annotator: annotatorName,
+    exported_at: new Date().toISOString(),
+    total_axes: AXES.length,
     annotated_axes: Object.keys(annotations).length,
-    annotations: AXES.map(ax => annotations[ax.key] || {
-      key: ax.key, pair: ax.pair, negative_pole: ax.negName, positive_pole: ax.posName,
-      target_word: TARGET_WORD, score: null, not_applicable: null,
-      suggest_neg: null, suggest_pos: null, note: '', annotator: '', timestamp: ''
-    })
+    annotations: Object.values(annotations)
   };
   dl('annotations_' + annotatorName.replace(/\s+/g, '_') + '.json', JSON.stringify(data, null, 2), 'application/json');
   showExportAlert('JSON downloaded.');
 }
 
 function exportCSV() {
-  const cols = ['key','pair','negative_pole','positive_pole','target_word','score','not_applicable','suggest_neg','suggest_pos','note','annotator','timestamp'];
-  const rows = AXES.map(ax => {
-    const a = annotations[ax.key];
-    return { key: ax.key, pair: ax.pair, negative_pole: ax.negName, positive_pole: ax.posName,
-      target_word: TARGET_WORD, score: a?.score ?? '', not_applicable: a ? (a.not_applicable ? 'yes' : 'no') : '',
-      suggest_neg: a?.suggest_neg || '', suggest_pos: a?.suggest_pos || '',
-      note: a?.note || '', annotator: a?.annotator || '', timestamp: a?.timestamp || '' };
-  });
-  const csv = [cols.join(','), ...rows.map(r => cols.map(c => '"' + String(r[c] ?? '').replace(/"/g, '""') + '"').join(','))].join('\n');
-  dl('annotations_' + annotatorName.replace(/\s+/g, '_') + '.csv', csv, 'text/csv');
+  const rows = getRows();
+  const cols = ['axis_key','pair','negative_pole','positive_pole','word','word_type','score','not_applicable','suggest_neg','suggest_pos','note','annotator','timestamp'];
+  const csvRows = [cols.join(','), ...rows.map(r => cols.map(c => '"' + String(r[c] ?? '').replace(/"/g, '""') + '"').join(','))];
+  dl('annotations_' + annotatorName.replace(/\s+/g, '_') + '.csv', csvRows.join('\n'), 'text/csv');
   showExportAlert('CSV downloaded.');
 }
 
 function dl(name, content, type) {
-  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([content], { type }));
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([content], { type }));
   a.download = name; a.click();
 }
 
