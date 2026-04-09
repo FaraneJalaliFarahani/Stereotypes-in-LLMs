@@ -3,200 +3,345 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Antonym Pair Annotation Tool</title>
+<title>Stereotype Annotation</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --bg: #ffffff; --bg-secondary: #f5f5f4; --bg-tertiary: #eeece9;
-    --text: #1a1a1a; --text-secondary: #6b6b6b; --text-tertiary: #9a9a9a;
-    --border: rgba(0,0,0,0.12); --border-md: rgba(0,0,0,0.22);
-    --radius-md: 8px; --radius-lg: 12px;
-    --info-bg: #e6f1fb; --info-border: #b5d4f4; --info-text: #0c447c;
-    --danger-bg: #fcebeb; --danger-border: #f7c1c1; --danger-text: #791f1f;
-    --success-bg: #eaf3de; --success-border: #c0dd97; --success-text: #27500a;
-    --warning-bg: #faeeda; --warning-border: #fac775; --warning-text: #633806;
-    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --bg: #faf9f7;
+    --bg-card: #ffffff;
+    --bg-secondary: #f0ede8;
+    --text: #1a1814;
+    --text-secondary: #6b6560;
+    --text-tertiary: #a09890;
+    --border: rgba(0,0,0,0.09);
+    --border-md: rgba(0,0,0,0.16);
+    --accent: #2a5caa;
+    --accent-light: #e8effa;
+    --danger-bg: #fdf0f0;
+    --danger-border: #e8b4b4;
+    --danger-text: #8b1f1f;
+    --success-bg: #f0f7ec;
+    --success-border: #b4d4a0;
+    --success-text: #2a5c1a;
+    --warning-bg: #fdf6e8;
+    --warning-border: #e8c87a;
+    --na-bg: #f0f0f0;
+    --na-border: #c0c0c0;
+    --na-text: #505050;
+    --font: 'Georgia', 'Times New Roman', serif;
+    --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --radius: 10px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.07);
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --bg: #1c1c1b; --bg-secondary: #252524; --bg-tertiary: #2e2e2c;
-      --text: #f0ede8; --text-secondary: #a8a39c; --text-tertiary: #6e6a65;
-      --border: rgba(255,255,255,0.1); --border-md: rgba(255,255,255,0.2);
-      --info-bg: #042c53; --info-border: #185fa5; --info-text: #b5d4f4;
-      --danger-bg: #501313; --danger-border: #a32d2d; --danger-text: #f7c1c1;
-      --success-bg: #173404; --success-border: #3b6d11; --success-text: #c0dd97;
-      --warning-bg: #412402; --warning-border: #854f0b; --warning-text: #fac775;
+      --bg: #181715;
+      --bg-card: #222120;
+      --bg-secondary: #2a2927;
+      --text: #f0ede8;
+      --text-secondary: #a09890;
+      --text-tertiary: #6b6560;
+      --border: rgba(255,255,255,0.08);
+      --border-md: rgba(255,255,255,0.15);
+      --accent: #6a9de0;
+      --accent-light: #1a2a40;
+      --danger-bg: #2a1515;
+      --danger-border: #6b2a2a;
+      --danger-text: #f0a0a0;
+      --success-bg: #152515;
+      --success-border: #2a5c2a;
+      --success-text: #90d070;
+      --warning-bg: #2a2210;
+      --warning-border: #6b5010;
+      --na-bg: #252525;
+      --na-border: #505050;
+      --na-text: #b0b0b0;
     }
   }
-  body { font-family: var(--font); background: var(--bg-tertiary); color: var(--text); min-height: 100vh; padding: 2rem 1rem 4rem; }
-  .app { max-width: 860px; margin: 0 auto; }
-  .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 0.5px solid var(--border); }
-  .header h1 { font-size: 20px; font-weight: 600; color: var(--text); }
-  .badge { font-size: 12px; padding: 3px 10px; border-radius: var(--radius-md); background: var(--bg-secondary); color: var(--text-secondary); border: 0.5px solid var(--border); }
-  .panel { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 1.5rem; }
-  .panel h2 { font-size: 11px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 1rem; }
-  .field { margin-bottom: 12px; }
+
+  body {
+    font-family: var(--font-ui);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 2rem 1rem 4rem;
+  }
+
+  .app { max-width: 680px; margin: 0 auto; }
+
+  /* ── Header ── */
+  .header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 2rem; padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .header h1 { font-family: var(--font); font-size: 20px; font-weight: normal; color: var(--text); }
+  .badge {
+    font-size: 12px; padding: 3px 10px; border-radius: 20px;
+    background: var(--bg-secondary); color: var(--text-secondary);
+    border: 1px solid var(--border); font-family: var(--font-ui);
+  }
+
+  /* ── Setup panel ── */
+  .panel {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.5rem;
+    margin-bottom: 1.5rem; box-shadow: var(--shadow);
+  }
+  .panel h2 {
+    font-size: 11px; font-weight: 600; color: var(--text-secondary);
+    text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1.2rem;
+    font-family: var(--font-ui);
+  }
+  .inst-block { margin-bottom: 1.2rem; }
+  .inst-block p { font-size: 14px; color: var(--text-secondary); line-height: 1.8; margin-bottom: 0.6rem; }
+  .inst-block p:last-child { margin-bottom: 0; }
+  .inst-block strong { color: var(--text); }
+
+  .example-box {
+    background: var(--bg-secondary); border: 1px solid var(--border);
+    border-radius: 8px; padding: 1rem 1.2rem; margin: 0.8rem 0;
+    font-size: 13px; color: var(--text-secondary); line-height: 1.7;
+  }
+  .example-box .eq { font-size: 15px; color: var(--text); font-family: var(--font); margin-bottom: 0.3rem; }
+
+  .warn-note {
+    font-size: 13px; color: var(--text-secondary);
+    background: var(--warning-bg); border: 1px solid var(--warning-border);
+    border-radius: 8px; padding: 10px 14px; margin: 1rem 0; line-height: 1.6;
+  }
+
+  .field { margin-bottom: 1rem; }
   .field label { display: block; font-size: 13px; color: var(--text-secondary); margin-bottom: 5px; }
-  .field input { width: 100%; max-width: 320px; padding: 8px 10px; font-size: 14px; font-family: var(--font); background: var(--bg); color: var(--text); border: 0.5px solid var(--border-md); border-radius: var(--radius-md); outline: none; }
-  .field input:focus { border-color: var(--text-secondary); }
-  .btn { padding: 8px 18px; border-radius: var(--radius-md); font-size: 14px; font-family: var(--font); cursor: pointer; border: 0.5px solid var(--border-md); background: var(--bg); color: var(--text); white-space: nowrap; }
+  .field input {
+    width: 100%; max-width: 300px; padding: 8px 12px;
+    font-size: 14px; font-family: var(--font-ui);
+    background: var(--bg); color: var(--text);
+    border: 1px solid var(--border-md); border-radius: 8px; outline: none;
+  }
+  .field input:focus { border-color: var(--accent); }
+
+  .btn {
+    padding: 9px 20px; border-radius: 8px; font-size: 14px;
+    font-family: var(--font-ui); cursor: pointer;
+    border: 1px solid var(--border-md);
+    background: var(--bg); color: var(--text);
+  }
   .btn:hover { background: var(--bg-secondary); }
   .btn:disabled { opacity: 0.4; cursor: not-allowed; }
-  .btn-primary { background: var(--text); color: var(--bg); border-color: var(--text); }
-  .btn-primary:hover { opacity: 0.85; background: var(--text); }
-  .btn-sm { padding: 5px 14px; font-size: 13px; }
+  .btn-primary {
+    background: var(--accent); color: #fff;
+    border-color: var(--accent);
+  }
+  .btn-primary:hover { opacity: 0.88; background: var(--accent); }
+  .btn-sm { padding: 6px 14px; font-size: 13px; }
   .btn-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-  .hidden { display: none !important; }
-  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 1.5rem; }
-  @media (max-width: 480px) { .stats-row { grid-template-columns: repeat(2, 1fr); } }
-  .stat { background: var(--bg); border-radius: var(--radius-md); padding: 0.75rem 1rem; border: 0.5px solid var(--border); }
-  .stat .sv { font-size: 24px; font-weight: 600; color: var(--text); }
-  .stat .sl { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
-  .card { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 1rem; }
-  .progress-row { display: flex; align-items: center; gap: 12px; padding: 0.9rem 1.25rem; border-bottom: 0.5px solid var(--border); }
-  .ptrack { flex: 1; height: 4px; background: var(--bg-secondary); border-radius: 2px; overflow: hidden; }
-  .pfill { height: 100%; background: var(--text); border-radius: 2px; transition: width 0.3s; }
-  .plabel { font-size: 13px; color: var(--text-secondary); white-space: nowrap; }
-  .pair-section { padding: 1.25rem 1.25rem 1.1rem; }
-  .pair-title { font-size: 22px; font-weight: 600; color: var(--text); margin-bottom: 16px; letter-spacing: -0.01em; }
-  .pair-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  @media (max-width: 540px) { .pair-grid { grid-template-columns: 1fr; } }
-  .pole { border-radius: var(--radius-md); padding: 1rem 1.1rem; display: flex; flex-direction: column; gap: 8px; }
-  .pole.neg { background: var(--danger-bg); border: 0.5px solid var(--danger-border); }
-  .pole.pos { background: var(--info-bg);   border: 0.5px solid var(--info-border); }
-  .pole-name { font-size: 17px; font-weight: 600; color: var(--text); }
-  .pole-def  { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
-  .pole-input-label { font-size: 11px; margin-top: 4px; }
-  .pole.neg .pole-input-label { color: var(--danger-text); }
-  .pole.pos .pole-input-label { color: var(--info-text); }
-  .pole textarea {
-    width: 100%; font-size: 13px; font-family: var(--font);
-    min-height: 68px; resize: vertical; padding: 7px 9px;
-    border-radius: var(--radius-md); outline: none; line-height: 1.5;
-    border: 0.5px solid var(--border-md);
-    background: rgba(255,255,255,0.5); color: var(--text);
-  }
-  @media (prefers-color-scheme: dark) { .pole textarea { background: rgba(0,0,0,0.3); } }
-  .pole textarea:focus { border-color: var(--text-secondary); }
-  .pole textarea::placeholder { color: var(--text-tertiary); }
-  .applicable-row {
-    padding: 1rem 1.25rem; border-top: 0.5px solid var(--border);
-    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
-  }
-  .ar-label { font-size: 14px; font-weight: 600; color: var(--text); flex: 1; min-width: 160px; }
-  .ar-sub { font-size: 12px; color: var(--text-secondary); display: block; font-weight: 400; margin-top: 2px; }
-  .toggle-group { display: flex; gap: 6px; }
-  .tog-btn {
-    padding: 6px 18px; border-radius: var(--radius-md); font-size: 13px;
-    font-family: var(--font); cursor: pointer;
-    border: 0.5px solid var(--border-md);
-    background: var(--bg-secondary); color: var(--text);
-  }
-  .tog-btn:hover { border-color: var(--text-secondary); }
-  .tog-btn.sel-yes { background: var(--success-bg); color: var(--success-text); border-color: var(--success-border); }
-  .tog-btn.sel-no  { background: var(--danger-bg);  color: var(--danger-text);  border-color: var(--danger-border); }
-  .stereo-row {
-    padding: 1rem 1.25rem; border-top: 0.5px solid var(--border);
-    background: var(--warning-bg); border-left: 3px solid var(--warning-border);
-  }
-  .stereo-header { font-size: 14px; font-weight: 600; color: var(--warning-text); margin-bottom: 2px; }
-  .stereo-sub { font-size: 12px; color: var(--warning-text); opacity: 0.85; margin-bottom: 14px; line-height: 1.5; }
-  .score-bubble-wrap { display: flex; justify-content: center; margin-bottom: 8px; }
-  .score-bubble {
-    width: 52px; height: 52px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 26px; font-weight: 600;
-    border: 2px solid var(--warning-border);
-    background: var(--bg); color: var(--warning-text);
-    transition: background 0.15s, color 0.15s;
-  }
-  .score-bubble.unset { background: var(--bg-secondary); color: var(--text-tertiary); border-color: var(--border-md); font-size: 14px; font-weight: 400; }
-  .score-bubble.set   { background: var(--warning-border); color: #412402; }
-  .slider-row { display: flex; align-items: center; gap: 10px; }
-  .slider-row input[type=range] { flex: 1; accent-color: var(--warning-border); cursor: pointer; }
-  .slider-end-label { font-size: 12px; color: var(--warning-text); opacity: 0.8; white-space: nowrap; min-width: 54px; }
-  .slider-end-label.right { text-align: right; }
-  .stereo-nudge { margin-top: 8px; font-size: 12px; color: var(--warning-text); opacity: 0.85; text-align: center; font-style: italic; }
-  .note-row { padding: 1rem 1.25rem; border-top: 0.5px solid var(--border); }
-  .note-row label { font-size: 13px; color: var(--text-secondary); display: block; margin-bottom: 5px; }
-  .note-row textarea { width: 100%; font-size: 13px; font-family: var(--font); min-height: 48px; resize: none; padding: 7px 10px; background: var(--bg); color: var(--text); border: 0.5px solid var(--border-md); border-radius: var(--radius-md); outline: none; }
-  .note-row textarea:focus { border-color: var(--text-secondary); }
-  .nav-row { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.25rem; border-top: 0.5px solid var(--border); flex-wrap: wrap; gap: 8px; }
-  .ann-tag { font-size: 12px; color: var(--text-tertiary); }
-  .export-bar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-top: 0.5rem; }
-  .export-bar > span { font-size: 14px; color: var(--text-secondary); }
-  .alert-msg { font-size: 13px; color: var(--success-text); background: var(--success-bg); border: 0.5px solid var(--success-border); border-radius: var(--radius-md); padding: 5px 14px; display: inline-block; margin-top: 8px; }
-  .done-state { text-align: center; padding: 3rem 1rem; color: var(--text-secondary); font-size: 15px; }
-  .instruction-block { display: flex; flex-direction: column; margin-bottom: 1.25rem; border: 0.5px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
-  .inst-section { padding: 1.1rem 1.25rem; border-bottom: 0.5px solid var(--border); }
-  .inst-section:last-child { border-bottom: none; }
-  .inst-section p { font-size: 13px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 0.5rem; }
-  .inst-section p:last-child { margin-bottom: 0; }
-  .inst-heading { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
-  .inst-section strong { color: var(--text); font-weight: 600; }
-  .examples-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 6px; }
-  @media (max-width: 500px) { .examples-grid { grid-template-columns: 1fr; } }
-  .example-box    { background: var(--success-bg); border: 0.5px solid var(--success-border); border-radius: var(--radius-md); padding: 10px 14px; }
-  .example-box-no { background: var(--bg-secondary); border: 0.5px solid var(--border-md); border-radius: var(--radius-md); padding: 10px 14px; }
-  .example-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--success-text); margin-bottom: 6px; }
-  .example-box-no .example-label { color: var(--text-secondary); }
-  .eg-list { list-style: none; display: flex; flex-direction: column; gap: 5px; }
-  .eg-list li { font-size: 12px; color: var(--text-secondary); line-height: 1.55; }
-  .eg-list li em { color: var(--text); font-style: normal; font-weight: 600; }
-  .warn-note { font-size: 13px; color: var(--warning-text); background: var(--warning-bg); border: 0.5px solid var(--warning-border); border-radius: var(--radius-md); padding: 10px 14px; margin-bottom: 1rem; line-height: 1.6; }
-  .welcome-note { font-size: 13px; color: var(--text-secondary); padding: 10px 14px; background: var(--bg-secondary); border-radius: var(--radius-md); border: 0.5px solid var(--border); margin-bottom: 1rem; }
   .err-text { font-size: 13px; color: var(--danger-text); margin-top: 8px; }
-  .loading-msg { text-align: center; padding: 3rem 1rem; color: var(--text-secondary); font-size: 15px; }
-  .load-err { font-size: 13px; color: var(--danger-text); background: var(--danger-bg); border: 0.5px solid var(--danger-border); border-radius: var(--radius-md); padding: 10px 14px; margin-bottom: 1rem; line-height: 1.6; }
+  .hidden { display: none !important; }
+
+  /* ── Stats ── */
+  .stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 1.5rem; }
+  @media (max-width: 480px) { .stats-row { grid-template-columns: repeat(2,1fr); } }
+  .stat {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 0.75rem 1rem; box-shadow: var(--shadow);
+  }
+  .stat .sv { font-size: 22px; font-weight: 600; color: var(--text); }
+  .stat .sl { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+
+  /* ── Main annotation card ── */
+  .card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow);
+    margin-bottom: 1rem;
+  }
+
+  .progress-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 0.9rem 1.4rem; border-bottom: 1px solid var(--border);
+    background: var(--bg-secondary);
+  }
+  .ptrack { flex: 1; height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .pfill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.35s; }
+  .plabel { font-size: 12px; color: var(--text-tertiary); white-space: nowrap; font-family: var(--font-ui); }
+
+  /* ── Question block ── */
+  .question-section {
+    padding: 1.4rem 1.4rem 1.2rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .question-text {
+    font-family: var(--font); font-size: 20px; color: var(--text);
+    margin-bottom: 1rem; line-height: 1.4;
+  }
+  .poles-row {
+    display: flex; align-items: flex-start; gap: 10px;
+  }
+  .poles-sep {
+    font-size: 12px; color: var(--text-tertiary);
+    padding-top: 4px; flex-shrink: 0;
+  }
+  .pole-chip {
+    flex: 1; border-radius: 7px; padding: 6px 10px;
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .neg-chip { background: var(--danger-bg); border: 1px solid var(--danger-border); }
+  .pos-chip { background: var(--accent-light); border: 1px solid #b5d0f5; }
+  .chip-name { font-size: 13px; font-weight: 700; }
+  .neg-chip .chip-name { color: var(--danger-text); }
+  .pos-chip .chip-name { color: var(--accent); }
+  .chip-def { font-size: 11px; color: var(--text-tertiary); line-height: 1.4; font-style: italic; }
+
+  /* ── Not applicable ── */
+  .na-section {
+    display: flex; align-items: center; gap: 8px;
+    padding: 0.75rem 1.4rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-secondary);
+  }
+  .na-section input[type="checkbox"] {
+    width: 15px; height: 15px; cursor: pointer;
+    accent-color: var(--accent); flex-shrink: 0;
+  }
+  .na-section label {
+    font-size: 13px; color: var(--text-secondary); cursor: pointer;
+  }
+
+  /* ── Scale ── */
+  .rating-section { padding: 1.1rem 1.4rem 1.3rem; }
+  .scale-poles-hint {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 8px;
+  }
+  .scale-poles-hint span { font-size: 12px; color: var(--text-tertiary); }
+  .hint-mid { color: var(--text-tertiary); font-style: italic; }
+  .scale-buttons {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px;
+  }
+  .scale-btn {
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    padding: 10px 4px; border-radius: 8px; cursor: pointer;
+    border: 1.5px solid var(--border-md);
+    background: var(--bg); color: var(--text);
+    font-family: var(--font-ui); transition: all 0.12s;
+  }
+  .scale-btn .snum { font-size: 18px; font-weight: 700; line-height: 1; }
+  .scale-btn .slbl { font-size: 10px; color: var(--text-tertiary); text-align: center; line-height: 1.3; }
+  .scale-btn:hover { border-color: var(--accent); background: var(--accent-light); }
+  .scale-btn.sel { border-color: var(--accent); background: var(--accent); color: #fff; }
+  .scale-btn.sel .slbl { color: rgba(255,255,255,0.75); }
+  #scaleBlock { transition: opacity 0.2s; }
+  #scaleBlock.disabled { opacity: 0.3; pointer-events: none; }
+
+  .scale-hint {
+    display: flex; justify-content: space-between;
+    font-size: 11px; color: var(--text-tertiary); padding: 0 2px;
+  }
+
+  /* ── Word suggestion (optional, subset) ── */
+  .suggest-section {
+    padding: 1rem 1.4rem 1.2rem; border-top: 1px solid var(--border);
+    background: var(--warning-bg);
+  }
+  .suggest-header {
+    font-size: 12px; font-weight: 600; color: #7a5c10;
+    text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.3rem;
+  }
+  .suggest-sub {
+    font-size: 12px; color: #8a6c20; margin-bottom: 0.9rem; line-height: 1.5;
+  }
+  .suggest-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 480px) { .suggest-grid { grid-template-columns: 1fr; } }
+  .suggest-field label {
+    display: block; font-size: 11px; color: #7a5c10;
+    font-weight: 600; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .suggest-field input {
+    width: 100%; padding: 7px 10px; font-size: 13px;
+    font-family: var(--font-ui); background: var(--bg-card);
+    color: var(--text); border: 1px solid var(--warning-border);
+    border-radius: 7px; outline: none;
+  }
+  .suggest-field input:focus { border-color: #c89030; }
+  .suggest-field input::placeholder { color: var(--text-tertiary); }
+
+  /* ── Nav ── */
+  .nav-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1rem 1.4rem; border-top: 1px solid var(--border);
+    flex-wrap: wrap; gap: 8px;
+  }
+  .ann-tag { font-size: 12px; color: var(--text-tertiary); }
+
+  /* ── Done ── */
+  .done-state {
+    text-align: center; padding: 3rem 1rem;
+    color: var(--text-secondary); font-size: 15px;
+  }
+  .export-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 10px; margin-top: 0.5rem;
+    padding: 1rem 0;
+  }
+  .export-bar > span { font-size: 14px; color: var(--text-secondary); }
+  .alert-msg {
+    font-size: 13px; color: var(--success-text);
+    background: var(--success-bg); border: 1px solid var(--success-border);
+    border-radius: 8px; padding: 5px 14px; display: inline-block; margin-top: 8px;
+  }
+
+  .loading-msg { text-align: center; padding: 3rem 1rem; color: var(--text-secondary); }
+  .load-err {
+    font-size: 13px; color: var(--danger-text); background: var(--danger-bg);
+    border: 1px solid var(--danger-border); border-radius: 8px;
+    padding: 10px 14px; margin-bottom: 1rem;
+  }
+
+  /* dark mode adjustments for warning section */
+  @media (prefers-color-scheme: dark) {
+    .suggest-section { background: #2a2210; }
+    .suggest-header, .suggest-sub { color: #c89a40; }
+    .suggest-field label { color: #c89a40; }
+    .suggest-field input { border-color: #6b5010; }
+    .suggest-field input:focus { border-color: #c89030; }
+  }
 </style>
 </head>
 <body>
 <div class="app">
 
   <div class="header">
-    <h1>Antonym pair annotation</h1>
+    <h1>Stereotype annotation</h1>
     <span class="badge" id="modeLabel">Ready</span>
   </div>
 
-  <div id="loadingMsg" class="loading-msg">Loading pairs from example_axes.json…</div>
+  <div id="loadingMsg" class="loading-msg">Loading word pairs…</div>
   <div id="loadErr" class="load-err hidden"></div>
 
+  <!-- Setup panel -->
   <div class="panel hidden" id="setupPanel">
-    <h2>Before you begin — please read carefully</h2>
-    <div class="instruction-block">
-      <div class="inst-section">
-        <p>In this annotation task, you are given an antonym pair (two opposite adjectives). We want you to <strong>write down the groups of people that come to mind</strong> when you think about each adjective. For example, for the antonym pair <strong>poor</strong> ↔ <strong>rich</strong>, you might write "homeless people" under <em>poor</em> and "CEOs" under <em>rich</em>. This reflects a stereotype you have about those groups of people in your mind.</p>
-      </div>
-      <div class="inst-section">
-        <div class="inst-heading">Examples</div>
-        <div class="examples-grid">
-          <div class="example-box">
-            <div class="example-label">Stereotypical antonyms</div>
-            <ul class="eg-list">
-              <li><em>unfriendly ↔ friendly</em> — e.g. "politicians" vs "nurses"</li>
-              <li><em>immoral ↔ moral</em> — e.g. "criminals" vs "priests"</li>
-            </ul>
-          </div>
-          <div class="example-box-no">
-            <div class="example-label">Non-stereotypical antonyms</div>
-            <ul class="eg-list">
-              <li><em>increased ↔ decreased</em> — a quantity, not about people</li>
-              <li><em>concave ↔ convex</em> — geometry, no people involved</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="inst-section">
-        <div class="inst-heading">What to do</div>
-        <p>For each adjective, you will see a <strong>text box</strong> — write any groups of people that spontaneously come to mind for that adjective. Separate multiple groups with <strong>commas</strong>. Leave it empty if nothing comes to mind.</p>
-        <p>You will also see a toggle: <strong>Applicable to humans / Not applicable</strong>. If the antonym pair describe something not relevant to people, such as a purely physical, chemical, or biological phenomenon, mark it <em>Not applicable</em>.</p>
-        <p>If you mark a pair as applicable, you will be asked to rate the <strong>strength of the stereotype</strong> on a scale from 1 to 5: 1 (no stereotype), 2 (weak), 3 (moderate), 4 (strong), 5 (very strong and widely recognized).</p>
-      </div>
+    <h2>Instructions — please read before starting</h2>
+
+    <div class="inst-block">
+      <p>You will be shown an <strong>antonym pair</strong> (e.g. <em>poor ↔ rich</em>) and a <strong>word</strong> (e.g. <em>students</em>). Your task is to rate where that word falls on the scale between the two poles.</p>
     </div>
+
+    <div class="example-box">
+      <div class="eq">poor &nbsp;←&nbsp; 1 · 2 · 3 · 4 · 5 &nbsp;→&nbsp; rich</div>
+      <strong>Are "students" rather poor, rather rich, or neither?</strong><br>
+      Pick 1 (clearly poor-side), 3 (neither), or 5 (clearly rich-side) — or anything in between.<br>
+      If the scale does not make sense for the word (e.g. rating a <em>table</em> on poor↔rich), mark it <strong>Not applicable</strong>.
+    </div>
+
+    <div class="inst-block">
+      <p><strong>Neither (3) vs. Not applicable:</strong> Use <em>3 — neither</em> when the word sits in the middle of the scale. Use <em>Not applicable</em> when the scale simply does not apply to the word at all (e.g. a physical object on a personality scale).</p>
+      <p>For a small number of word pairs you will also be asked to <strong>suggest one word</strong> that clearly belongs at each end of the scale — this can be any word, not only a social group.</p>
+    </div>
+
     <div class="warn-note">
-      <strong>&#9888; Important:</strong> Please complete the annotation <strong>in one sitting</strong> without interruption. Taking breaks may shift your perspective and affect consistency. Progress is <strong>not saved</strong> if the browser tab is closed — export before closing.
+      ⚠ Complete the annotation <strong>in one sitting</strong>. Progress is not saved if the tab is closed — export before closing.
     </div>
-    <div class="welcome-note" id="welcomeNote">Loading…</div>
+
     <div class="field">
       <label>Your name</label>
       <input type="text" id="annotatorName" placeholder="e.g. Alice" />
@@ -207,84 +352,93 @@
     <div class="err-text" id="setupErr"></div>
   </div>
 
+  <!-- Stats -->
   <div id="statsSection" class="hidden">
     <div class="stats-row">
-      <div class="stat"><div class="sv" id="stTotal">—</div><div class="sl">Total pairs</div></div>
+      <div class="stat"><div class="sv" id="stTotal">—</div><div class="sl">Total items</div></div>
       <div class="stat"><div class="sv" id="stDone">0</div><div class="sl">Annotated</div></div>
       <div class="stat"><div class="sv" id="stSkip">0</div><div class="sl">Skipped</div></div>
       <div class="stat"><div class="sv" id="stLeft">—</div><div class="sl">Remaining</div></div>
     </div>
   </div>
 
+  <!-- Annotation section -->
   <div id="annotationSection" class="hidden">
     <div class="card" id="mainCard">
+
+      <!-- Progress -->
       <div class="progress-row">
         <div class="ptrack"><div class="pfill" id="pfill" style="width:0%"></div></div>
         <span class="plabel" id="plabel">— / —</span>
       </div>
-      <div class="pair-section">
-        <div class="pair-title" id="pairTitle">—</div>
-        <div class="pair-grid">
-          <div class="pole neg">
-            <div class="pole-name" id="negName">—</div>
-            <div class="pole-def" id="negDef"></div>
-            <div class="pole-input-label">Groups of people that come to mind:</div>
-            <textarea id="negGroups" placeholder="e.g. homeless people, single parents…"></textarea>
+
+      <!-- Question (word + poles in one block) -->
+      <div class="question-section">
+        <div class="question-text" id="questionText">—</div>
+        <div class="poles-row">
+          <div class="pole-chip neg-chip">
+            <span class="chip-name" id="negPoleDef">—</span>
+            <span class="chip-def" id="negDef"></span>
           </div>
-          <div class="pole pos">
-            <div class="pole-name" id="posName">—</div>
-            <div class="pole-def" id="posDef"></div>
-            <div class="pole-input-label">Groups of people that come to mind:</div>
-            <textarea id="posGroups" placeholder="e.g. billionaires, CEOs…"></textarea>
+          <span class="poles-sep">or</span>
+          <div class="pole-chip pos-chip">
+            <span class="chip-name" id="posPoleDef">—</span>
+            <span class="chip-def" id="posDef"></span>
           </div>
         </div>
       </div>
-      <div class="applicable-row">
-        <div class="ar-label">
-          Applicable to humans?
-          <span class="ar-sub">Do the antonym pair describe something about people at all?</span>
-        </div>
-        <div class="toggle-group">
-          <button class="tog-btn" id="tog-yes" onclick="setApplicable('Yes')">Yes</button>
-          <button class="tog-btn" id="tog-no"  onclick="setApplicable('No')">Not applicable</button>
+
+      <!-- Not applicable checkbox -->
+      <div class="na-section">
+        <input type="checkbox" id="naCheck" onchange="toggleNA()" />
+        <label for="naCheck">Not applicable — this word cannot be rated on this scale</label>
+      </div>
+
+      <!-- Scale -->
+      <div class="rating-section">
+        <div id="scaleBlock">
+          <div class="scale-poles-hint">
+            <span id="hintLeft">—</span>
+            <span class="hint-mid">neither</span>
+            <span id="hintRight">—</span>
+          </div>
+          <div class="scale-buttons" id="scaleButtons"></div>
         </div>
       </div>
-      <div class="stereo-row hidden" id="stereoRow">
-        <div class="stereo-header">How stereotypical is this pair?</div>
-        <div class="stereo-sub">Rate how strongly this antonym pair evokes stereotypical associations about groups of people.</div>
-        <div class="score-bubble-wrap">
-          <div class="score-bubble unset" id="scoreBubble">drag</div>
+
+      <!-- Optional word suggestion (shown for subset of axes) -->
+      <div class="suggest-section hidden" id="suggestSection">
+        <div class="suggest-header">Optional — suggest extreme words</div>
+        <div class="suggest-sub">Suggest one word (any word, not only social groups) that clearly belongs at each end of this scale.</div>
+        <div class="suggest-grid">
+          <div class="suggest-field">
+            <label id="suggestLabelNeg">Word you'd rate 1 (—)</label>
+            <input type="text" id="suggestNeg" placeholder="e.g. homeless shelter" />
+          </div>
+          <div class="suggest-field">
+            <label id="suggestLabelPos">Word you'd rate 5 (—)</label>
+            <input type="text" id="suggestPos" placeholder="e.g. yacht" />
+          </div>
         </div>
-       <div class="slider-row">
-         <input type="range" id="stereoSlider" min="1" max="5" step="1" value="3" oninput="onSliderInput()" style="flex: 1;" />
-       </div>
-       <div style="display: flex; justify-content: space-between; margin-top: 8px; font-size: 11px; padding: 0 4px;">
-         <div style="text-align: center; width: 40px;"><strong>1</strong><br>no stereotype</div>
-         <div style="text-align: center; width: 40px;"><strong>2</strong><br>weak</div>
-         <div style="text-align: center; width: 40px;"><strong>3</strong><br>moderate</div>
-         <div style="text-align: center; width: 40px;"><strong>4</strong><br>strong</div>
-         <div style="text-align: center; width: 40px;"><strong>5</strong><br>very strong & widely recognized</div>
-       </div>
-        <div class="stereo-nudge" id="stereoNudge">&#8593; drag the slider to set a score before saving</div>
       </div>
-      <div class="note-row">
-        <label>Notes <span style="color:var(--text-tertiary);font-size:12px">(optional)</span></label>
-        <textarea id="noteField" placeholder="Any other comments about this antonym pair…"></textarea>
-      </div>
+
+      <!-- Nav -->
       <div class="nav-row">
         <div class="btn-row">
-          <button class="btn btn-sm" id="prevBtn" onclick="navigate(-1)" disabled>&#8592; Prev</button>
+          <button class="btn btn-sm" id="prevBtn" onclick="navigate(-1)" disabled>← Prev</button>
           <button class="btn btn-sm" onclick="skipItem()">Skip</button>
         </div>
         <span class="ann-tag" id="annTag"></span>
-        <button class="btn btn-sm btn-primary" onclick="saveAndNext()">Save &amp; next &#8594;</button>
+        <button class="btn btn-sm btn-primary" onclick="saveAndNext()">Save &amp; next →</button>
       </div>
     </div>
+
     <div class="done-state hidden" id="doneMsg">
-      &#10003; All pairs reviewed! Export your annotations below and send the file back.
+      ✓ All items reviewed! Export your annotations below.
     </div>
-    <div class="export-bar" style="margin-top:1rem;">
-      <span>Export your annotations</span>
+
+    <div class="export-bar">
+      <span>Export annotations</span>
       <div class="btn-row">
         <button class="btn btn-sm" onclick="exportJSON()">Download JSON</button>
         <button class="btn btn-sm" onclick="exportCSV()">Download CSV</button>
@@ -294,10 +448,35 @@
   </div>
 
 </div>
+
 <script>
-let PAIRS = [];
-let annotations = {}, currentIndex = 0, annotatorName = '';
-let applicable = null, stereoTouched = false;
+// ── Data ────────────────────────────────────────────────────────────────────
+// Each item is { axisKey, negPole, posPole, word, wordType, askSuggest }
+// wordType: 'social_group' | 'random_noun'
+// askSuggest: bool — true for the subset of axes where we ask for extreme words
+
+let ITEMS = [];
+let annotations = {};
+let currentIndex = 0;
+let annotatorName = '';
+let currentRating = null; // 1-5 or 'na'
+
+// ── Load data ────────────────────────────────────────────────────────────────
+// Parses example_axes.json and expands each axis into word-level items.
+// Social groups drawn from the paper's 52 groups (subset for demo).
+// Every ~10th axis gets askSuggest = true.
+
+const SOCIAL_GROUPS = [
+  'nurses','students','CEOs','doctors','scientists','professors',
+  'engineers','managers','homeless people','welfare recipients',
+  'billionaires','immigrants','women','men','elderly people',
+  'drug addicts','refugees','disabled people','teachers','politicians'
+];
+
+const RANDOM_NOUNS = [
+  'table','cloud','hammer','river','bicycle','carpet',
+  'cylinder','carbonate','funicular','triangle'
+];
 
 function parseEntry(key, raw) {
   const lines = raw.split('\n').map(s => s.trim()).filter(Boolean);
@@ -313,7 +492,8 @@ function parseEntry(key, raw) {
     const arrowIdx = body.indexOf('→');
     return arrowIdx >= 0 ? body.slice(arrowIdx + 1).trim() : body;
   };
-  return { key, pair: posWord + '|' + negWord, posName: posWord, posDef: extractDef('Positive'), negName: negWord, negDef: extractDef('Negative') };
+  return { key, posName: posWord, negName: negWord,
+           posDef: extractDef('Positive'), negDef: extractDef('Negative') };
 }
 
 async function loadPairs() {
@@ -321,25 +501,83 @@ async function loadPairs() {
     const res = await fetch('example_axes.json');
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
-    if (Array.isArray(data)) { PAIRS = data; }
-    else if (typeof data === 'object' && data !== null) { PAIRS = Object.entries(data).map(([k, v]) => parseEntry(k, v)); }
-    else { throw new Error('Unrecognised format.'); }
-    if (PAIRS.length === 0) throw new Error('No pairs found in example_axes.json.');
-    document.getElementById('welcomeNote').innerHTML = 'This dataset contains <strong>' + PAIRS.length + ' antonym pairs</strong>. When done, export your annotations and send the file back.';
-    document.getElementById('stTotal').textContent = PAIRS.length;
-    document.getElementById('stLeft').textContent  = PAIRS.length;
+
+    let axes = [];
+    if (Array.isArray(data)) {
+      axes = data;
+    } else if (typeof data === 'object' && data !== null) {
+      axes = Object.entries(data).map(([k, v]) => parseEntry(k, v));
+    } else {
+      throw new Error('Unrecognised format.');
+    }
+    if (axes.length === 0) throw new Error('No axes found.');
+
+    // Expand axes into word-level items
+    // Use a small set of words per axis to keep the pilot manageable
+    const wordsPerAxis = [...SOCIAL_GROUPS.slice(0, 5), ...RANDOM_NOUNS.slice(0, 2)];
+
+    axes.forEach((axis, axisIdx) => {
+      const askSuggest = (axisIdx % 3 === 0);
+      wordsPerAxis.forEach(word => {
+        const isRandom = RANDOM_NOUNS.includes(word);
+        ITEMS.push({
+          id: axis.key + '::' + word,
+          axisKey: axis.key,
+          negPole: axis.negName, negDef: axis.negDef || '',
+          posPole: axis.posName, posDef: axis.posDef || '',
+          word,
+          wordType: isRandom ? 'random_noun' : 'social_group',
+          askSuggest
+        });
+      });
+    });
+
+    if (ITEMS.length === 0) throw new Error('No items generated.');
+
+    document.getElementById('stTotal').textContent = ITEMS.length;
+    document.getElementById('stLeft').textContent  = ITEMS.length;
     document.getElementById('loadingMsg').classList.add('hidden');
     document.getElementById('setupPanel').classList.remove('hidden');
   } catch (err) {
     document.getElementById('loadingMsg').classList.add('hidden');
     const el = document.getElementById('loadErr');
     el.classList.remove('hidden');
-    el.textContent = '⚠ Could not load example_axes.json — ' + err.message;
+    el.textContent = '⚠ Could not load example_axes.json — ' + err.message +
+      '. If testing standalone, ITEMS will be populated with demo data.';
+    loadDemoData();
   }
+}
+
+function loadDemoData() {
+  // Demo data for standalone testing
+  const demoAxes = [
+    { key: 'poor-rich', negName: 'poor', negDef: 'having little money or few possessions', posName: 'rich', posDef: 'possessing material wealth' },
+    { key: 'unintelligent-intelligent', negName: 'unintelligent', negDef: 'lacking intelligence', posName: 'intelligent', posDef: 'having the capacity for thought and reason' },
+    { key: 'unfriendly-friendly', negName: 'unfriendly', negDef: 'not disposed to friendship', posName: 'friendly', posDef: 'characteristic of or befitting a friend' },
+  ];
+  const words = ['students', 'CEOs', 'homeless people', 'professors', 'table', 'cylinder'];
+  demoAxes.forEach((axis, i) => {
+    words.forEach(word => {
+      ITEMS.push({
+        id: axis.key + '::' + word,
+        axisKey: axis.key,
+        negPole: axis.negName, negDef: axis.negDef || '',
+        posPole: axis.posName, posDef: axis.posDef || '',
+        word,
+        wordType: ['table','cylinder'].includes(word) ? 'random_noun' : 'social_group',
+        askSuggest: i % 3 === 0
+      });
+    });
+  });
+  document.getElementById('stTotal').textContent = ITEMS.length;
+  document.getElementById('stLeft').textContent  = ITEMS.length;
+  document.getElementById('loadErr').classList.add('hidden');
+  document.getElementById('setupPanel').classList.remove('hidden');
 }
 
 loadPairs();
 
+// ── Session ──────────────────────────────────────────────────────────────────
 function startSession() {
   const err = document.getElementById('setupErr');
   annotatorName = document.getElementById('annotatorName').value.trim();
@@ -349,94 +587,157 @@ function startSession() {
   document.getElementById('statsSection').classList.remove('hidden');
   document.getElementById('annotationSection').classList.remove('hidden');
   document.getElementById('modeLabel').textContent = annotatorName;
-  currentIndex = 0; showItem(0); updateStats();
+  currentIndex = 0;
+  showItem(0);
+  updateStats();
 }
 
+// ── Scale UI ─────────────────────────────────────────────────────────────────
+const SCALE_LABELS = ['', 'clearly\nneg-side', 'somewhat\nneg-side', 'neither', 'somewhat\npos-side', 'clearly\npos-side'];
+
+function buildScaleButtons() {
+  const container = document.getElementById('scaleButtons');
+  container.innerHTML = '';
+  for (let v = 1; v <= 5; v++) {
+    const btn = document.createElement('button');
+    btn.className = 'scale-btn';
+    btn.id = 'sb' + v;
+    btn.innerHTML = `<span class="snum">${v}</span><span class="slbl">${SCALE_LABELS[v]}</span>`;
+    btn.onclick = () => setRating(v);
+    container.appendChild(btn);
+  }
+}
+
+function setRating(val) {
+  currentRating = val;
+  document.getElementById('naBtn').classList.remove('sel');
+  for (let v = 1; v <= 5; v++) {
+    document.getElementById('sb' + v).classList.toggle('sel', v === val);
+  }
+}
+
+function toggleNA() {
+  const checked = document.getElementById('naCheck').checked;
+  const scaleBlock = document.getElementById('scaleBlock');
+  if (checked) {
+    currentRating = 'na';
+    scaleBlock.classList.add('disabled');
+    for (let v = 1; v <= 5; v++) {
+      document.getElementById('sb' + v).classList.remove('sel');
+    }
+  } else {
+    currentRating = null;
+    scaleBlock.classList.remove('disabled');
+  }
+}
+
+function clearRating() {
+  currentRating = null;
+  const naCheck = document.getElementById('naCheck');
+  if (naCheck) naCheck.checked = false;
+  const scaleBlock = document.getElementById('scaleBlock');
+  if (scaleBlock) scaleBlock.classList.remove('disabled');
+  for (let v = 1; v <= 5; v++) {
+    const el = document.getElementById('sb' + v);
+    if (el) { el.classList.remove('sel'); el.disabled = false; }
+  }
+}
+
+// ── Show item ────────────────────────────────────────────────────────────────
 function showItem(idx) {
-  if (idx >= PAIRS.length) { showDone(); return; }
-  const p = PAIRS[idx];
-  applicable = null; stereoTouched = false;
-  const words = p.pair.split('|');
-  document.getElementById('pairTitle').textContent = words[0] + ' \u2194 ' + words[1];
-  document.getElementById('negName').textContent = p.negName;
-  document.getElementById('negDef').textContent  = p.negDef;
-  document.getElementById('posName').textContent = p.posName;
-  document.getElementById('posDef').textContent  = p.posDef;
-  const ex = annotations[p.key];
-  document.getElementById('negGroups').value = ex?.neg_groups || '';
-  document.getElementById('posGroups').value = ex?.pos_groups || '';
-  document.getElementById('noteField').value = ex?.note || '';
-  if (ex) applicable = ex.applicable || null;
-  const savedScore = ex?.stereotypicality_score;
-  if (savedScore && savedScore > 0) { document.getElementById('stereoSlider').value = savedScore; stereoTouched = true; }
-  else { document.getElementById('stereoSlider').value = 3; stereoTouched = false; }
-  updateBubble(); renderToggle();
-  document.getElementById('pfill').style.width = Math.round((idx / PAIRS.length) * 100) + '%';
-  document.getElementById('plabel').textContent = (idx + 1) + ' / ' + PAIRS.length;
+  if (idx >= ITEMS.length) { showDone(); return; }
+  const item = ITEMS[idx];
+
+  // Question
+  document.getElementById('questionText').textContent =
+    `Is "${item.word}" rather ${item.negPole}, rather ${item.posPole}, or neither?`;
+
+  // Pole definitions
+  document.getElementById('negPoleDef').textContent = item.negPole;
+  document.getElementById('negDef').textContent     = item.negDef || '';
+  document.getElementById('posPoleDef').textContent = item.posPole;
+  document.getElementById('posDef').textContent     = item.posDef || '';
+
+  // Scale poles
+  document.getElementById('negPole').textContent   = item.negPole;
+  document.getElementById('posPole').textContent   = item.posPole;
+  document.getElementById('hintLeft').textContent  = item.negPole;
+  document.getElementById('hintRight').textContent = item.posPole;
+
+  const suggestEl = document.getElementById('suggestSection');
+  if (item.askSuggest) {
+    suggestEl.classList.remove('hidden');
+    document.getElementById('suggestLabelNeg').textContent = `Word you'd rate 1 (most ${item.negPole})`;
+    document.getElementById('suggestLabelPos').textContent = `Word you'd rate 5 (most ${item.posPole})`;
+  } else {
+    suggestEl.classList.add('hidden');
+  }
+
+  const ex = annotations[item.id];
+  clearRating();
+  document.getElementById('suggestNeg').value = ex?.suggest_neg || '';
+  document.getElementById('suggestPos').value = ex?.suggest_pos || '';
+  if (ex) {
+    if (ex.rating === 'na') {
+      document.getElementById('naCheck').checked = true;
+      toggleNA();
+    } else if (ex.rating) {
+      setRating(ex.rating);
+    }
+  }
+
+  const pct = Math.round((idx / ITEMS.length) * 100);
+  document.getElementById('pfill').style.width = pct + '%';
+  document.getElementById('plabel').textContent = (idx + 1) + ' / ' + ITEMS.length;
   document.getElementById('annTag').textContent = annotatorName;
   document.getElementById('prevBtn').disabled = idx === 0;
   document.getElementById('mainCard').classList.remove('hidden');
   document.getElementById('doneMsg').classList.add('hidden');
 }
 
-function onSliderInput() { stereoTouched = true; updateBubble(); }
-
-function updateBubble() {
-  const bubble = document.getElementById('scoreBubble');
-  const nudge  = document.getElementById('stereoNudge');
-  if (stereoTouched) {
-    bubble.textContent = document.getElementById('stereoSlider').value;
-    bubble.className = 'score-bubble set';
-    nudge.style.visibility = 'hidden';
-  } else {
-    bubble.textContent = 'drag';
-    bubble.className = 'score-bubble unset';
-    nudge.style.visibility = 'visible';
-  }
-}
-
-function renderToggle() {
-  document.getElementById('tog-yes').className = 'tog-btn' + (applicable === 'Yes' ? ' sel-yes' : '');
-  document.getElementById('tog-no').className  = 'tog-btn' + (applicable === 'No'  ? ' sel-no'  : '');
-  document.getElementById('stereoRow').classList.toggle('hidden', applicable !== 'Yes');
-}
-
-function setApplicable(val) { applicable = val; renderToggle(); }
-
+// ── Save ─────────────────────────────────────────────────────────────────────
 function saveAndNext() {
-  if (!applicable) { alert('Please mark whether this pair is applicable to humans.'); return; }
-  if (applicable === 'Yes' && !stereoTouched) { alert('Please drag the slider to set a stereotypicality score before saving.'); return; }
-  const p = PAIRS[currentIndex];
-  const stereoScore = applicable === 'Yes' ? parseInt(document.getElementById('stereoSlider').value) : 0;
-  annotations[p.key] = {
-    key: p.key, pair: p.pair, positive_pole: p.posName, negative_pole: p.negName,
-    applicable, stereotypicality_score: stereoScore,
-    pos_groups: document.getElementById('posGroups').value.trim(),
-    neg_groups: document.getElementById('negGroups').value.trim(),
-    note: document.getElementById('noteField').value.trim(),
-    annotator: annotatorName, timestamp: new Date().toISOString(), skipped: false
+  if (currentRating === null) {
+    alert('Please select a rating (1–5) or mark as "Not applicable" before saving.');
+    return;
+  }
+  const item = ITEMS[currentIndex];
+  annotations[item.id] = {
+    id: item.id,
+    axis: item.axisKey,
+    neg_pole: item.negPole,
+    pos_pole: item.posPole,
+    word: item.word,
+    word_type: item.wordType,
+    rating: currentRating,
+    suggest_neg: document.getElementById('suggestNeg').value.trim(),
+    suggest_pos: document.getElementById('suggestPos').value.trim(),
+    annotator: annotatorName,
+    timestamp: new Date().toISOString(),
+    skipped: false
   };
   updateStats();
-  if (currentIndex < PAIRS.length - 1) { currentIndex++; showItem(currentIndex); } else showDone();
+  if (currentIndex < ITEMS.length - 1) { currentIndex++; showItem(currentIndex); }
+  else showDone();
 }
 
 function skipItem() {
-  const p = PAIRS[currentIndex];
-  annotations[p.key] = {
-    key: p.key, pair: p.pair, positive_pole: p.posName, negative_pole: p.negName,
-    applicable: null, stereotypicality_score: null,
-    neg_groups: document.getElementById('negGroups').value.trim(),
-    pos_groups: document.getElementById('posGroups').value.trim(),
-    note: document.getElementById('noteField').value.trim(),
+  const item = ITEMS[currentIndex];
+  annotations[item.id] = {
+    id: item.id, axis: item.axisKey,
+    neg_pole: item.negPole, pos_pole: item.posPole,
+    word: item.word, word_type: item.wordType,
+    rating: null, suggest_neg: '', suggest_pos: '',
     annotator: annotatorName, timestamp: new Date().toISOString(), skipped: true
   };
   updateStats();
-  if (currentIndex < PAIRS.length - 1) { currentIndex++; showItem(currentIndex); } else showDone();
+  if (currentIndex < ITEMS.length - 1) { currentIndex++; showItem(currentIndex); }
+  else showDone();
 }
 
 function navigate(dir) {
   const next = currentIndex + dir;
-  if (next >= 0 && next < PAIRS.length) { currentIndex = next; showItem(currentIndex); }
+  if (next >= 0 && next < ITEMS.length) { currentIndex = next; showItem(currentIndex); }
 }
 
 function showDone() {
@@ -448,47 +749,62 @@ function updateStats() {
   const vals = Object.values(annotations);
   document.getElementById('stDone').textContent = vals.filter(a => !a.skipped).length;
   document.getElementById('stSkip').textContent = vals.filter(a => a.skipped).length;
-  document.getElementById('stLeft').textContent = PAIRS.length - vals.length;
+  document.getElementById('stLeft').textContent = ITEMS.length - vals.length;
 }
 
+// ── Export ───────────────────────────────────────────────────────────────────
 function getRows() {
-  return PAIRS.map(p => {
-    const a = annotations[p.key];
+  return ITEMS.map(item => {
+    const a = annotations[item.id];
     return {
-      key: p.key, pair: p.pair, positive_pole: p.posName, negative_pole: p.negName,
-      applicable: a?.applicable ?? '', stereotypicality_score: a?.stereotypicality_score ?? '',
-       pos_groups: a?.pos_groups ?? '', neg_groups: a?.neg_groups ?? '',
-      note: a?.note ?? '', annotator: a?.annotator ?? '',
-      timestamp: a?.timestamp ?? '', skipped: a?.skipped ?? ''
+      id: item.id, axis: item.axisKey,
+      neg_pole: item.negPole, pos_pole: item.posPole,
+      word: item.word, word_type: item.wordType,
+      rating: a?.rating ?? '',
+      suggest_neg: a?.suggest_neg ?? '',
+      suggest_pos: a?.suggest_pos ?? '',
+      annotator: a?.annotator ?? '',
+      timestamp: a?.timestamp ?? '',
+      skipped: a?.skipped ?? ''
     };
   });
 }
 
 function exportJSON() {
-  const data = { annotator: annotatorName, exported_at: new Date().toISOString(),
-    total: PAIRS.length, annotated: Object.values(annotations).filter(a => !a.skipped).length,
-    annotations: getRows() };
-  dl('annotations_' + annotatorName.replace(/\s+/g, '_') + '.json', JSON.stringify(data, null, 2), 'application/json');
-  showAlert('JSON downloaded. Please send this file back.');
+  const data = {
+    annotator: annotatorName,
+    exported_at: new Date().toISOString(),
+    total: ITEMS.length,
+    annotated: Object.values(annotations).filter(a => !a.skipped).length,
+    annotations: getRows()
+  };
+  dl('annotations_' + annotatorName.replace(/\s+/g,'_') + '.json',
+     JSON.stringify(data, null, 2), 'application/json');
+  showAlert('JSON downloaded.');
 }
 
 function exportCSV() {
-  const cols = ['key','pair','positive_pole','negative_pole','applicable','stereotypicality_score','pos_groups','neg_groups','note','annotator','timestamp','skipped'];
-  const rows = [cols, ...getRows().map(r => cols.map(c => '"' + String(r[c] ?? '').replace(/"/g, '""') + '"'))];
-  dl('annotations_' + annotatorName.replace(/\s+/g, '_') + '.csv', rows.map(r => r.join(',')).join('\n'), 'text/csv');
-  showAlert('CSV downloaded. Please send this file back.');
+  const cols = ['id','axis','neg_pole','pos_pole','word','word_type','rating','suggest_neg','suggest_pos','annotator','timestamp','skipped'];
+  const rows = [cols, ...getRows().map(r => cols.map(c => '"' + String(r[c] ?? '').replace(/"/g,'""') + '"'))];
+  dl('annotations_' + annotatorName.replace(/\s+/g,'_') + '.csv',
+     rows.map(r => r.join(',')).join('\n'), 'text/csv');
+  showAlert('CSV downloaded.');
 }
 
 function dl(name, content, type) {
-  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([content], { type }));
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([content], { type }));
   a.download = name; a.click();
 }
 
 function showAlert(msg) {
   const el = document.getElementById('exportAlert');
-  el.innerHTML = '<span class="alert-msg">' + msg + '</span>';
+  el.innerHTML = '<span class="alert-msg">' + msg + ' Please send the file back.</span>';
   setTimeout(() => el.innerHTML = '', 4000);
 }
+
+// Build scale buttons once
+buildScaleButtons();
 </script>
 </body>
 </html>
