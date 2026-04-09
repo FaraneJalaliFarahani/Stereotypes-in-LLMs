@@ -3,141 +3,157 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Stereotype Axis Annotation</title>
+<title>Semantic Axis Annotation</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  :root{
-    --bg:#faf9f7;--bg-card:#fff;--bg-sec:#f0eee9;--bg-tri:#e8e5df;--bg-hover:#f5f3ef;
-    --text:#1b1918;--text2:#6e6862;--text3:#9e9690;
-    --bdr:rgba(0,0,0,.08);--bdr-md:rgba(0,0,0,.14);
-    --accent:#c25832;--accent-lt:#f6ebe6;--accent-dk:#983f22;
-    --neg-bg:#fdf0ea;--neg-bdr:#f0c5a8;--neg-tx:#8b3a14;
-    --pos-bg:#e8f0f6;--pos-bdr:#a8c8e0;--pos-tx:#1a4a6c;
-    --ok-bg:#eaf3de;--ok-bdr:#b5d49a;--ok-tx:#2d5a0e;
-    --warn-bg:#fef6e6;--warn-bdr:#f0c96e;--warn-tx:#6e4a08;
-    --err-tx:#7a1f1f;--err-bg:#fceaea;
-    --r:10px;--r-lg:14px;--r-xl:18px;
-    --font:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;
-    --mono:'DM Mono','SF Mono',monospace;
-  }
-  @media(prefers-color-scheme:dark){:root{
-    --bg:#1a1917;--bg-card:#232220;--bg-sec:#2a2927;--bg-tri:#333230;--bg-hover:#2e2d2b;
-    --text:#ede9e3;--text2:#a8a29a;--text3:#716b63;
-    --bdr:rgba(255,255,255,.07);--bdr-md:rgba(255,255,255,.13);
-    --accent:#e07050;--accent-lt:#3a2218;--accent-dk:#f09878;
-    --neg-bg:#2e1e14;--neg-bdr:#6e3a1a;--neg-tx:#f0b888;
-    --pos-bg:#142030;--pos-bdr:#2a5878;--pos-tx:#90c0e0;
-    --ok-bg:#1a2e0a;--ok-bdr:#3a6818;--ok-tx:#b0d090;
-    --warn-bg:#2e2408;--warn-bdr:#6e4a08;--warn-tx:#f0c96e;
-    --err-tx:#f0a0a0;--err-bg:#3a1818;
-  }}
-  body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh}
-  .app{max-width:680px;margin:0 auto;padding:2rem 1.25rem 4rem}
-  .hidden{display:none!important}
-  .header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:2rem;padding-bottom:1rem;border-bottom:1px solid var(--bdr)}
-  .header h1{font-size:21px;font-weight:600;letter-spacing:-.02em}
-  .tag{font-family:var(--mono);font-size:11px;padding:3px 10px;border-radius:20px;background:var(--bg-sec);color:var(--text2);border:1px solid var(--bdr)}
-  .card{background:var(--bg-card);border:1px solid var(--bdr);border-radius:var(--r-xl);box-shadow:0 1px 3px rgba(0,0,0,.04);overflow:hidden;margin-bottom:1.25rem}
-  .btn{display:inline-flex;align-items:center;gap:6px;padding:9px 20px;border-radius:var(--r);font-size:14px;font-weight:500;font-family:var(--font);cursor:pointer;border:1px solid var(--bdr-md);background:var(--bg-card);color:var(--text);transition:all .15s;white-space:nowrap}
-  .btn:hover{background:var(--bg-hover);border-color:var(--text3)}
-  .btn:disabled{opacity:.35;cursor:not-allowed}
-  .btn-primary{background:var(--accent);color:#fff;border-color:var(--accent)}
-  .btn-primary:hover{background:var(--accent-dk);border-color:var(--accent-dk)}
-  .btn-sm{padding:6px 14px;font-size:13px}
-  .btn-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-  .field{margin-bottom:14px}
-  .field label{display:block;font-size:13px;color:var(--text2);margin-bottom:5px;font-weight:500}
-  .field input{width:100%;max-width:320px;padding:9px 12px;font-size:14px;font-family:var(--font);background:var(--bg-card);color:var(--text);border:1px solid var(--bdr-md);border-radius:var(--r);outline:none}
-  .field input:focus{border-color:var(--accent)}
-  .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.5rem}
-  .stat{background:var(--bg-card);border-radius:var(--r);padding:.75rem 1rem;border:1px solid var(--bdr);text-align:center}
-  .stat .sv{font-size:26px;font-weight:700;letter-spacing:-.02em}
-  .stat .sl{font-size:11px;color:var(--text2);margin-top:2px;text-transform:uppercase;letter-spacing:.05em;font-weight:500}
-  .progress-row{display:flex;align-items:center;gap:12px;padding:.85rem 1.5rem;border-bottom:1px solid var(--bdr);background:var(--bg-sec)}
-  .ptrack{flex:1;height:4px;background:var(--bg-tri);border-radius:2px;overflow:hidden}
-  .pfill{height:100%;background:var(--accent);border-radius:2px;transition:width .3s ease}
-  .plabel{font-family:var(--mono);font-size:12px;color:var(--text2);white-space:nowrap}
-  .axis-header{padding:1.25rem 1.5rem;border-bottom:1px solid var(--bdr)}
-  .axis-label{font-family:var(--mono);font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
-  .axis-title{font-size:22px;font-weight:600;letter-spacing:-.01em;margin-bottom:14px}
-  .axis-defs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .axis-def{border-radius:var(--r);padding:10px 14px}
-  .axis-def.neg{background:var(--neg-bg);border:1px solid var(--neg-bdr)}
-  .axis-def.pos{background:var(--pos-bg);border:1px solid var(--pos-bdr)}
-  .def-word{font-size:15px;font-weight:600}
-  .axis-def.neg .def-word{color:var(--neg-tx)}
-  .axis-def.pos .def-word{color:var(--pos-tx)}
-  .def-text{font-size:12px;color:var(--text2);margin-top:3px;line-height:1.5}
-  .rating-section{padding:1.25rem 1.5rem}
-  .rating-question{font-size:15px;font-weight:500;margin-bottom:16px;line-height:1.5}
-  .rating-question em{color:var(--accent);font-style:normal;font-weight:600}
-  .na-row{display:flex;align-items:center;gap:8px;margin-bottom:14px}
-  .na-check{width:17px;height:17px;accent-color:var(--accent);cursor:pointer}
-  .na-label{font-size:13px;color:var(--text2);cursor:pointer}
-  .scale-wrap{transition:opacity .2s,max-height .3s;overflow:hidden}
-  .scale-wrap.collapsed{opacity:.15;max-height:0;pointer-events:none;margin:0}
-  .scale-wrap.expanded{opacity:1;max-height:300px}
-  .scale-row{display:flex;align-items:center;gap:0;margin-bottom:6px}
-  .scale-pole{font-size:13px;font-weight:600;min-width:90px}
-  .scale-pole.left{color:var(--neg-tx);text-align:right;padding-right:14px}
-  .scale-pole.right{color:var(--pos-tx);text-align:left;padding-left:14px}
-  .scale-btns{display:flex;gap:6px;flex:1;justify-content:center}
-  .scale-btn{
-    width:52px;height:46px;border-radius:var(--r);
-    border:1px solid var(--bdr-md);background:var(--bg-card);
-    font-size:17px;font-weight:600;font-family:var(--font);
-    color:var(--text3);cursor:pointer;transition:all .12s;
-    display:flex;align-items:center;justify-content:center;
-  }
-  .scale-btn:hover{background:var(--bg-hover);border-color:var(--text3);color:var(--text2)}
-  .scale-btn.a1{background:var(--neg-bg);color:var(--neg-tx);border-color:var(--neg-bdr);box-shadow:0 0 0 2px var(--neg-bdr)}
-  .scale-btn.a2{background:#fdf5ef;color:#9e5a28;border-color:#e0b890;box-shadow:0 0 0 2px #e0b890}
-  .scale-btn.a3{background:var(--bg-tri);color:var(--text);border-color:var(--text3);box-shadow:0 0 0 2px var(--text3)}
-  .scale-btn.a4{background:#eaf0f6;color:#3a6890;border-color:#a0c0d8;box-shadow:0 0 0 2px #a0c0d8}
-  .scale-btn.a5{background:var(--pos-bg);color:var(--pos-tx);border-color:var(--pos-bdr);box-shadow:0 0 0 2px var(--pos-bdr)}
-  @media(prefers-color-scheme:dark){
-    .scale-btn.a2{background:#2a2014;color:#d0a060;border-color:#6e4a20;box-shadow:0 0 0 2px #6e4a20}
-    .scale-btn.a4{background:#182830;color:#80b0d0;border-color:#2a5070;box-shadow:0 0 0 2px #2a5070}
-  }
-  .scale-desc{display:flex;justify-content:center;gap:6px;margin-top:2px}
-  .scale-desc span{width:52px;text-align:center;font-size:10px;color:var(--text3);line-height:1.3}
-  .suggest-section{padding:1rem 1.5rem;border-top:1px solid var(--bdr);background:var(--warn-bg)}
-  .suggest-title{font-size:13px;font-weight:600;color:var(--warn-tx);margin-bottom:4px}
-  .suggest-sub{font-size:12px;color:var(--warn-tx);opacity:.8;margin-bottom:12px;line-height:1.5}
-  .suggest-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .suggest-field label{font-size:12px;color:var(--warn-tx);font-weight:500;margin-bottom:4px;display:block}
-  .suggest-field input{width:100%;padding:7px 10px;font-size:13px;font-family:var(--font);border:1px solid var(--warn-bdr);border-radius:var(--r);background:rgba(255,255,255,.5);color:var(--text);outline:none}
-  @media(prefers-color-scheme:dark){.suggest-field input{background:rgba(0,0,0,.25)}}
-  .suggest-field input:focus{border-color:var(--accent)}
-  .suggest-field input::placeholder{color:var(--text3)}
-  .note-row{padding:1rem 1.5rem;border-top:1px solid var(--bdr)}
-  .note-row label{font-size:13px;color:var(--text2);display:block;margin-bottom:5px;font-weight:500}
-  .note-row textarea{width:100%;font-size:13px;font-family:var(--font);min-height:40px;resize:none;padding:7px 10px;background:var(--bg-card);color:var(--text);border:1px solid var(--bdr-md);border-radius:var(--r);outline:none}
-  .note-row textarea:focus{border-color:var(--accent)}
-  .nav-row{display:flex;justify-content:space-between;align-items:center;padding:1rem 1.5rem;border-top:1px solid var(--bdr);background:var(--bg-sec);flex-wrap:wrap;gap:8px}
-  .inst-block{padding:1.5rem}
-  .inst-block h3{font-size:15px;font-weight:600;margin-bottom:10px}
-  .inst-block p{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:.75rem}
-  .inst-block p:last-child{margin-bottom:0}
-  .inst-block strong{color:var(--text)}
-  .inst-example{background:var(--bg-sec);border:1px solid var(--bdr);border-radius:var(--r);padding:12px 16px;margin:10px 0}
-  .inst-example p{font-size:13px;margin-bottom:4px}
-  .ex-label{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--text3);margin-bottom:8px}
-  .warn-note{font-size:13px;color:var(--warn-tx);background:var(--warn-bg);border:1px solid var(--warn-bdr);border-radius:var(--r);padding:10px 14px;margin:0 1.5rem 1rem;line-height:1.6}
-  .export-bar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;padding:1rem 0}
-  .export-bar>span{font-size:14px;color:var(--text2);font-weight:500}
-  .alert-msg{font-size:13px;color:var(--ok-tx);background:var(--ok-bg);border:1px solid var(--ok-bdr);border-radius:var(--r);padding:5px 14px;display:inline-block;margin-top:8px}
-  .done-state{text-align:center;padding:3rem 1rem;color:var(--text2);font-size:15px}
-  .err-text{font-size:13px;color:var(--err-tx);margin-top:8px}
-  .load-err{font-size:13px;color:var(--err-tx);background:var(--err-bg);border-radius:var(--r);padding:10px 14px;margin-bottom:1rem;line-height:1.6}
-  @media(max-width:540px){
-    .axis-defs{grid-template-columns:1fr}
-    .suggest-grid{grid-template-columns:1fr}
-    .scale-pole{min-width:60px;font-size:11px}
-    .scale-btn{width:42px;height:40px;font-size:15px}
-    .scale-desc span{width:42px}
-  }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#faf9f7;--bg-card:#fff;--bg-sec:#f0eee9;--bg-tri:#e8e5df;--bg-hover:#f5f3ef;
+  --text:#1b1918;--text2:#6e6862;--text3:#9e9690;
+  --bdr:rgba(0,0,0,.08);--bdr-md:rgba(0,0,0,.14);
+  --accent:#c25832;--accent-lt:#f6ebe6;--accent-dk:#983f22;
+  --neg-bg:#fdf0ea;--neg-bdr:#f0c5a8;--neg-tx:#8b3a14;
+  --pos-bg:#e8f0f6;--pos-bdr:#a8c8e0;--pos-tx:#1a4a6c;
+  --ok-bg:#eaf3de;--ok-bdr:#b5d49a;--ok-tx:#2d5a0e;
+  --warn-bg:#fef6e6;--warn-bdr:#f0c96e;--warn-tx:#6e4a08;
+  --err-tx:#7a1f1f;--err-bg:#fceaea;
+  --r:10px;--r-lg:14px;--r-xl:18px;
+  --font:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;
+  --mono:'DM Mono','SF Mono',monospace;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#1a1917;--bg-card:#232220;--bg-sec:#2a2927;--bg-tri:#333230;--bg-hover:#2e2d2b;
+  --text:#ede9e3;--text2:#a8a29a;--text3:#716b63;
+  --bdr:rgba(255,255,255,.07);--bdr-md:rgba(255,255,255,.13);
+  --accent:#e07050;--accent-lt:#3a2218;--accent-dk:#f09878;
+  --neg-bg:#2e1e14;--neg-bdr:#6e3a1a;--neg-tx:#f0b888;
+  --pos-bg:#142030;--pos-bdr:#2a5878;--pos-tx:#90c0e0;
+  --ok-bg:#1a2e0a;--ok-bdr:#3a6818;--ok-tx:#b0d090;
+  --warn-bg:#2e2408;--warn-bdr:#6e4a08;--warn-tx:#f0c96e;
+  --err-tx:#f0a0a0;--err-bg:#3a1818;
+}}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh}
+.app{max-width:700px;margin:0 auto;padding:2rem 1.25rem 4rem}
+.hidden{display:none!important}
+.header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:2rem;padding-bottom:1rem;border-bottom:1px solid var(--bdr)}
+.header h1{font-size:21px;font-weight:600;letter-spacing:-.02em}
+.tag{font-family:var(--mono);font-size:11px;padding:3px 10px;border-radius:20px;background:var(--bg-sec);color:var(--text2);border:1px solid var(--bdr)}
+.card{background:var(--bg-card);border:1px solid var(--bdr);border-radius:var(--r-xl);box-shadow:0 1px 3px rgba(0,0,0,.04);overflow:hidden;margin-bottom:1.25rem}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 20px;border-radius:var(--r);font-size:14px;font-weight:500;font-family:var(--font);cursor:pointer;border:1px solid var(--bdr-md);background:var(--bg-card);color:var(--text);transition:all .15s;white-space:nowrap}
+.btn:hover{background:var(--bg-hover);border-color:var(--text3)}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.btn-primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn-primary:hover{background:var(--accent-dk);border-color:var(--accent-dk)}
+.btn-sm{padding:6px 14px;font-size:13px}
+.btn-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;color:var(--text2);margin-bottom:5px;font-weight:500}
+.field input{width:100%;max-width:320px;padding:9px 12px;font-size:14px;font-family:var(--font);background:var(--bg-card);color:var(--text);border:1px solid var(--bdr-md);border-radius:var(--r);outline:none}
+.field input:focus{border-color:var(--accent)}
+
+/* Progress */
+.progress-row{display:flex;align-items:center;gap:12px;padding:.85rem 1.5rem;border-bottom:1px solid var(--bdr);background:var(--bg-sec)}
+.ptrack{flex:1;height:4px;background:var(--bg-tri);border-radius:2px;overflow:hidden}
+.pfill{height:100%;background:var(--accent);border-radius:2px;transition:width .3s ease}
+.plabel{font-family:var(--mono);font-size:12px;color:var(--text2);white-space:nowrap}
+
+/* Axis header */
+.axis-header{padding:1.25rem 1.5rem;border-bottom:1px solid var(--bdr)}
+.axis-label{font-family:var(--mono);font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.axis-defs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.axis-def{border-radius:var(--r);padding:10px 14px}
+.axis-def.neg{background:var(--neg-bg);border:1px solid var(--neg-bdr)}
+.axis-def.pos{background:var(--pos-bg);border:1px solid var(--pos-bdr)}
+.def-word{font-size:15px;font-weight:600}
+.axis-def.neg .def-word{color:var(--neg-tx)}
+.axis-def.pos .def-word{color:var(--pos-tx)}
+.def-text{font-size:12px;color:var(--text2);margin-top:3px;line-height:1.5}
+
+/* Rating item */
+.rating-item{padding:1rem 1.5rem;border-bottom:1px solid var(--bdr)}
+.rating-item:last-child{border-bottom:none}
+.ri-word{font-size:16px;font-weight:600;margin-bottom:10px}
+.ri-question{font-size:14px;color:var(--text2);margin-bottom:12px;line-height:1.5}
+.ri-question em{font-style:normal;font-weight:600}
+.ri-question em.neg-color{color:var(--neg-tx)}
+.ri-question em.pos-color{color:var(--pos-tx)}
+.ri-scale{display:flex;align-items:center;gap:0}
+.ri-pole{font-size:12px;font-weight:600;min-width:80px}
+.ri-pole.left{color:var(--neg-tx);text-align:right;padding-right:12px}
+.ri-pole.right{color:var(--pos-tx);text-align:left;padding-left:12px}
+.ri-btns{display:flex;gap:5px;flex:1;justify-content:center}
+.ri-btn{
+  width:56px;height:50px;border-radius:var(--r);
+  border:1px solid var(--bdr-md);background:var(--bg-card);
+  font-size:17px;font-weight:600;font-family:var(--font);
+  color:var(--text3);cursor:pointer;transition:all .12s;
+  display:flex;align-items:center;justify-content:center;
+}
+.ri-btn:hover{background:var(--bg-hover);border-color:var(--text3);color:var(--text2)}
+.ri-btn.a1{background:var(--neg-bg);color:var(--neg-tx);border-color:var(--neg-bdr);box-shadow:0 0 0 2px var(--neg-bdr)}
+.ri-btn.a2{background:#fdf5ef;color:#9e5a28;border-color:#e0b890;box-shadow:0 0 0 2px #e0b890}
+.ri-btn.a3{background:var(--bg-tri);color:var(--text);border-color:var(--text3);box-shadow:0 0 0 2px var(--text3)}
+.ri-btn.a4{background:#eaf0f6;color:#3a6890;border-color:#a0c0d8;box-shadow:0 0 0 2px #a0c0d8}
+.ri-btn.a5{background:var(--pos-bg);color:var(--pos-tx);border-color:var(--pos-bdr);box-shadow:0 0 0 2px var(--pos-bdr)}
+@media(prefers-color-scheme:dark){
+  .ri-btn.a2{background:#2a2014;color:#d0a060;border-color:#6e4a20;box-shadow:0 0 0 2px #6e4a20}
+  .ri-btn.a4{background:#182830;color:#80b0d0;border-color:#2a5070;box-shadow:0 0 0 2px #2a5070}
+}
+.ri-labels{display:flex;justify-content:center;gap:5px;margin-top:3px}
+.ri-labels span{width:56px;text-align:center;font-size:10px;color:var(--text3);line-height:1.3}
+.ri-na{display:flex;align-items:center;gap:8px;margin-top:10px}
+.ri-na input{width:16px;height:16px;accent-color:var(--accent);cursor:pointer}
+.ri-na label{font-size:12px;color:var(--text3);cursor:pointer}
+
+/* Suggest section */
+.suggest-section{padding:1rem 1.5rem;border-top:1px solid var(--bdr);background:var(--warn-bg)}
+.suggest-title{font-size:13px;font-weight:600;color:var(--warn-tx);margin-bottom:4px}
+.suggest-sub{font-size:12px;color:var(--warn-tx);opacity:.8;margin-bottom:12px;line-height:1.5}
+.suggest-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.suggest-field label{font-size:12px;color:var(--warn-tx);font-weight:500;margin-bottom:4px;display:block}
+.suggest-field input{width:100%;padding:7px 10px;font-size:13px;font-family:var(--font);border:1px solid var(--warn-bdr);border-radius:var(--r);background:rgba(255,255,255,.5);color:var(--text);outline:none}
+@media(prefers-color-scheme:dark){.suggest-field input{background:rgba(0,0,0,.25)}}
+.suggest-field input:focus{border-color:var(--accent)}
+.suggest-field input::placeholder{color:var(--text3)}
+
+/* Nav */
+.nav-row{display:flex;justify-content:space-between;align-items:center;padding:1rem 1.5rem;border-top:1px solid var(--bdr);background:var(--bg-sec);flex-wrap:wrap;gap:8px}
+
+/* Instructions */
+.inst-block{padding:1.5rem}
+.inst-block h3{font-size:15px;font-weight:600;margin-bottom:10px}
+.inst-block p{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:.75rem}
+.inst-block p:last-child{margin-bottom:0}
+.inst-block strong{color:var(--text)}
+.inst-example{background:var(--bg-sec);border:1px solid var(--bdr);border-radius:var(--r);padding:12px 16px;margin:10px 0}
+.inst-example p{font-size:13px;margin-bottom:4px}
+.ex-label{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--text3);margin-bottom:8px}
+.warn-note{font-size:13px;color:var(--warn-tx);background:var(--warn-bg);border:1px solid var(--warn-bdr);border-radius:var(--r);padding:10px 14px;margin:0 1.5rem 1rem;line-height:1.6}
+
+/* Stats */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.5rem}
+.stat{background:var(--bg-card);border-radius:var(--r);padding:.75rem 1rem;border:1px solid var(--bdr);text-align:center}
+.stat .sv{font-size:26px;font-weight:700;letter-spacing:-.02em}
+.stat .sl{font-size:11px;color:var(--text2);margin-top:2px;text-transform:uppercase;letter-spacing:.05em;font-weight:500}
+
+/* Export */
+.export-bar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;padding:1rem 0}
+.export-bar>span{font-size:14px;color:var(--text2);font-weight:500}
+.alert-msg{font-size:13px;color:var(--ok-tx);background:var(--ok-bg);border:1px solid var(--ok-bdr);border-radius:var(--r);padding:5px 14px;display:inline-block;margin-top:8px}
+.done-state{text-align:center;padding:3rem 1rem;color:var(--text2);font-size:15px}
+.err-text{font-size:13px;color:var(--err-tx);margin-top:8px}
+
+/* Completed check */
+.ri-done{position:absolute;top:8px;right:12px;font-size:14px;color:var(--ok-tx)}
+.rating-item{position:relative}
+
+@media(max-width:540px){
+  .axis-defs{grid-template-columns:1fr}
+  .suggest-grid{grid-template-columns:1fr}
+  .ri-pole{min-width:50px;font-size:11px}
+  .ri-btn{width:44px;height:42px;font-size:15px}
+  .ri-labels span{width:44px}
+}
 </style>
 </head>
 <body>
@@ -147,21 +163,19 @@
     <span class="tag" id="modeLabel">Ready</span>
   </div>
 
-  <div id="loadErr" class="load-err hidden"></div>
-
   <!-- SETUP -->
-  <div class="card hidden" id="setupPanel">
+  <div class="card" id="setupPanel">
     <div class="inst-block">
       <h3>Instructions</h3>
-      <p>You will see a series of <strong>antonym pairs</strong> (two opposite adjectives). For each pair, rate the word <strong>"students"</strong> on a 1–5 scale between the two poles.</p>
+      <p>You will see a series of <strong>antonym pairs</strong> (two opposite adjectives). For each pair, you will rate <strong>3 words</strong> on a 1–5 scale between the two poles.</p>
       <div class="inst-example">
         <div class="ex-label">Example</div>
         <p>Antonym pair: <strong>poor ↔ rich</strong></p>
-        <p>→ Are students rather <em>poor</em> or rather <em>rich</em>?</p>
-        <p style="font-family:var(--mono);font-size:12px;color:var(--text3);margin-top:6px">1 (poor) · 2 (leaning poor) · 3 (neither) · 4 (leaning rich) · 5 (rich)</p>
-        <p style="margin-top:8px">If the pair doesn't apply at all (e.g. <em>acidic ↔ alkaline</em> for students), check <strong>Not applicable</strong>.</p>
+        <p>Rate <strong>"students"</strong> → Are students rather <em>poor</em> or rather <em>rich</em>?</p>
+        <p>Rate <strong>"door"</strong> → Are doors rather <em>poor</em> or rather <em>rich</em>?</p>
+        <p style="font-family:var(--mono);font-size:12px;color:var(--text3);margin-top:6px">1 (poor) · 2 · 3 (neither) · 4 · 5 (rich)</p>
+        <p style="margin-top:8px">If the pair doesn't apply at all to a word, check <strong>Not applicable</strong>.</p>
       </div>
-      <p>For some axes you will also be asked to <strong>suggest a word</strong> you would rate at each extreme. This is optional but helpful.</p>
     </div>
     <div class="warn-note">
       <strong>⏱ Tip:</strong> Go with your gut — first impressions are best. Don't overthink it.
@@ -181,7 +195,7 @@
   <!-- STATS -->
   <div id="statsSection" class="hidden">
     <div class="stats-row">
-      <div class="stat"><div class="sv" id="stTotal">—</div><div class="sl">Antonym Pair</div></div>
+      <div class="stat"><div class="sv" id="stTotal">—</div><div class="sl">Axes</div></div>
       <div class="stat"><div class="sv" id="stDone">0</div><div class="sl">Done</div></div>
       <div class="stat"><div class="sv" id="stLeft">—</div><div class="sl">Remaining</div></div>
     </div>
@@ -197,8 +211,7 @@
 
       <div class="axis-header">
         <div class="axis-label">Antonym Pair <span id="axisIdx"></span></div>
-        <div class="axis-title" id="axisTitle">&nbsp;</div>
-        <div class="axis-defs">
+        <div class="axis-defs" style="margin-top:10px">
           <div class="axis-def neg">
             <div class="def-word" id="negWord">—</div>
             <div class="def-text" id="negDef"></div>
@@ -210,40 +223,13 @@
         </div>
       </div>
 
-      <div class="rating-section">
-        <div class="rating-question">
-          Are <strong>students</strong>strong> rather <em><span id="qNeg">—</span></em> or rather <em><span id="qPos">—</span></em>?
-        </div>
+      <!-- Words to rate - generated dynamically -->
+      <div id="ratingsContainer"></div>
 
-        <div class="na-row">
-          <input type="checkbox" class="na-check" id="naCheck" onchange="toggleNA()">
-          <label class="na-label" for="naCheck">Not applicable — this antonym pair does not apply to "students"</label>
-        </div>
-
-        <div class="scale-wrap expanded" id="scaleWrap">
-          <div class="scale-row">
-            <span class="scale-pole left" id="scalePoleL">—</span>
-            <div class="scale-btns" id="scaleBtns">
-              <button class="scale-btn" data-val="1" onclick="setScore(1)">1</button>
-              <button class="scale-btn" data-val="2" onclick="setScore(2)">2</button>
-              <button class="scale-btn" data-val="3" onclick="setScore(3)">3</button>
-              <button class="scale-btn" data-val="4" onclick="setScore(4)">4</button>
-              <button class="scale-btn" data-val="5" onclick="setScore(5)">5</button>
-            </div>
-            <span class="scale-pole right" id="scalePoleR">—</span>
-          </div>
-<span id="sd1">—</span>
-<span>somewhat <span id="sd1b"></span></span>
-<span>neutral</span>
-<span>somewhat <span id="sd5b"></span></span>
-<span id="sd5">—</span>
-          </div>
-        </div>
-      </div>
-
+      <!-- Suggestions - only for subset -->
       <div class="suggest-section hidden" id="suggestSection">
         <div class="suggest-title">💡 Word suggestions (optional)</div>
-        <div class="suggest-sub">Can you think of a word you would strongly associate with each pole?</div>
+        <div class="suggest-sub">Suggest one word you would rate at each extreme of this scale.</div>
         <div class="suggest-grid">
           <div class="suggest-field">
             <label>A word you'd rate <strong>1</strong> (<span id="sugNegLbl">—</span>):</label>
@@ -256,16 +242,11 @@
         </div>
       </div>
 
-      <div class="note-row">
-        <label>Notes <span style="color:var(--text3);font-size:11px">(optional)</span></label>
-        <textarea id="noteField" placeholder="Any thoughts about this axis…"></textarea>
-      </div>
-
       <div class="nav-row">
         <div class="btn-row">
           <button class="btn btn-sm" id="prevBtn" onclick="navigate(-1)" disabled>← Prev</button>
         </div>
-        <button class="btn btn-sm btn-primary" onclick="saveAndNext()">Save &amp; next →</button>
+        <button class="btn btn-sm btn-primary" id="nextBtn" onclick="saveAndNext()">Save &amp; next →</button>
       </div>
     </div>
 
@@ -283,49 +264,93 @@
 </div>
 
 <script>
-const TARGET_WORD = 'students';
-let AXES = [], annotations = {}, currentIndex = 0, annotatorName = '';
-let currentScore = null, currentNA = false;
+// === CONFIGURATION ===
 
+// Target words: mix of social group mentions and random nouns (from paper Tables 7 & 8)
+const SOCIAL_GROUPS = [
+  "nurses","housewives","disabled people","elderly people","drug addicts",
+  "homeless people","welfare recipients","refugees","undocumented immigrants","scientists",
+  "rich people","Asian people","Jewish people","upper class people","Republicans",
+  "men","career women","feminists","unemployed people","poor people",
+  "Christian people","Muslim people","Hindu people","believers","atheists",
+  "nonbelievers","skeptics","agnostics","conservatives","Democrats",
+  "liberals","gay people","CEOs","billionaires","business executives",
+  "managers","working class people","blue-collar workers","intellectuals","professors",
+  "engineers","doctors","immigrants","uneducated people","traditional women",
+  "transgender people","LGBTQ people","White people","Black people","Hispanic people",
+  "middle class people","women"
+];
+const RANDOM_NOUNS = ["door","cherry","cupcake","pumpkin","helmet","brick","triangle","sailor","whistle","sparrow"];
+const WORDS_PER_AXIS = 3; // 2 social groups + 1 random noun per axis
+
+// How many axes get the suggestion fields (first N)
+const SUGGEST_LIMIT = 10;
+
+// === EMBEDDED AXES DATA ===
+const EMBEDDED_DATA = {
+  "a00259568-a00261245": "Antonym Pair: lower-class.a.01|upper-class.a.01\n  Positive: lower-class, low-class \u2192 occupying the lowest socioeconomic position in a society\n  Negative: upper-class \u2192 occupying the highest socioeconomic position in a society\n  Domain: Unknown - Unknown\n  Confidence: Unknown - Unknown\n",
+  "a01484987-a01485502": "Antonym Pair: womanly.a.01|unwomanly.a.01\n  Positive: womanly, feminine \u2192 befitting or characteristic of a woman especially a mature woman\n  Negative: unwomanly \u2192 not womanly\n  Domain: Philosophy and psychology - Unknown\n  Confidence: 1.0 - Unknown\n",
+  "a01889256-a01892953": "Antonym Pair: proud.a.01|humble.a.02\n  Positive: proud \u2192 feeling self-respect or pleasure in something by which you measure your self-worth; or being a reason for pride\n  Negative: humble \u2192 marked by meekness or modesty; not arrogant or prideful\n  Domain: Philosophy and psychology - Unknown\n  Confidence: 0.917 - Unknown\n",
+  "a00025238-a00025728": "Antonym Pair: acidic.a.01|alkaline.a.01\n  Positive: acidic \u2192 being or containing an acid; of a solution having an excess of hydrogen atoms (having a pH of less than 7)\n  Negative: alkaline, alkalic \u2192 relating to or containing an alkali; having a pH greater than 7\n  Domain: Chemistry and mineralogy - Chemistry and mineralogy\n  Confidence: 1.0 - 0.889\n",
+  "a02685539-a02686159": "Antonym Pair: extracellular.a.01|intracellular.a.01\n  Positive: extracellular \u2192 located or occurring outside a cell or cells\n  Negative: intracellular \u2192 located or occurring within a cell or cells\n  Domain: Biology - Biology\n  Confidence: 1.0 - 1.0\n",
+  "a00286578-a00287640": "Antonym Pair: broad-minded.a.02|narrow-minded.a.02\n  Positive: broad-minded \u2192 inclined to respect views and beliefs that differ from your own\n  Negative: narrow-minded, narrow \u2192 lacking tolerance or flexibility or breadth of view\n  Domain: Unknown - Unknown\n  Confidence: Unknown - Unknown\n",
+  "a02409849-a02410156": "Antonym Pair: thermoplastic.a.01|thermosetting.a.01\n  Positive: thermoplastic \u2192 having the property of softening or fusing when heated and of hardening and becoming rigid again when cooled\n  Negative: thermosetting, thermoset \u2192 having the property of becoming permanently hard and rigid when heated or cured\n  Domain: Chemistry and mineralogy - Unknown\n  Confidence: 0.667 - Unknown\n",
+  "a01099536-a01100082": "Antonym Pair: specified.a.01|unspecified.a.01\n  Positive: specified \u2192 clearly and explicitly stated\n  Negative: unspecified \u2192 not stated explicitly or in detail\n  Domain: Unknown - Unknown\n  Confidence: Unknown - Unknown\n",
+  "a02021905-a02022953": "Antonym Pair: rich.a.01|poor.a.02\n  Positive: rich \u2192 possessing material wealth\n  Negative: poor \u2192 having little money or few possessions\n  Domain: Business, economics, and finance - Unknown\n  Confidence: 1.0 - Unknown\n",
+  "a02131072-a02134999": "Antonym Pair: sexy.a.01|unsexy.a.01\n  Positive: sexy \u2192 marked by or tending to arouse sexual desire or interest\n  Negative: unsexy \u2192 not sexually aroused or arousing\n  Domain: Philosophy and psychology - Unknown\n  Confidence: 1.0 - Unknown\n"
+};
+
+// === STATE ===
+let AXES = [], annotations = {}, currentIndex = 0, annotatorName = '';
+
+// === PARSING ===
 function parseEntry(key, raw) {
   const lines = raw.split('\n').map(s => s.trim()).filter(Boolean);
   const pairLine = lines.find(l => l.startsWith('Antonym Pair:')) || '';
   const pairRaw = pairLine.replace('Antonym Pair:', '').trim();
   const clean = w => w.replace(/\.[a-z]\.\d+$/, '').trim();
   const parts = pairRaw.split('|');
-  const posWord = clean(parts[0] || '');
-  const negWord = clean(parts[1] || '');
+  const word1 = clean(parts[0] || '');
+  const word2 = clean(parts[1] || '');
   const getDef = prefix => {
     const line = lines.find(l => l.startsWith(prefix + ':')) || '';
     const body = line.replace(prefix + ':', '').trim();
     const i = body.indexOf('\u2192');
     return i >= 0 ? body.slice(i + 1).trim() : body;
   };
-  return { key, pair: posWord + '|' + negWord, posName: posWord, negName: negWord, posDef: getDef('Positive'), negDef: getDef('Negative') };
+  return { key, pair: word1 + '|' + word2, negName: word1, posName: word2, negDef: getDef('Positive'), posDef: getDef('Negative') };
 }
 
-async function loadPairs() {
+// === WORD SAMPLING ===
+// For each axis, pick 2 social groups + 1 random noun, rotating so all words get coverage
+function sampleWordsForAxis(axisIndex) {
+  const sg1 = SOCIAL_GROUPS[axisIndex % SOCIAL_GROUPS.length];
+  const sg2 = SOCIAL_GROUPS[(axisIndex + 3) % SOCIAL_GROUPS.length];
+  // Ensure sg2 != sg1
+  const sg2Final = sg2 === sg1 ? SOCIAL_GROUPS[(axisIndex + 5) % SOCIAL_GROUPS.length] : sg2;
+  const rn = RANDOM_NOUNS[axisIndex % RANDOM_NOUNS.length];
+  return [sg1, sg2Final, rn];
+}
+
+// === INIT ===
+function loadPairs() {
   try {
-    const res = await fetch('example_axes.json');
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const data = await res.json();
-    if (Array.isArray(data)) AXES = data;
-    else if (typeof data === 'object' && data !== null)
-      AXES = Object.entries(data).map(([k, v]) => parseEntry(k, v));
-    else throw new Error('Unrecognised format.');
+    AXES = Object.entries(EMBEDDED_DATA).map(([k, v]) => parseEntry(k, v));
     if (!AXES.length) throw new Error('No axes found.');
-    AXES.forEach((ax, i) => { ax.hasSuggestion = i < 10; });
+    AXES.forEach((ax, i) => {
+      ax.hasSuggestion = i < SUGGEST_LIMIT;
+      ax.targetWords = sampleWordsForAxis(i);
+    });
     document.getElementById('stTotal').textContent = AXES.length;
     document.getElementById('stLeft').textContent = AXES.length;
     document.getElementById('setupPanel').classList.remove('hidden');
   } catch (err) {
-    const el = document.getElementById('loadErr');
-    el.classList.remove('hidden');
-    el.textContent = '\u26a0 Could not load example_axes.json \u2014 ' + err.message;
+    console.error(err);
   }
 }
 loadPairs();
 
+// === SESSION ===
 function startSession() {
   annotatorName = document.getElementById('annotatorName').value.trim();
   if (!annotatorName) { document.getElementById('setupErr').textContent = 'Please enter your name.'; return; }
@@ -334,86 +359,173 @@ function startSession() {
   document.getElementById('statsSection').classList.remove('hidden');
   document.getElementById('annotationSection').classList.remove('hidden');
   document.getElementById('modeLabel').textContent = annotatorName;
-  currentIndex = 0; showAxis(0); updateStats();
+  currentIndex = 0;
+  showAxis(0);
+  updateStats();
 }
 
+// === DISPLAY AXIS ===
 function showAxis(idx) {
   if (idx >= AXES.length) { showDone(); return; }
   const ax = AXES[idx];
-  document.getElementById('axisTitle').textContent = ax.negName + '  \u2194  ' + ax.posName;
+
   document.getElementById('axisIdx').textContent = '#' + (idx + 1);
   document.getElementById('negWord').textContent = ax.negName;
   document.getElementById('negDef').textContent = ax.negDef;
   document.getElementById('posWord').textContent = ax.posName;
   document.getElementById('posDef').textContent = ax.posDef;
-  document.getElementById('qNeg').textContent = ax.negName;
-  document.getElementById('qPos').textContent = ax.posName;
-  document.getElementById('scalePoleL').textContent = ax.negName;
-  document.getElementById('scalePoleR').textContent = ax.posName;
-  document.getElementById('sd1').textContent = ax.negName;
-  document.getElementById('sd5').textContent = ax.posName;
   document.getElementById('pfill').style.width = Math.round((idx / AXES.length) * 100) + '%';
   document.getElementById('plabel').textContent = (idx + 1) + ' / ' + AXES.length;
   document.getElementById('prevBtn').disabled = idx === 0;
 
-  const saved = annotations[ax.key];
-  currentScore = saved?.score ?? null;
-  currentNA = saved?.not_applicable ?? false;
-  document.getElementById('naCheck').checked = currentNA;
-  renderScale(); renderNA();
+  // Build rating items for each target word
+  const container = document.getElementById('ratingsContainer');
+  container.innerHTML = '';
 
+  const saved = annotations[ax.key] || {};
+
+  ax.targetWords.forEach((word, wi) => {
+    const wordKey = word;
+    const savedWord = saved[wordKey] || {};
+    const isNA = savedWord.not_applicable || false;
+    const score = savedWord.score ?? null;
+
+    const div = document.createElement('div');
+    div.className = 'rating-item';
+    div.id = 'ri-' + wi;
+
+    const isSocialGroup = SOCIAL_GROUPS.includes(word);
+    const wordTypeTag = isSocialGroup
+      ? ''
+      : '';
+
+    div.innerHTML = `
+      <div class="ri-word">${word} ${wordTypeTag}</div>
+      <div class="ri-question">
+        Is <strong>${word}</strong> rather <em class="neg-color">${ax.negName}</em> or rather <em class="pos-color">${ax.posName}</em>?
+      </div>
+      <div class="ri-scale" id="scale-${wi}" style="${isNA ? 'opacity:.15;pointer-events:none' : ''}">
+        <span class="ri-pole left">${ax.negName}</span>
+        <div class="ri-btns" id="btns-${wi}">
+          ${[1,2,3,4,5].map(v => `<button class="ri-btn${score === v ? ' a'+v : ''}" data-val="${v}" onclick="setWordScore(${wi},${v})">${v}</button>`).join('')}
+        </div>
+        <span class="ri-pole right">${ax.posName}</span>
+      </div>
+      <div class="ri-labels" id="labels-${wi}" style="${isNA ? 'opacity:.15;pointer-events:none' : ''}">
+        <span>${ax.negName}</span>
+        <span></span>
+        <span>neither</span>
+        <span></span>
+        <span>${ax.posName}</span>
+      </div>
+      <div class="ri-na">
+        <input type="checkbox" id="na-${wi}" ${isNA ? 'checked' : ''} onchange="toggleWordNA(${wi})">
+        <label for="na-${wi}">Not applicable</label>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+
+  // Suggestions
   const sugSec = document.getElementById('suggestSection');
   if (ax.hasSuggestion) {
     sugSec.classList.remove('hidden');
     document.getElementById('sugNegLbl').textContent = ax.negName;
     document.getElementById('sugPosLbl').textContent = ax.posName;
-    document.getElementById('sugNeg').value = saved?.suggest_neg || '';
-    document.getElementById('sugPos').value = saved?.suggest_pos || '';
-  } else { sugSec.classList.add('hidden'); }
+    document.getElementById('sugNeg').value = saved._suggest_neg || '';
+    document.getElementById('sugPos').value = saved._suggest_pos || '';
+  } else {
+    sugSec.classList.add('hidden');
+  }
 
-  document.getElementById('noteField').value = saved?.note || '';
   document.getElementById('mainCard').classList.remove('hidden');
   document.getElementById('doneMsg').classList.add('hidden');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function setScore(val) {
-  currentScore = val; currentNA = false;
-  document.getElementById('naCheck').checked = false;
-  renderNA(); renderScale();
-}
-
-function renderScale() {
-  const btns = document.getElementById('scaleBtns').children;
+// === RATING INTERACTIONS ===
+function setWordScore(wi, val) {
+  // Uncheck NA
+  document.getElementById('na-' + wi).checked = false;
+  const scale = document.getElementById('scale-' + wi);
+  const labels = document.getElementById('labels-' + wi);
+  scale.style.opacity = '1';
+  scale.style.pointerEvents = '';
+  labels.style.opacity = '1';
+  labels.style.pointerEvents = '';
+  // Highlight button
+  const btns = document.getElementById('btns-' + wi).children;
   for (const b of btns) {
     const v = parseInt(b.dataset.val);
-    b.className = 'scale-btn' + (v === currentScore ? ' a' + v : '');
+    b.className = 'ri-btn' + (v === val ? ' a' + v : '');
+  }
+  // Store in temp
+  storeWordRating(wi, val, false);
+}
+
+function toggleWordNA(wi) {
+  const isNA = document.getElementById('na-' + wi).checked;
+  const scale = document.getElementById('scale-' + wi);
+  const labels = document.getElementById('labels-' + wi);
+  scale.style.opacity = isNA ? '.15' : '1';
+  scale.style.pointerEvents = isNA ? 'none' : '';
+  labels.style.opacity = isNA ? '.15' : '1';
+  labels.style.pointerEvents = isNA ? 'none' : '';
+  if (isNA) {
+    // Clear score visually
+    const btns = document.getElementById('btns-' + wi).children;
+    for (const b of btns) b.className = 'ri-btn';
+    storeWordRating(wi, null, true);
   }
 }
 
-function toggleNA() {
-  currentNA = document.getElementById('naCheck').checked;
-  if (currentNA) currentScore = null;
-  renderNA(); renderScale();
-}
-
-function renderNA() {
-  document.getElementById('scaleWrap').className = 'scale-wrap ' + (currentNA ? 'collapsed' : 'expanded');
-}
-
-function saveAndNext() {
-  if (!currentNA && currentScore === null) { alert('Please select a rating or mark "Not applicable".'); return; }
+function storeWordRating(wi, score, na) {
   const ax = AXES[currentIndex];
-  annotations[ax.key] = {
-    key: ax.key, pair: ax.pair, negative_pole: ax.negName, positive_pole: ax.posName,
-    target_word: TARGET_WORD, score: currentScore, not_applicable: currentNA,
-    suggest_neg: ax.hasSuggestion ? document.getElementById('sugNeg').value.trim() : null,
-    suggest_pos: ax.hasSuggestion ? document.getElementById('sugPos').value.trim() : null,
-    note: document.getElementById('noteField').value.trim(),
+  if (!annotations[ax.key]) annotations[ax.key] = {};
+  const word = ax.targetWords[wi];
+  annotations[ax.key][word] = {
+    score: score,
+    not_applicable: na,
+    word_type: SOCIAL_GROUPS.includes(word) ? 'social_group' : 'random_noun'
+  };
+}
+
+// === SAVE & NAVIGATE ===
+function saveAndNext() {
+  const ax = AXES[currentIndex];
+
+  // Check that all words have a rating or NA
+  let allDone = true;
+  ax.targetWords.forEach((word, wi) => {
+    const saved = annotations[ax.key]?.[word];
+    if (!saved || (saved.score === null && !saved.not_applicable)) {
+      allDone = false;
+    }
+  });
+
+  if (!allDone) {
+    alert('Please rate all words or mark them as "Not applicable".');
+    return;
+  }
+
+  // Save suggestions
+  if (ax.hasSuggestion) {
+    if (!annotations[ax.key]) annotations[ax.key] = {};
+    annotations[ax.key]._suggest_neg = document.getElementById('sugNeg').value.trim();
+    annotations[ax.key]._suggest_pos = document.getElementById('sugPos').value.trim();
+  }
+
+  // Mark metadata
+  if (!annotations[ax.key]) annotations[ax.key] = {};
+  annotations[ax.key]._meta = {
+    axis_key: ax.key, pair: ax.pair,
+    negative_pole: ax.negName, positive_pole: ax.posName,
     annotator: annotatorName, timestamp: new Date().toISOString()
   };
+
   updateStats();
-  if (currentIndex < AXES.length - 1) { currentIndex++; showAxis(currentIndex); } else showDone();
+  if (currentIndex < AXES.length - 1) { currentIndex++; showAxis(currentIndex); }
+  else showDone();
 }
 
 function navigate(dir) {
@@ -428,45 +540,54 @@ function showDone() {
 }
 
 function updateStats() {
-  const done = Object.keys(annotations).length;
+  const done = Object.keys(annotations).filter(k => annotations[k]._meta).length;
   document.getElementById('stDone').textContent = done;
   document.getElementById('stLeft').textContent = AXES.length - done;
 }
 
-document.addEventListener('keydown', e => {
-  if (document.getElementById('annotationSection').classList.contains('hidden')) return;
-  if (document.getElementById('mainCard').classList.contains('hidden')) return;
-  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-  if (e.key >= '1' && e.key <= '5') { e.preventDefault(); setScore(parseInt(e.key)); }
-  if (e.key === 'n' || e.key === 'N') { e.preventDefault(); document.getElementById('naCheck').checked = !currentNA; toggleNA(); }
-  if (e.key === 'Enter') { e.preventDefault(); saveAndNext(); }
-  if (e.key === 'ArrowLeft') { e.preventDefault(); navigate(-1); }
-  if (e.key === 'ArrowRight') { e.preventDefault(); saveAndNext(); }
-});
-
+// === EXPORT ===
 function exportJSON() {
-  const data = {
-    annotator: annotatorName, target_word: TARGET_WORD,
-    exported_at: new Date().toISOString(), total_axes: AXES.length,
-    annotated_axes: Object.keys(annotations).length,
-    annotations: AXES.map(ax => annotations[ax.key] || {
-      key: ax.key, pair: ax.pair, negative_pole: ax.negName, positive_pole: ax.posName,
-      target_word: TARGET_WORD, score: null, not_applicable: null,
-      suggest_neg: null, suggest_pos: null, note: '', annotator: '', timestamp: ''
+  const out = {
+    annotator: annotatorName,
+    exported_at: new Date().toISOString(),
+    total_axes: AXES.length,
+    target_words_config: { social_groups: SOCIAL_GROUPS, random_nouns: RANDOM_NOUNS, words_per_axis: WORDS_PER_AXIS },
+    annotations: AXES.map(ax => {
+      const saved = annotations[ax.key] || {};
+      const meta = saved._meta || { axis_key: ax.key, pair: ax.pair, negative_pole: ax.negName, positive_pole: ax.posName };
+      const ratings = {};
+      ax.targetWords.forEach(w => {
+        ratings[w] = saved[w] || { score: null, not_applicable: null, word_type: SOCIAL_GROUPS.includes(w) ? 'social_group' : 'random_noun' };
+      });
+      return {
+        ...meta,
+        suggest_neg: saved._suggest_neg || null,
+        suggest_pos: saved._suggest_pos || null,
+        ratings
+      };
     })
   };
-  dl('annotations_' + annotatorName.replace(/\s+/g, '_') + '.json', JSON.stringify(data, null, 2), 'application/json');
+  dl('annotations_' + annotatorName.replace(/\s+/g, '_') + '.json', JSON.stringify(out, null, 2), 'application/json');
   showExportAlert('JSON downloaded.');
 }
 
 function exportCSV() {
-  const cols = ['key','pair','negative_pole','positive_pole','target_word','score','not_applicable','suggest_neg','suggest_pos','note','annotator','timestamp'];
-  const rows = AXES.map(ax => {
-    const a = annotations[ax.key];
-    return { key: ax.key, pair: ax.pair, negative_pole: ax.negName, positive_pole: ax.posName,
-      target_word: TARGET_WORD, score: a?.score ?? '', not_applicable: a ? (a.not_applicable ? 'yes' : 'no') : '',
-      suggest_neg: a?.suggest_neg || '', suggest_pos: a?.suggest_pos || '',
-      note: a?.note || '', annotator: a?.annotator || '', timestamp: a?.timestamp || '' };
+  // Flat format: one row per (axis, word) pair
+  const cols = ['axis_key','pair','negative_pole','positive_pole','word','word_type','score','not_applicable','suggest_neg','suggest_pos','annotator','timestamp'];
+  const rows = [];
+  AXES.forEach(ax => {
+    const saved = annotations[ax.key] || {};
+    const meta = saved._meta || {};
+    ax.targetWords.forEach(w => {
+      const r = saved[w] || {};
+      rows.push({
+        axis_key: ax.key, pair: ax.pair, negative_pole: ax.negName, positive_pole: ax.posName,
+        word: w, word_type: SOCIAL_GROUPS.includes(w) ? 'social_group' : 'random_noun',
+        score: r.score ?? '', not_applicable: r.not_applicable ? 'yes' : (r.not_applicable === false ? 'no' : ''),
+        suggest_neg: saved._suggest_neg || '', suggest_pos: saved._suggest_pos || '',
+        annotator: meta.annotator || '', timestamp: meta.timestamp || ''
+      });
+    });
   });
   const csv = [cols.join(','), ...rows.map(r => cols.map(c => '"' + String(r[c] ?? '').replace(/"/g, '""') + '"').join(','))].join('\n');
   dl('annotations_' + annotatorName.replace(/\s+/g, '_') + '.csv', csv, 'text/csv');
@@ -474,7 +595,8 @@ function exportCSV() {
 }
 
 function dl(name, content, type) {
-  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([content], { type }));
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([content], { type }));
   a.download = name; a.click();
 }
 
@@ -483,6 +605,15 @@ function showExportAlert(msg) {
   el.innerHTML = '<span class="alert-msg">' + msg + '</span>';
   setTimeout(() => el.innerHTML = '', 3500);
 }
+
+// === KEYBOARD ===
+document.addEventListener('keydown', e => {
+  if (document.getElementById('annotationSection').classList.contains('hidden')) return;
+  if (document.getElementById('mainCard').classList.contains('hidden')) return;
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  if (e.key === 'Enter') { e.preventDefault(); saveAndNext(); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); navigate(-1); }
+});
 </script>
 </body>
 </html>
