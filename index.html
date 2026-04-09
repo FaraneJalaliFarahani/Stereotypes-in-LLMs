@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Semantic Axis Annotation</title>
+<title>Antonym Pair Annotation</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -149,8 +149,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       <div class="inst-example">
         <div class="ex-label">Example</div>
         <p>Antonym pair: <strong>poor ↔ rich</strong></p>
-        <p>Rate <strong>"students"</strong>: Are students rather <em>poor</em> or rather <em>rich</em>?</p>
-        <p style="font-family:var(--mono);font-size:12px;color:var(--text3);margin-top:6px">1 (poor) · 2 · 3 (neither) · 4 · 5 (rich)</p>
+        <p>Rate <strong>"students"</strong>: Are students more <em>poor</em> or <em>rich</em>?</p>
+        <p style="font-family:var(--mono);font-size:12px;color:var(--text3);margin-top:6px">1 (poor) · 2 (somewhat poor) · 3 (neutral) · 4 (somewhat rich) · 5 (rich)</p>
         <p style="margin-top:8px">If the pair doesn't apply at all to the word, check <strong>Not applicable</strong>.</p>
       </div>
     </div>
@@ -215,7 +215,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
           <span class="ri-pole right" id="pole1R">—</span>
         </div>
         <div class="ri-labels" id="labels1">
-          <span id="lbl1a">—</span><span>somewhat <span id="lbl1c">—</span></span><span>3 (neither)</span><span>somewhat <span id="lbl1d">—</span></span><span id="lbl1b">—</span>
+          <span id="lbl1a">—</span><span>somewhat <span id="lbl1c">—</span></span><span> neutral </span><span>somewhat <span id="lbl1d">—</span></span><span id="lbl1b">—</span>
         </div>
         <div class="ri-na">
           <input type="checkbox" id="na1" onchange="toggleNA(0)">
@@ -399,7 +399,9 @@ function showAxis(idx) {
     nas[w] = sv.not_applicable ?? false;
     document.getElementById('word'+n).textContent = word;
     document.getElementById('q'+n).innerHTML =
-      'Is <strong>'+word+'</strong> rather <em class="neg-color">'+ax.negName+'</em> or rather <em class="pos-color">'+ax.posName+'</em>?';
+      (w === 0 ? 'Are ' : 'Is ') +
+      '<strong>' + word + '</strong> more <em class="neg-color">' + ax.negName +
+      '</em> or <em class="pos-color">' + ax.posName + '</em>?';
     document.getElementById('pole'+n+'L').textContent = ax.negName;
     document.getElementById('pole'+n+'R').textContent = ax.posName;
     document.getElementById('lbl'+n+'a').textContent = ax.negName;
