@@ -131,7 +131,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   <div class="card" id="setupPanel">
     <div class="inst-block">
       <h3>Instructions</h3>
-      <p>You will see <strong>antonym pairs</strong> (two opposite adjectives). For each pair, you will rate <strong>two words</strong> on a 1–5 scale between the two adjectives.</p>
+      <p>You will see <strong>antonym pairs</strong> (two opposite adjectives). For each pair, you will rate <strong>one word</strong> on a 1–5 scale between the two adjectives.</p>
       <div class="inst-example">
         <div class="ex-label">Example</div>
         <p>Antonym pair: <strong>poor ↔ rich</strong></p>
@@ -365,6 +365,7 @@ function showAxis(idx) {
     document.getElementById('na'+n).checked = nas[w];
     renderScaleFor(w); renderNAFor(w);
   }
+  document.getElementById('ratingBlock2').classList.add('hidden');
   updateSuggestVisibility(ax);
   document.getElementById('mainCard').classList.remove('hidden');
   document.getElementById('doneMsg').classList.add('hidden');
@@ -409,9 +410,7 @@ function renderNAFor(w) {
 }
 
 function saveAndNext() {
-  for (let w = 0; w < 2; w++) {
-    if (!nas[w] && scores[w] === null) { alert('Please rate both words or mark them as "Not applicable".'); return; }
-  }
+if (!nas[0] && scores[0] === null) { alert('Please rate the word or mark it as "Not applicable".'); return; }
   const ax = AXES[currentIndex];
   if (!annotations[ax.key]) annotations[ax.key] = {};
   const words = [ax.socialGroup, ax.randomNoun];
