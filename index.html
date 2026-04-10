@@ -71,17 +71,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .ri-question em.neg-color{color:var(--neg-tx)}
 .ri-question em.pos-color{color:var(--pos-tx)}
 .ri-scale{display:flex;align-items:center;gap:0}
-.ri-pole{font-size:13px;font-weight:600;min-width:90px}
-.ri-pole.left{color:var(--neg-tx);text-align:right;padding-right:14px}
-.ri-pole.right{color:var(--pos-tx);text-align:left;padding-left:14px}
 .ri-btns{display:flex;gap:6px;flex:1;justify-content:center}
-.ri-btn{
-  width:60px;height:54px;border-radius:var(--r);
-  border:1px solid var(--bdr-md);background:var(--bg-card);
-  font-size:19px;font-weight:600;font-family:var(--font);
-  color:var(--text3);cursor:pointer;transition:all .12s;
-  display:flex;align-items:center;justify-content:center;
-}
+.ri-btn{width:60px;height:54px;border-radius:var(--r);border:1px solid var(--bdr-md);background:var(--bg-card);font-size:19px;font-weight:600;font-family:var(--font);color:var(--text3);cursor:pointer;transition:all .12s;display:flex;align-items:center;justify-content:center}
 .ri-btn:hover{background:var(--bg-hover);border-color:var(--text3);color:var(--text2)}
 .ri-btn.a1{background:var(--neg-bg);color:var(--neg-tx);border-color:var(--neg-bdr);box-shadow:0 0 0 2px var(--neg-bdr)}
 .ri-btn.a2{background:#fdf5ef;color:#9e5a28;border-color:#e0b890;box-shadow:0 0 0 2px #e0b890}
@@ -98,14 +89,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .ri-na input{width:17px;height:17px;accent-color:var(--accent);cursor:pointer}
 .ri-na label{font-size:13px;color:var(--text2);cursor:pointer}
 .suggest-section{padding:1rem 1.5rem;border-top:1px solid var(--bdr);background:var(--warn-bg)}
-.suggest-title{font-size:13px;font-weight:600;color:var(--warn-tx);margin-bottom:4px}
-.suggest-sub{font-size:12px;color:var(--warn-tx);opacity:.8;margin-bottom:12px;line-height:1.5}
+.suggest-title{font-size:13px;font-weight:600;color:var(--warn-tx);margin-bottom:8px}
 .suggest-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .suggest-field label{font-size:12px;color:var(--warn-tx);font-weight:500;margin-bottom:4px;display:block}
 .suggest-field input{width:100%;padding:7px 10px;font-size:13px;font-family:var(--font);border:1px solid var(--warn-bdr);border-radius:var(--r);background:rgba(255,255,255,.5);color:var(--text);outline:none}
 @media(prefers-color-scheme:dark){.suggest-field input{background:rgba(0,0,0,.25)}}
 .suggest-field input:focus{border-color:var(--accent)}
-.suggest-field input::placeholder{color:var(--text3)}
 .nav-row{display:flex;justify-content:space-between;align-items:center;padding:1rem 1.5rem;border-top:1px solid var(--bdr);background:var(--bg-sec);flex-wrap:wrap;gap:8px}
 .inst-block{padding:1.5rem}
 .inst-block h3{font-size:15px;font-weight:600;margin-bottom:10px}
@@ -128,7 +117,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 @media(max-width:540px){
   .axis-defs{grid-template-columns:1fr}
   .suggest-grid{grid-template-columns:1fr}
-  .ri-pole{min-width:60px;font-size:11px}
   .ri-btn{width:48px;height:46px;font-size:16px}
   .ri-labels span{width:48px}
 }
@@ -140,8 +128,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     <h1>Antonym Pairs Annotation</h1>
     <span class="tag" id="modeLabel">Ready</span>
   </div>
-
-  <!-- SETUP -->
   <div class="card" id="setupPanel">
     <div class="inst-block">
       <h3>Instructions</h3>
@@ -168,8 +154,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       <div class="err-text" id="setupErr"></div>
     </div>
   </div>
-
-  <!-- STATS -->
   <div id="statsSection" class="hidden">
     <div class="stats-row">
       <div class="stat"><div class="sv" id="stTotal">—</div><div class="sl">Questions</div></div>
@@ -177,15 +161,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       <div class="stat"><div class="sv" id="stLeft">—</div><div class="sl">Remaining</div></div>
     </div>
   </div>
-
-  <!-- ANNOTATION -->
   <div id="annotationSection" class="hidden">
     <div class="card" id="mainCard">
       <div class="progress-row">
         <div class="ptrack"><div class="pfill" id="pfill" style="width:0%"></div></div>
         <span class="plabel" id="plabel">— / —</span>
       </div>
-
       <div class="axis-header">
         <div class="axis-label">Antonym Pair <span id="axisIdx"></span></div>
         <div class="axis-defs">
@@ -199,7 +180,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
           </div>
         </div>
       </div>
-
       <div class="rating-section" id="ratingBlock1">
         <div class="ri-word" id="word1">—</div>
         <div class="ri-question" id="q1">—</div>
@@ -220,9 +200,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
           <label for="na1">Not applicable</label>
         </div>
       </div>
-
       <div style="border-top:1px solid var(--bdr)"></div>
-
       <div class="rating-section" id="ratingBlock2">
         <div class="ri-word" id="word2">—</div>
         <div class="ri-question" id="q2">—</div>
@@ -243,28 +221,24 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
           <label for="na2">Not applicable</label>
         </div>
       </div>
-
       <div class="suggest-section hidden" id="suggestSection">
-        <div class="suggest-title">💡 Word suggestions (optional)</div>
-        <div class="suggest-sub">Suggest one word you would rate at each extreme of this scale.</div>
+        <div class="suggest-title">💡 Suggest a word you would rate at each extreme of this scale</div>
         <div class="suggest-grid">
           <div class="suggest-field">
             <label>A word you'd rate <strong>1</strong> (<span id="sugNegLbl">—</span>):</label>
-            <input type="text" id="sugNeg" placeholder="e.g. homeless people" />
+            <input type="text" id="sugNeg" />
           </div>
           <div class="suggest-field">
             <label>A word you'd rate <strong>5</strong> (<span id="sugPosLbl">—</span>):</label>
-            <input type="text" id="sugPos" placeholder="e.g. billionaires" />
+            <input type="text" id="sugPos" />
           </div>
         </div>
       </div>
-
       <div class="nav-row">
         <button class="btn btn-sm" id="prevBtn" onclick="navigate(-1)" disabled>← Prev</button>
         <button class="btn btn-sm btn-primary" onclick="saveAndNext()">Save &amp; next →</button>
       </div>
     </div>
-
     <div class="done-state hidden" id="doneMsg">✓ All done! Export your annotations below.</div>
     <div class="export-bar">
       <span>Export annotations</span>
@@ -276,12 +250,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     <div id="exportAlert"></div>
   </div>
 </div>
-
-
 <script>
-// ============================================================
-// CONFIGURATION
-// ============================================================
 const SOCIAL_GROUPS = [
   "nurses","housewives","disabled people","elderly people","drug addicts",
   "homeless people","welfare recipients","refugees","undocumented immigrants","scientists",
@@ -302,13 +271,8 @@ const RANDOM_NOUNS = [
   "root","sand","clove","note","key","round","taste","wish","swim","mix"
 ];
 const SUGGEST_LIMIT = 10;
-
-// Axes JSON URL — change this to switch between pilot (10) and full (100) axes:
 const AXES_URL = 'example_axes.json';
-// For full 100 axes, use: const AXES_URL = 'stratified_axes.json';
-
-let EMBEDDED_DATA = null; // will be loaded via fetch
-
+let EMBEDDED_DATA = null;
 let AXES = [], annotations = {}, currentIndex = 0, annotatorName = '';
 let scores = [null, null], nas = [false, false];
 
@@ -325,6 +289,7 @@ function parseEntry(key, raw) {
     const i = body.indexOf('\u2192');
     return i >= 0 ? body.slice(i+1).trim() : body;
   };
+  // w1 = first in pair (neg pole, left, score 1), w2 = second in pair (pos pole, right, score 5)
   return { key, pair:w1+'|'+w2, negName:w1, posName:w2, negDef:getDef('Positive'), posDef:getDef('Negative') };
 }
 
@@ -337,7 +302,6 @@ function assignWords(axes) {
   axes.forEach((ax,i) => {
     ax.socialGroup = sg[i % sg.length];
     ax.randomNoun = RANDOM_NOUNS[i % RANDOM_NOUNS.length];
-    ax.hasSuggestion = i < SUGGEST_LIMIT;
   });
 }
 
@@ -377,7 +341,6 @@ function showAxis(idx) {
   if (idx >= AXES.length) { showDone(); return; }
   const ax = AXES[idx];
   const words = [ax.socialGroup, ax.randomNoun];
-
   document.getElementById('axisIdx').textContent = '#'+(idx+1);
   document.getElementById('negWord').textContent = ax.negName;
   document.getElementById('negDef').textContent = ax.negDef;
@@ -386,7 +349,6 @@ function showAxis(idx) {
   document.getElementById('pfill').style.width = Math.round((idx/AXES.length)*100)+'%';
   document.getElementById('plabel').textContent = (idx+1)+' / '+AXES.length;
   document.getElementById('prevBtn').disabled = idx === 0;
-
   const saved = annotations[ax.key] || {};
   for (let w = 0; w < 2; w++) {
     const n = w+1, word = words[w];
@@ -403,30 +365,37 @@ function showAxis(idx) {
     document.getElementById('na'+n).checked = nas[w];
     renderScaleFor(w); renderNAFor(w);
   }
-
-  const sugSec = document.getElementById('suggestSection');
-  if (ax.hasSuggestion) {
-    sugSec.classList.remove('hidden');
-    document.getElementById('sugNegLbl').textContent = ax.negName;
-    document.getElementById('sugPosLbl').textContent = ax.posName;
-    document.getElementById('sugNeg').value = saved._suggest_neg || '';
-    document.getElementById('sugPos').value = saved._suggest_pos || '';
-  } else { sugSec.classList.add('hidden'); }
-
+  updateSuggestVisibility(ax);
   document.getElementById('mainCard').classList.remove('hidden');
   document.getElementById('doneMsg').classList.add('hidden');
   window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function updateSuggestVisibility(ax) {
+  const sugSec = document.getElementById('suggestSection');
+  if (scores[0] === 3 || scores[1] === 3) {
+    sugSec.classList.remove('hidden');
+    document.getElementById('sugNegLbl').textContent = ax.negName;
+    document.getElementById('sugPosLbl').textContent = ax.posName;
+    const saved = annotations[ax.key] || {};
+    document.getElementById('sugNeg').value = saved._suggest_neg || '';
+    document.getElementById('sugPos').value = saved._suggest_pos || '';
+  } else {
+    sugSec.classList.add('hidden');
+  }
 }
 
 function setScore(w, val) {
   scores[w] = val; nas[w] = false;
   document.getElementById('na'+(w+1)).checked = false;
   renderNAFor(w); renderScaleFor(w);
+  updateSuggestVisibility(AXES[currentIndex]);
 }
 function toggleNA(w) {
   nas[w] = document.getElementById('na'+(w+1)).checked;
   if (nas[w]) scores[w] = null;
   renderNAFor(w); renderScaleFor(w);
+  updateSuggestVisibility(AXES[currentIndex]);
 }
 function renderScaleFor(w) {
   const btns = document.getElementById('btns'+(w+1)).children;
@@ -455,7 +424,8 @@ function saveAndNext() {
     social_group:ax.socialGroup, random_noun:ax.randomNoun,
     annotator:annotatorName, timestamp:new Date().toISOString()
   };
-  if (ax.hasSuggestion) {
+  const sugSec = document.getElementById('suggestSection');
+  if (!sugSec.classList.contains('hidden')) {
     annotations[ax.key]._suggest_neg = document.getElementById('sugNeg').value.trim();
     annotations[ax.key]._suggest_pos = document.getElementById('sugPos').value.trim();
   }
