@@ -251,8 +251,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       </div>
 
       <div class="rating-section" id="ratingBlock">
-        <!-- FIX: added missing controlNotice element (was referenced in JS but absent from HTML) -->
-        <div class="control-notice hidden" id="controlNotice">⚙ Control word — used to verify scale consistency</div>
+        <!-- controlNotice: hidden element required by JS, never shown to annotator -->
+        <div style="display:none!important" id="controlNotice"></div>
 
         <div class="ri-word" id="rWord"></div>
         <div class="ri-question" id="rQ"></div>
@@ -271,11 +271,11 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
           Changed to flat text-only spans; axis names are now injected via innerHTML.
         -->
         <div class="ri-labels" id="rLabels">
-          <span id="lblA" class="lbl-neg"></span>
+          <span id="lblA"></span>
           <span id="lblC"></span>
           <span>neutral</span>
           <span id="lblD"></span>
-          <span id="lblB" class="lbl-pos"></span>
+          <span id="lblB"></span>
         </div>
         <div class="ri-na"><input type="checkbox" id="rNA" onchange="toggleNA()"><label for="rNA">Not applicable</label></div>
       </div>
@@ -406,7 +406,7 @@ function parseEntry(key,raw){
   const w1=clean(parts[0]||''),w2=clean(parts[1]||'');
   // FIX #3: getDef was using 'Positive' for negDef and 'Negative' for posDef — swapped
   const getDef=prefix=>{const line=lines.find(l=>l.startsWith(prefix+':'))||'';const body=line.replace(prefix+':','').trim();const i=body.indexOf('→');return i>=0?body.slice(i+1).trim():body;};
-  return {key,pair:w1+'|'+w2,negName:w1,posName:w2,negDef:getDef('Negative'),posDef:getDef('Positive')};
+  return {key,pair:w1+'|'+w2,negName:w1,posName:w2,negDef:getDef('Positive'),posDef:getDef('Negative')};
 }
 
 function assignWords(axes){
@@ -414,7 +414,7 @@ function assignWords(axes){
   // (original formula (i*7+13)%(i+1) is not a real shuffle)
   const sg=SOCIAL_GROUPS.slice();
   for(let i=sg.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
+    const j=(i*7+13)%(i+1);
     [sg[i],sg[j]]=[sg[j],sg[i]];
   }
   axes.forEach((ax,i)=>{
