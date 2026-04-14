@@ -536,8 +536,8 @@ function showStep(){
   // avoiding the nested-span-gets-overwritten bug from the original code.
   document.getElementById('lblA').textContent=ax.negName;
   document.getElementById('lblB').textContent=ax.posName;
-  document.getElementById('lblC').innerHTML='somewhat <strong>'+ax.negName+'</strong>';
-  document.getElementById('lblD').innerHTML='somewhat <strong>'+ax.posName+'</strong>';
+  document.getElementById('lblC').innerHTML='somewhat ' + ax.negName;
+  document.getElementById('lblD').innerHTML= 'somewhat ' + ax.posName;
 
   // FIX #2 (continued): explicitly set checkbox to currentNA *after* reset
   document.getElementById('rNA').checked=currentNA;
