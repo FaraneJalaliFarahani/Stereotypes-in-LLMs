@@ -221,25 +221,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
         <div class="ri-na"><input type="checkbox" id="na1" onchange="toggleNA(0)"><label for="na1">Not applicable</label></div>
       </div>
 
-      <!-- Block 2: Random noun (shown every 4th axis) -->
-      <div class="divider" id="dividerNoun" style="display:none"></div>
-      <div class="rating-section hidden" id="ratingBlock2">
-        <div class="ri-word" id="word2">—</div>
-        <div class="ri-question" id="q2">—</div>
-        <div class="ri-scale" id="scaleWrap2">
-          <div class="ri-btns" id="btns2">
-            <button class="ri-btn" data-val="1" onclick="setScore(1,1)">1</button>
-            <button class="ri-btn" data-val="2" onclick="setScore(1,2)">2</button>
-            <button class="ri-btn" data-val="3" onclick="setScore(1,3)">3</button>
-            <button class="ri-btn" data-val="4" onclick="setScore(1,4)">4</button>
-            <button class="ri-btn" data-val="5" onclick="setScore(1,5)">5</button>
-          </div>
-        </div>
-        <div class="ri-labels" id="labels2">
-          <span id="lbl2a">—</span><span>somewhat <span id="lbl2c">—</span></span><span>neutral</span><span>somewhat <span id="lbl2d">—</span></span><span id="lbl2b">—</span>
-        </div>
-        <div class="ri-na"><input type="checkbox" id="na2" onchange="toggleNA(1)"><label for="na2">Not applicable</label></div>
-      </div>
+
 
       <!-- Block 3: Control word (shown only when axis has a control mapping) -->
       <div class="divider" id="dividerControl" style="display:none"></div>
@@ -352,7 +334,7 @@ const RANDOM_NOUNS = [
   "voice","sand","clove","note","key","taste","wish","escort","domino","sixpack"
 ];
 
-const NOUN_FREQUENCY = 4; // random noun shown every Nth axis
+
 const AXES_URL = 'example_axes.json';
 let EMBEDDED_DATA = null;
 let AXES = [], annotations = {}, currentIndex = 0;
@@ -402,9 +384,7 @@ function assignWords(axes) {
   for(let i=sg.length-1;i>0;i--){const j=(i*7+13)%(i+1);[sg[i],sg[j]]=[sg[j],sg[i]];}
   axes.forEach((ax,i)=>{
     ax.socialGroup = sg[i % sg.length];
-    ax.randomNoun  = (i % NOUN_FREQUENCY === NOUN_FREQUENCY-1)
-      ? RANDOM_NOUNS[Math.floor(i/NOUN_FREQUENCY) % RANDOM_NOUNS.length]
-      : null;
+    ax.randomNoun  = null;
     const ctrl = getControl(ax);
     ax.controlWord     = ctrl ? ctrl.word     : null;
     ax.controlExpected = ctrl ? ctrl.expected : null;
@@ -470,18 +450,7 @@ function showAxis(idx) {
   nas[0]   =saved[ax.socialGroup]?.not_applicable??false;
   renderBlock(0, ax.socialGroup, ax);
 
-  // Block 2 – random noun (every Nth axis)
-  const b2=document.getElementById('ratingBlock2');
-  const d2=document.getElementById('dividerNoun');
-  if(ax.randomNoun){
-    b2.classList.remove('hidden'); d2.style.display='';
-    scores[1]=saved[ax.randomNoun]?.score??null;
-    nas[1]   =saved[ax.randomNoun]?.not_applicable??false;
-    renderBlock(1, ax.randomNoun, ax);
-  } else {
-    b2.classList.add('hidden'); d2.style.display='none';
-    scores[1]=null; nas[1]=false;
-  }
+  scores[1]=null; nas[1]=false;
 
   // Block 3 – control word (when axis has a mapping)
   const b3=document.getElementById('ratingBlock3');
@@ -564,10 +533,7 @@ function saveAndNext(){
   // Social group
   annotations[ax.key][ax.socialGroup]={score:scores[0],not_applicable:nas[0],word_type:'social_group'};
 
-  // Random noun (if shown)
-  if(ax.randomNoun){
-    annotations[ax.key][ax.randomNoun]={score:scores[1],not_applicable:nas[1],word_type:'random_noun'};
-  }
+
 
   // Control word (if shown) — store expected score and whether annotator got it right
   if(ax.controlWord){
@@ -601,7 +567,6 @@ function saveAndNext(){
   const s = annotations[ax.key];
   const items = [
     {word: ax.socialGroup, type: 'social_group', r: s[ax.socialGroup]||{}},
-    ...(ax.randomNoun  ? [{word: ax.randomNoun,  type: 'random_noun', r: s[ax.randomNoun]||{}}]  : []),
     ...(ax.controlWord ? [{word: ax.controlWord, type: 'control',     r: s[ax.controlWord]||{}}] : []),
   ];
   items.forEach(({word, type, r}) => {
@@ -661,7 +626,7 @@ function exportJSON(){
       const s=annotations[ax.key]||{};
       const entry={...(s._meta||{}),suggest_neg:s._suggest_neg||null,suggest_pos:s._suggest_pos||null,ratings:{}};
       entry.ratings[ax.socialGroup]=s[ax.socialGroup]||{score:null,not_applicable:null,word_type:'social_group'};
-      if(ax.randomNoun)  entry.ratings[ax.randomNoun] =s[ax.randomNoun] ||{score:null,not_applicable:null,word_type:'random_noun'};
+
       if(ax.controlWord) entry.ratings[ax.controlWord]=s[ax.controlWord]||{score:null,not_applicable:null,word_type:'control',expected_score:ax.controlExpected};
       return entry;
     })
@@ -680,7 +645,7 @@ function exportCSV(){
     const s=annotations[ax.key]||{},m=s._meta||{};
     const items=[
       {word:ax.socialGroup, type:'social_group'},
-      ...(ax.randomNoun  ?[{word:ax.randomNoun,  type:'random_noun'}]:[]),
+
       ...(ax.controlWord ?[{word:ax.controlWord, type:'control'}]    :[]),
     ];
     items.forEach(({word,type})=>{
