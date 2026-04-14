@@ -147,7 +147,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   <div class="card" id="setupPanel">
     <div class="inst-block">
       <h3>Instructions</h3>
-      <p>You will see <strong>antonym pairs</strong> (two opposite adjectives). For each pair, you will rate <strong>one word per page</strong> on a 1–5 scale between the two adjectives.</p>
+      <p>You will see <strong>antonym pairs</strong> (two opposite adjectives). For each pair, you will rate <strong>one word</strong> on a 1–5 scale between the two adjectives.</p>
       <div class="inst-example">
         <div class="ex-label">Example</div>
         <p>Antonym pair: <strong>poor ↔ rich</strong></p>
@@ -161,9 +161,11 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       A CSV file will be <strong>downloaded automatically to your device</strong> when you finish. Please <strong>send this file back to us</strong> by email after completing the annotation.
     </div>
 
-    <!-- Personal info -->
-    <div class="setup-section-title">Personal information</div>
-    <div style="padding:0 1.5rem 0">
+    <div style="padding:0 1.5rem 1.5rem">
+
+      <div class="setup-section-title" style="padding:0;margin:.75rem 0 .5rem">Personal information</div>
+      <div class="field">
+        <label>Your name</label>
         <input type="text" id="annotatorName" placeholder="e.g. Alice" />
       </div>
       <div class="field">
@@ -174,11 +176,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
         <label>Mother tongue</label>
         <input type="text" id="annotatorLang" placeholder="e.g. German" />
       </div>
-    </div>
 
-    <!-- English proficiency -->
-    <div class="setup-section-title">English proficiency</div>
-    <div style="padding:0 1.5rem 0">
+      <div class="setup-section-title" style="padding:0;margin:.75rem 0 .5rem">English proficiency</div>
       <div class="field">
         <label>Self-rated English level</label>
         <select id="annotatorEng">
@@ -190,11 +189,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
           <option value="5_C1C2">5 – C1/C2 (Fluent / Native)</option>
         </select>
       </div>
-    </div>
 
-    <!-- Education & background -->
-    <div class="setup-section-title">Education &amp; background</div>
-    <div style="padding:0 1.5rem 1.5rem">
+      <div class="setup-section-title" style="padding:0;margin:.75rem 0 .5rem">Education &amp; background</div>
       <div class="field">
         <label>Highest level of education completed</label>
         <select id="annotatorEdu">
@@ -225,7 +221,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
           <option value="other">Other</option>
         </select>
       </div>
-      <div class="btn-row" style="margin-top:4px">
+
+      <div class="btn-row" style="margin-top:8px">
         <button class="btn btn-primary" onclick="startSession()">Start annotating →</button>
       </div>
       <div class="err-text" id="setupErr"></div>
