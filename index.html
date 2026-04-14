@@ -16,6 +16,7 @@
   --pos-bg:#e8f0f6;--pos-bdr:#a8c8e0;--pos-tx:#1a4a6c;
   --ok-bg:#eaf3de;--ok-bdr:#b5d49a;--ok-tx:#2d5a0e;
   --warn-bg:#fef6e6;--warn-bdr:#f0c96e;--warn-tx:#6e4a08;
+  --ctrl-bg:#f0eaf6;--ctrl-bdr:#c8a8e0;--ctrl-tx:#4a1a6c;
   --err-tx:#7a1f1f;--err-bg:#fceaea;
   --r:10px;--r-lg:14px;--r-xl:18px;
   --font:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;
@@ -30,6 +31,7 @@
   --pos-bg:#142030;--pos-bdr:#2a5878;--pos-tx:#90c0e0;
   --ok-bg:#1a2e0a;--ok-bdr:#3a6818;--ok-tx:#b0d090;
   --warn-bg:#2e2408;--warn-bdr:#6e4a08;--warn-tx:#f0c96e;
+  --ctrl-bg:#1e1430;--ctrl-bdr:#5a3878;--ctrl-tx:#c0a0e0;
   --err-tx:#f0a0a0;--err-bg:#3a1818;
 }}
 body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh}
@@ -48,8 +50,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .btn-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .field{margin-bottom:14px}
 .field label{display:block;font-size:13px;color:var(--text2);margin-bottom:5px;font-weight:500}
-.field input{width:100%;max-width:320px;padding:9px 12px;font-size:14px;font-family:var(--font);background:var(--bg-card);color:var(--text);border:1px solid var(--bdr-md);border-radius:var(--r);outline:none}
-.field input:focus{border-color:var(--accent)}
+.field input,.field select{width:100%;max-width:320px;padding:9px 12px;font-size:14px;font-family:var(--font);background:var(--bg-card);color:var(--text);border:1px solid var(--bdr-md);border-radius:var(--r);outline:none}
+.field input:focus,.field select:focus{border-color:var(--accent)}
 .progress-row{display:flex;align-items:center;gap:12px;padding:.85rem 1.5rem;border-bottom:1px solid var(--bdr);background:var(--bg-sec)}
 .ptrack{flex:1;height:4px;background:var(--bg-tri);border-radius:2px;overflow:hidden}
 .pfill{height:100%;background:var(--accent);border-radius:2px;transition:width .3s ease}
@@ -65,6 +67,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .axis-def.pos .def-word{color:var(--pos-tx)}
 .def-text{font-size:12px;color:var(--text2);margin-top:3px;line-height:1.5}
 .rating-section{padding:1.5rem}
+.rating-section.control-block{background:var(--ctrl-bg);border-top:2px solid var(--ctrl-bdr)}
+.control-badge{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--ctrl-tx);background:var(--ctrl-bg);border:1px solid var(--ctrl-bdr);border-radius:20px;padding:2px 10px;margin-bottom:10px}
 .ri-word{font-size:20px;font-weight:700;margin-bottom:6px}
 .ri-question{font-size:15px;color:var(--text2);margin-bottom:16px;line-height:1.5}
 .ri-question em{font-style:normal;font-weight:600}
@@ -114,6 +118,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .alert-msg{font-size:13px;color:var(--ok-tx);background:var(--ok-bg);border:1px solid var(--ok-bdr);border-radius:var(--r);padding:5px 14px;display:inline-block;margin-top:8px}
 .done-state{text-align:center;padding:3rem 1rem;color:var(--text2);font-size:15px}
 .err-text{font-size:13px;color:var(--err-tx);margin-top:8px}
+.divider{border-top:1px solid var(--bdr)}
 @media(max-width:540px){
   .axis-defs{grid-template-columns:1fr}
   .suggest-grid{grid-template-columns:1fr}
@@ -128,6 +133,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     <h1>Antonym Pairs Annotation</h1>
     <span class="tag" id="modeLabel">Ready</span>
   </div>
+
   <div class="card" id="setupPanel">
     <div class="inst-block">
       <h3>Instructions</h3>
@@ -141,12 +147,31 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       </div>
     </div>
     <div class="warn-note">
-      <strong>Important:</strong> Please complete the annotation <strong>in one sitting</strong> without interruption. Taking breaks may shift your perspective and affect consistency. Progress is <strong>not saved</strong> if the browser tab is closed — export before closing.
+      <strong>Important:</strong> Please complete the annotation <strong>in one sitting</strong> without interruption. Taking breaks may shift your perspective and affect consistency.
     </div>
     <div style="padding:0 1.5rem 1.5rem">
       <div class="field">
         <label>Your name</label>
         <input type="text" id="annotatorName" placeholder="e.g. Alice" />
+      </div>
+      <div class="field">
+        <label>Age</label>
+        <input type="number" id="annotatorAge" placeholder="e.g. 28" min="10" max="100" style="max-width:120px"/>
+      </div>
+      <div class="field">
+        <label>Mother tongue</label>
+        <input type="text" id="annotatorLang" placeholder="e.g. German" />
+      </div>
+      <div class="field">
+        <label>English proficiency (self-rated)</label>
+        <select id="annotatorEng">
+          <option value="">— select —</option>
+          <option value="1">1 – Beginner</option>
+          <option value="2">2 – Elementary</option>
+          <option value="3">3 – Intermediate</option>
+          <option value="4">4 – Upper-intermediate</option>
+          <option value="5">5 – Fluent / Native</option>
+        </select>
       </div>
       <div class="btn-row">
         <button class="btn btn-primary" onclick="startSession()">Start annotating →</button>
@@ -154,6 +179,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       <div class="err-text" id="setupErr"></div>
     </div>
   </div>
+
   <div id="statsSection" class="hidden">
     <div class="stats-row">
       <div class="stat"><div class="sv" id="stTotal">—</div><div class="sl">Questions</div></div>
@@ -161,6 +187,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       <div class="stat"><div class="sv" id="stLeft">—</div><div class="sl">Remaining</div></div>
     </div>
   </div>
+
   <div id="annotationSection" class="hidden">
     <div class="card" id="mainCard">
       <div class="progress-row">
@@ -170,16 +197,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       <div class="axis-header">
         <div class="axis-label">Antonym Pair <span id="axisIdx"></span></div>
         <div class="axis-defs">
-          <div class="axis-def neg">
-            <div class="def-word" id="negWord">—</div>
-            <div class="def-text" id="negDef"></div>
-          </div>
-          <div class="axis-def pos">
-            <div class="def-word" id="posWord">—</div>
-            <div class="def-text" id="posDef"></div>
-          </div>
+          <div class="axis-def neg"><div class="def-word" id="negWord">—</div><div class="def-text" id="negDef"></div></div>
+          <div class="axis-def pos"><div class="def-word" id="posWord">—</div><div class="def-text" id="posDef"></div></div>
         </div>
       </div>
+
+      <!-- Block 1: Social group (always shown) -->
       <div class="rating-section" id="ratingBlock1">
         <div class="ri-word" id="word1">—</div>
         <div class="ri-question" id="q1">—</div>
@@ -195,13 +218,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
         <div class="ri-labels" id="labels1">
           <span id="lbl1a">—</span><span>somewhat <span id="lbl1c">—</span></span><span>neutral</span><span>somewhat <span id="lbl1d">—</span></span><span id="lbl1b">—</span>
         </div>
-        <div class="ri-na">
-          <input type="checkbox" id="na1" onchange="toggleNA(0)">
-          <label for="na1">Not applicable</label>
-        </div>
+        <div class="ri-na"><input type="checkbox" id="na1" onchange="toggleNA(0)"><label for="na1">Not applicable</label></div>
       </div>
-      <div style="border-top:1px solid var(--bdr)"></div>
-      <div class="rating-section" id="ratingBlock2">
+
+      <!-- Block 2: Random noun (shown every 4th axis) -->
+      <div class="divider" id="dividerNoun" style="display:none"></div>
+      <div class="rating-section hidden" id="ratingBlock2">
         <div class="ri-word" id="word2">—</div>
         <div class="ri-question" id="q2">—</div>
         <div class="ri-scale" id="scaleWrap2">
@@ -216,11 +238,30 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
         <div class="ri-labels" id="labels2">
           <span id="lbl2a">—</span><span>somewhat <span id="lbl2c">—</span></span><span>neutral</span><span>somewhat <span id="lbl2d">—</span></span><span id="lbl2b">—</span>
         </div>
-        <div class="ri-na">
-          <input type="checkbox" id="na2" onchange="toggleNA(1)">
-          <label for="na2">Not applicable</label>
-        </div>
+        <div class="ri-na"><input type="checkbox" id="na2" onchange="toggleNA(1)"><label for="na2">Not applicable</label></div>
       </div>
+
+      <!-- Block 3: Control word (shown only when axis has a control mapping) -->
+      <div class="divider" id="dividerControl" style="display:none"></div>
+      <div class="rating-section control-block hidden" id="ratingBlock3">
+        <div class="control-badge">🎯 Control item</div>
+        <div class="ri-word" id="word3">—</div>
+        <div class="ri-question" id="q3">—</div>
+        <div class="ri-scale" id="scaleWrap3">
+          <div class="ri-btns" id="btns3">
+            <button class="ri-btn" data-val="1" onclick="setScore(2,1)">1</button>
+            <button class="ri-btn" data-val="2" onclick="setScore(2,2)">2</button>
+            <button class="ri-btn" data-val="3" onclick="setScore(2,3)">3</button>
+            <button class="ri-btn" data-val="4" onclick="setScore(2,4)">4</button>
+            <button class="ri-btn" data-val="5" onclick="setScore(2,5)">5</button>
+          </div>
+        </div>
+        <div class="ri-labels" id="labels3">
+          <span id="lbl3a">—</span><span>somewhat <span id="lbl3c">—</span></span><span>neutral</span><span>somewhat <span id="lbl3d">—</span></span><span id="lbl3b">—</span>
+        </div>
+        <div class="ri-na"><input type="checkbox" id="na3" onchange="toggleNA(2)"><label for="na3">Not applicable</label></div>
+      </div>
+
       <div class="suggest-section hidden" id="suggestSection">
         <div class="suggest-title">💡 Suggest a word you would rate at each extreme of this scale</div>
         <div class="suggest-grid">
@@ -234,12 +275,14 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
           </div>
         </div>
       </div>
+
       <div class="nav-row">
         <button class="btn btn-sm" id="prevBtn" onclick="navigate(-1)" disabled>← Prev</button>
         <button class="btn btn-sm btn-primary" onclick="saveAndNext()">Save &amp; next →</button>
       </div>
     </div>
-    <div class="done-state hidden" id="doneMsg">✓ All done! Export your annotations below.</div>
+
+    <div class="done-state hidden" id="doneMsg">✓ All done! Your annotations have been auto-saved. Download a copy below.</div>
     <div class="export-bar">
       <span>Export annotations</span>
       <div class="btn-row">
@@ -250,7 +293,51 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     <div id="exportAlert"></div>
   </div>
 </div>
+
 <script>
+// ─── Control word mappings ────────────────────────────────────────────────────
+// Key = "negName|posName" lowercased. expected = correct score (1=neg pole, 5=pos pole).
+const CONTROL_MAP = {
+  // The axis negName is score-1 pole, posName is score-5 pole.
+  // violent|nonviolent: war → very violent → score 5 on the pos side?
+  // Wait: neg=violent(1), pos=nonviolent(5). War is violent → score 1.
+  'violent|nonviolent':       { word: 'war',              expected: 1 },
+  'nonviolent|violent':       { word: 'war',              expected: 5 },
+  // fast|slow: neg=fast(1), pos=slow(5). Snail is slow → score 5.
+  'fast|slow':                { word: 'snail',            expected: 5 },
+  'slow|fast':                { word: 'snail',            expected: 1 },
+  // painful|painless: neg=painful(1), pos=painless(5). Bruise is painful → score 1.
+  'painful|painless':         { word: 'bruise',           expected: 1 },
+  'painless|painful':         { word: 'bruise',           expected: 5 },
+  // wet|dry: neg=wet(1), pos=dry(5). Desert is dry → score 5.
+  'wet|dry':                  { word: 'desert',           expected: 5 },
+  'dry|wet':                  { word: 'desert',           expected: 1 },
+  // rich|poor: neg=rich(1), pos=poor(5). Billionaire is rich → score 1.
+  'rich|poor':                { word: 'billionaire',      expected: 1 },
+  'poor|rich':                { word: 'billionaire',      expected: 5 },
+  // old|young: neg=old(1), pos=young(5). Grandfather is old → score 1.
+  'old|young':                { word: 'grandfather',      expected: 1 },
+  'young|old':                { word: 'grandfather',      expected: 5 },
+  // large|small: neg=large(1), pos=small(5). Ant is small → score 5.
+  'large|small':              { word: 'ant',              expected: 5 },
+  'small|large':              { word: 'ant',              expected: 1 },
+  // lower-class|upper-class: neg=lower-class(1), pos=upper-class(5). Royal family → score 5.
+  'lower-class|upper-class':  { word: 'royal family',     expected: 5 },
+  'upper-class|lower-class':  { word: 'royal family',     expected: 1 },
+  // intelligent|unintelligent: neg=intelligent(1), pos=unintelligent(5). Einstein → score 1.
+  'intelligent|unintelligent':{ word: 'Albert Einstein',  expected: 1 },
+  'unintelligent|intelligent':{ word: 'Albert Einstein',  expected: 5 },
+  // high-rise|low-rise: neg=high-rise(1), pos=low-rise(5). Burj Khalifa → score 1.
+  'high-rise|low-rise':       { word: 'Burj Khalifa',     expected: 1 },
+  'low-rise|high-rise':       { word: 'Burj Khalifa',     expected: 5 },
+};
+
+function getControl(ax) {
+  const key = (ax.negName + '|' + ax.posName).toLowerCase();
+  return CONTROL_MAP[key] || null;
+}
+
+// ─── Word pools ───────────────────────────────────────────────────────────────
 const SOCIAL_GROUPS = [
   "nurses","housewives","disabled people","elderly people","drug addicts",
   "homeless people","welfare recipients","refugees","undocumented immigrants","scientists",
@@ -264,212 +351,362 @@ const SOCIAL_GROUPS = [
   "White people","Black people","Hispanic people","middle class people","women"
 ];
 const RANDOM_NOUNS = [
-"door","cherry","cupcake","pumpkin","helmet","brick","triangle","whistle","sparrow","mozzarella",
-"ananas","lung","alley","ash","bulb","catfish","bosch","dior","cinnamon","doughnut",
-"sponge","clam","sandwich","sunflower","stork","saucer","sweater","tape","halloween","telephone",
-"holiday","perfume","kimono","nougat","jackpot","lobby","moonlight","fireball","mousetrap","raisin",
-"voice","sand","clove","note","key","taste","wish","escort","domino", "sixpack"
+  "door","cherry","cupcake","pumpkin","helmet","brick","triangle","whistle","sparrow","mozzarella",
+  "ananas","lung","alley","ash","bulb","catfish","bosch","dior","cinnamon","doughnut",
+  "sponge","clam","sandwich","sunflower","stork","saucer","sweater","tape","halloween","telephone",
+  "holiday","perfume","kimono","nougat","jackpot","lobby","moonlight","fireball","mousetrap","raisin",
+  "voice","sand","clove","note","key","taste","wish","escort","domino","sixpack"
 ];
-const SUGGEST_LIMIT = 10;
+
+const NOUN_FREQUENCY = 4; // random noun shown every Nth axis
 const AXES_URL = 'example_axes.json';
 let EMBEDDED_DATA = null;
-let AXES = [], annotations = {}, currentIndex = 0, annotatorName = '';
-let scores = [null, null], nas = [false, false];
+let AXES = [], annotations = {}, currentIndex = 0;
+let annotatorName='', annotatorAge='', annotatorLang='', annotatorEng='';
+// scores[0]=social group, [1]=random noun, [2]=control word
+let scores = [null,null,null], nas = [false,false,false];
 
+// ─── Auto-save ────────────────────────────────────────────────────────────────
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxEOR4vWFrD6r4vg9CY1RujvwxLlYcgZHH2NhqAhERoS0SqrKy8rLEYHFGkUeV5XO5u/exec';
+
+function autoSave(rowData) {
+  try {
+    localStorage.setItem('annotation_backup', JSON.stringify({
+      annotatorName, annotatorAge, annotatorLang, annotatorEng,
+      annotations, currentIndex, savedAt: new Date().toISOString()
+    }));
+  } catch(e) {}
+  if (!rowData || !SHEET_URL || SHEET_URL === 'YOUR_APPS_SCRIPT_URL_HERE') return;
+  fetch(SHEET_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(rowData)
+  }).catch(e => console.warn('Sheet save failed:', e));
+}
+
+// ─── Parse ────────────────────────────────────────────────────────────────────
 function parseEntry(key, raw) {
-  const lines = raw.split('\n').map(s => s.trim()).filter(Boolean);
-  const pairLine = lines.find(l => l.startsWith('Antonym Pair:')) || '';
-  const pairRaw = pairLine.replace('Antonym Pair:', '').trim();
-  const clean = w => w.replace(/\.[a-z]\.\d+$/, '').trim();
+  const lines = raw.split('\n').map(s=>s.trim()).filter(Boolean);
+  const pairLine = lines.find(l=>l.startsWith('Antonym Pair:'))||'';
+  const pairRaw = pairLine.replace('Antonym Pair:','').trim();
+  const clean = w=>w.replace(/\.[a-z]\.\d+$/,'').trim();
   const parts = pairRaw.split('|');
-  const w1 = clean(parts[0]||''), w2 = clean(parts[1]||'');
-  const getDef = prefix => {
-    const line = lines.find(l => l.startsWith(prefix+':')) || '';
-    const body = line.replace(prefix+':','').trim();
-    const i = body.indexOf('\u2192');
-    return i >= 0 ? body.slice(i+1).trim() : body;
+  const w1=clean(parts[0]||''), w2=clean(parts[1]||'');
+  const getDef = prefix=>{
+    const line=lines.find(l=>l.startsWith(prefix+':'))||'';
+    const body=line.replace(prefix+':','').trim();
+    const i=body.indexOf('\u2192');
+    return i>=0?body.slice(i+1).trim():body;
   };
-  // w1 = first in pair (neg pole, left, score 1), w2 = second in pair (pos pole, right, score 5)
-  return { key, pair:w1+'|'+w2, negName:w1, posName:w2, negDef:getDef('Positive'), posDef:getDef('Negative') };
+  return {key, pair:w1+'|'+w2, negName:w1, posName:w2, negDef:getDef('Positive'), posDef:getDef('Negative')};
 }
 
 function assignWords(axes) {
-  const sg = SOCIAL_GROUPS.slice();
-  for (let i = sg.length-1; i > 0; i--) {
-    const j = (i*7+13) % (i+1);
-    [sg[i],sg[j]] = [sg[j],sg[i]];
-  }
-  axes.forEach((ax,i) => {
+  const sg=SOCIAL_GROUPS.slice();
+  for(let i=sg.length-1;i>0;i--){const j=(i*7+13)%(i+1);[sg[i],sg[j]]=[sg[j],sg[i]];}
+  axes.forEach((ax,i)=>{
     ax.socialGroup = sg[i % sg.length];
-    ax.randomNoun = RANDOM_NOUNS[i % RANDOM_NOUNS.length];
+    ax.randomNoun  = (i % NOUN_FREQUENCY === NOUN_FREQUENCY-1)
+      ? RANDOM_NOUNS[Math.floor(i/NOUN_FREQUENCY) % RANDOM_NOUNS.length]
+      : null;
+    const ctrl = getControl(ax);
+    ax.controlWord     = ctrl ? ctrl.word     : null;
+    ax.controlExpected = ctrl ? ctrl.expected : null;
   });
 }
 
 async function loadPairs() {
   try {
     const res = await fetch(AXES_URL);
-    if (!res.ok) throw new Error('HTTP ' + res.status);
+    if (!res.ok) throw new Error('HTTP '+res.status);
     EMBEDDED_DATA = await res.json();
-    AXES = Object.entries(EMBEDDED_DATA).map(([k,v]) => parseEntry(k,v));
+    AXES = Object.entries(EMBEDDED_DATA).map(([k,v])=>parseEntry(k,v));
     if (!AXES.length) throw new Error('No axes found.');
     assignWords(AXES);
     document.getElementById('stTotal').textContent = AXES.length;
-    document.getElementById('stLeft').textContent = AXES.length;
+    document.getElementById('stLeft').textContent  = AXES.length;
     document.getElementById('setupPanel').classList.remove('hidden');
-  } catch (err) {
-    console.error('Failed to load axes:', err);
-    const el = document.createElement('div');
-    el.style.cssText = 'color:var(--err-tx);background:var(--err-bg,#fceaea);border-radius:10px;padding:12px 16px;margin-bottom:1rem;font-size:13px;line-height:1.6';
-    el.textContent = '\u26a0 Could not load ' + AXES_URL + ' \u2014 ' + err.message + '. Make sure the JSON file is in the same folder as this HTML file.';
-    document.querySelector('.app').insertBefore(el, document.getElementById('setupPanel'));
+  } catch(err) {
+    console.error('Failed to load axes:',err);
+    const el=document.createElement('div');
+    el.style.cssText='color:var(--err-tx);background:var(--err-bg,#fceaea);border-radius:10px;padding:12px 16px;margin-bottom:1rem;font-size:13px;line-height:1.6';
+    el.textContent='\u26a0 Could not load '+AXES_URL+' \u2014 '+err.message+'. Make sure the JSON file is in the same folder as this HTML file.';
+    document.querySelector('.app').insertBefore(el,document.getElementById('setupPanel'));
   }
 }
 loadPairs();
 
+// ─── Session start ────────────────────────────────────────────────────────────
 function startSession() {
   annotatorName = document.getElementById('annotatorName').value.trim();
-  if (!annotatorName) { document.getElementById('setupErr').textContent = 'Please enter your name.'; return; }
-  document.getElementById('setupErr').textContent = '';
+  annotatorAge  = document.getElementById('annotatorAge').value.trim();
+  annotatorLang = document.getElementById('annotatorLang').value.trim();
+  annotatorEng  = document.getElementById('annotatorEng').value;
+  if (!annotatorName){ document.getElementById('setupErr').textContent='Please enter your name.'; return; }
+  if (!annotatorAge) { document.getElementById('setupErr').textContent='Please enter your age.'; return; }
+  if (!annotatorLang){ document.getElementById('setupErr').textContent='Please enter your mother tongue.'; return; }
+  if (!annotatorEng) { document.getElementById('setupErr').textContent='Please rate your English proficiency.'; return; }
+  document.getElementById('setupErr').textContent='';
   document.getElementById('setupPanel').classList.add('hidden');
   document.getElementById('statsSection').classList.remove('hidden');
   document.getElementById('annotationSection').classList.remove('hidden');
-  document.getElementById('modeLabel').textContent = annotatorName;
-  currentIndex = 0; showAxis(0); updateStats();
+  document.getElementById('modeLabel').textContent=annotatorName;
+  currentIndex=0; showAxis(0); updateStats();
 }
 
+// ─── Show axis ────────────────────────────────────────────────────────────────
 function showAxis(idx) {
-  if (idx >= AXES.length) { showDone(); return; }
-  const ax = AXES[idx];
-  const words = [ax.socialGroup, ax.randomNoun];
-  document.getElementById('axisIdx').textContent = '#'+(idx+1);
-  document.getElementById('negWord').textContent = ax.negName;
-  document.getElementById('negDef').textContent = ax.negDef;
-  document.getElementById('posWord').textContent = ax.posName;
-  document.getElementById('posDef').textContent = ax.posDef;
-  document.getElementById('pfill').style.width = Math.round((idx/AXES.length)*100)+'%';
-  document.getElementById('plabel').textContent = (idx+1)+' / '+AXES.length;
-  document.getElementById('prevBtn').disabled = idx === 0;
-  const saved = annotations[ax.key] || {};
-  for (let w = 0; w < 2; w++) {
-    const n = w+1, word = words[w];
-    const sv = saved[word] || {};
-    scores[w] = sv.score ?? null;
-    nas[w] = sv.not_applicable ?? false;
-    document.getElementById('word'+n).textContent = word;
-    document.getElementById('q'+n).innerHTML =
-      (w === 0 ? 'Are ' : 'Is ') + '<strong>'+word+'</strong> more <em class="neg-color">'+ax.negName+'</em> or <em class="pos-color">'+ax.posName+'</em>?';
-    document.getElementById('lbl'+n+'a').textContent = ax.negName;
-    document.getElementById('lbl'+n+'b').textContent = ax.posName;
-    document.getElementById('lbl'+n+'c').textContent = ax.negName;
-    document.getElementById('lbl'+n+'d').textContent = ax.posName;
-    document.getElementById('na'+n).checked = nas[w];
-    renderScaleFor(w); renderNAFor(w);
+  if (idx>=AXES.length){showDone();return;}
+  const ax=AXES[idx];
+  document.getElementById('axisIdx').textContent='#'+(idx+1);
+  document.getElementById('negWord').textContent=ax.negName;
+  document.getElementById('negDef').textContent=ax.negDef;
+  document.getElementById('posWord').textContent=ax.posName;
+  document.getElementById('posDef').textContent=ax.posDef;
+  document.getElementById('pfill').style.width=Math.round((idx/AXES.length)*100)+'%';
+  document.getElementById('plabel').textContent=(idx+1)+' / '+AXES.length;
+  document.getElementById('prevBtn').disabled=idx===0;
+
+  const saved=annotations[ax.key]||{};
+
+  // Block 1 – social group (always)
+  scores[0]=saved[ax.socialGroup]?.score??null;
+  nas[0]   =saved[ax.socialGroup]?.not_applicable??false;
+  renderBlock(0, ax.socialGroup, ax);
+
+  // Block 2 – random noun (every Nth axis)
+  const b2=document.getElementById('ratingBlock2');
+  const d2=document.getElementById('dividerNoun');
+  if(ax.randomNoun){
+    b2.classList.remove('hidden'); d2.style.display='';
+    scores[1]=saved[ax.randomNoun]?.score??null;
+    nas[1]   =saved[ax.randomNoun]?.not_applicable??false;
+    renderBlock(1, ax.randomNoun, ax);
+  } else {
+    b2.classList.add('hidden'); d2.style.display='none';
+    scores[1]=null; nas[1]=false;
   }
-  document.getElementById('ratingBlock2').classList.add('hidden');
+
+  // Block 3 – control word (when axis has a mapping)
+  const b3=document.getElementById('ratingBlock3');
+  const d3=document.getElementById('dividerControl');
+  if(ax.controlWord){
+    b3.classList.remove('hidden'); d3.style.display='';
+    scores[2]=saved[ax.controlWord]?.score??null;
+    nas[2]   =saved[ax.controlWord]?.not_applicable??false;
+    renderBlock(2, ax.controlWord, ax);
+  } else {
+    b3.classList.add('hidden'); d3.style.display='none';
+    scores[2]=null; nas[2]=false;
+  }
+
   updateSuggestVisibility(ax);
   document.getElementById('mainCard').classList.remove('hidden');
   document.getElementById('doneMsg').classList.add('hidden');
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
+function renderBlock(w, word, ax) {
+  const n=w+1;
+  const usePlural = word.endsWith('s')||word.includes(' ');
+  document.getElementById('word'+n).textContent=word;
+  document.getElementById('q'+n).innerHTML=
+    (usePlural?'Are ':'Is ')+'<strong>'+word+'</strong> more '+
+    '<em class="neg-color">'+ax.negName+'</em> or '+
+    '<em class="pos-color">'+ax.posName+'</em>?';
+  document.getElementById('lbl'+n+'a').textContent=ax.negName;
+  document.getElementById('lbl'+n+'b').textContent=ax.posName;
+  document.getElementById('lbl'+n+'c').textContent=ax.negName;
+  document.getElementById('lbl'+n+'d').textContent=ax.posName;
+  document.getElementById('na'+n).checked=nas[w];
+  renderScaleFor(w); renderNAFor(w);
+}
+
 function updateSuggestVisibility(ax) {
-  const sugSec = document.getElementById('suggestSection');
-  if (scores[0] === 3 || scores[1] === 3) {
+  const sugSec=document.getElementById('suggestSection');
+  if(scores[0]===3||scores[1]===3||scores[2]===3){
     sugSec.classList.remove('hidden');
-    document.getElementById('sugNegLbl').textContent = ax.negName;
-    document.getElementById('sugPosLbl').textContent = ax.posName;
-    const saved = annotations[ax.key] || {};
-    document.getElementById('sugNeg').value = saved._suggest_neg || '';
-    document.getElementById('sugPos').value = saved._suggest_pos || '';
+    document.getElementById('sugNegLbl').textContent=ax.negName;
+    document.getElementById('sugPosLbl').textContent=ax.posName;
+    const saved=annotations[ax.key]||{};
+    document.getElementById('sugNeg').value=saved._suggest_neg||'';
+    document.getElementById('sugPos').value=saved._suggest_pos||'';
   } else {
     sugSec.classList.add('hidden');
   }
 }
 
-function setScore(w, val) {
-  scores[w] = val; nas[w] = false;
-  document.getElementById('na'+(w+1)).checked = false;
+function setScore(w,val){
+  scores[w]=val; nas[w]=false;
+  document.getElementById('na'+(w+1)).checked=false;
   renderNAFor(w); renderScaleFor(w);
   updateSuggestVisibility(AXES[currentIndex]);
 }
-function toggleNA(w) {
-  nas[w] = document.getElementById('na'+(w+1)).checked;
-  if (nas[w]) scores[w] = null;
+function toggleNA(w){
+  nas[w]=document.getElementById('na'+(w+1)).checked;
+  if(nas[w])scores[w]=null;
   renderNAFor(w); renderScaleFor(w);
   updateSuggestVisibility(AXES[currentIndex]);
 }
-function renderScaleFor(w) {
-  const btns = document.getElementById('btns'+(w+1)).children;
-  for (const b of btns) { const v = parseInt(b.dataset.val); b.className = 'ri-btn'+(v===scores[w]?' a'+v:''); }
+function renderScaleFor(w){
+  const btns=document.getElementById('btns'+(w+1)).children;
+  for(const b of btns){const v=parseInt(b.dataset.val);b.className='ri-btn'+(v===scores[w]?' a'+v:'');}
 }
-function renderNAFor(w) {
-  const n = w+1;
-  document.getElementById('scaleWrap'+n).style.opacity = nas[w]?'.15':'1';
-  document.getElementById('scaleWrap'+n).style.pointerEvents = nas[w]?'none':'';
-  document.getElementById('labels'+n).style.opacity = nas[w]?'.15':'1';
+function renderNAFor(w){
+  const n=w+1;
+  document.getElementById('scaleWrap'+n).style.opacity=nas[w]?'.15':'1';
+  document.getElementById('scaleWrap'+n).style.pointerEvents=nas[w]?'none':'';
+  document.getElementById('labels'+n).style.opacity=nas[w]?'.15':'1';
 }
 
-function saveAndNext() {
-if (!nas[0] && scores[0] === null) { alert('Please rate the word or mark it as "Not applicable".'); return; }
-  const ax = AXES[currentIndex];
-  if (!annotations[ax.key]) annotations[ax.key] = {};
-  const words = [ax.socialGroup, ax.randomNoun];
-  const types = ['social_group','random_noun'];
-  for (let w = 0; w < 2; w++) {
-    annotations[ax.key][words[w]] = { score:scores[w], not_applicable:nas[w], word_type:types[w] };
+// ─── Save & navigate ──────────────────────────────────────────────────────────
+function saveAndNext(){
+  if(!nas[0]&&scores[0]===null){alert('Please rate the social group word or mark it as "Not applicable".');return;}
+  const ax=AXES[currentIndex];
+  if(!annotations[ax.key])annotations[ax.key]={};
+
+  // Social group
+  annotations[ax.key][ax.socialGroup]={score:scores[0],not_applicable:nas[0],word_type:'social_group'};
+
+  // Random noun (if shown)
+  if(ax.randomNoun){
+    annotations[ax.key][ax.randomNoun]={score:scores[1],not_applicable:nas[1],word_type:'random_noun'};
   }
-  annotations[ax.key]._meta = {
-    axis_key:ax.key, pair:ax.pair, negative_pole:ax.negName, positive_pole:ax.posName,
-    social_group:ax.socialGroup, random_noun:ax.randomNoun,
+
+  // Control word (if shown) — store expected score and whether annotator got it right
+  if(ax.controlWord){
+    const correct = nas[2] ? null : (scores[2]===ax.controlExpected);
+    annotations[ax.key][ax.controlWord]={
+      score:scores[2], not_applicable:nas[2],
+      word_type:'control',
+      expected_score:ax.controlExpected,
+      correct
+    };
+  }
+
+  annotations[ax.key]._meta={
+    axis_key:ax.key, pair:ax.pair,
+    negative_pole:ax.negName, positive_pole:ax.posName,
+    social_group:ax.socialGroup,
+    random_noun:ax.randomNoun||null,
+    control_word:ax.controlWord||null,
+    control_expected:ax.controlExpected||null,
     annotator:annotatorName, timestamp:new Date().toISOString()
   };
-  const sugSec = document.getElementById('suggestSection');
-  if (!sugSec.classList.contains('hidden')) {
-    annotations[ax.key]._suggest_neg = document.getElementById('sugNeg').value.trim();
-    annotations[ax.key]._suggest_pos = document.getElementById('sugPos').value.trim();
+
+  const sugSec=document.getElementById('suggestSection');
+  if(!sugSec.classList.contains('hidden')){
+    annotations[ax.key]._suggest_neg=document.getElementById('sugNeg').value.trim();
+    annotations[ax.key]._suggest_pos=document.getElementById('sugPos').value.trim();
   }
+
+  // Build a flat row to send to Google Sheets
+  const am = getMeta();
+  const s = annotations[ax.key];
+  const items = [
+    {word: ax.socialGroup, type: 'social_group', r: s[ax.socialGroup]||{}},
+    ...(ax.randomNoun  ? [{word: ax.randomNoun,  type: 'random_noun', r: s[ax.randomNoun]||{}}]  : []),
+    ...(ax.controlWord ? [{word: ax.controlWord, type: 'control',     r: s[ax.controlWord]||{}}] : []),
+  ];
+  items.forEach(({word, type, r}) => {
+    autoSave({
+      timestamp:       new Date().toISOString(),
+      annotator:       am.name,
+      age:             am.age,
+      mother_tongue:   am.mother_tongue,
+      english_proficiency: am.english_proficiency,
+      axis_key:        ax.key,
+      pair:            ax.pair,
+      negative_pole:   ax.negName,
+      positive_pole:   ax.posName,
+      word,
+      word_type:       type,
+      score:           r.score ?? '',
+      not_applicable:  r.not_applicable ? 'yes' : 'no',
+      expected_score:  type === 'control' ? (ax.controlExpected ?? '') : '',
+      control_correct: type === 'control' ? (r.correct != null ? (r.correct ? 'yes' : 'no') : '') : '',
+      suggest_neg:     s._suggest_neg || '',
+      suggest_pos:     s._suggest_pos || '',
+    });
+  });
   updateStats();
-  if (currentIndex < AXES.length-1) { currentIndex++; showAxis(currentIndex); } else showDone();
+  if(currentIndex<AXES.length-1){currentIndex++;showAxis(currentIndex);}else showDone();
 }
 
-function navigate(dir) { const n=currentIndex+dir; if(n>=0&&n<AXES.length){currentIndex=n;showAxis(n);} }
-function showDone() { document.getElementById('mainCard').classList.add('hidden'); document.getElementById('doneMsg').classList.remove('hidden'); document.getElementById('pfill').style.width='100%'; }
-function updateStats() { const done=Object.keys(annotations).filter(k=>annotations[k]._meta).length; document.getElementById('stDone').textContent=done; document.getElementById('stLeft').textContent=AXES.length-done; }
+function navigate(dir){const n=currentIndex+dir;if(n>=0&&n<AXES.length){currentIndex=n;showAxis(n);}}
+function showDone(){
+  document.getElementById('mainCard').classList.add('hidden');
+  document.getElementById('doneMsg').classList.remove('hidden');
+  document.getElementById('pfill').style.width='100%';
+  autoSave(null);
+}
+function updateStats(){
+  const done=Object.keys(annotations).filter(k=>annotations[k]._meta).length;
+  document.getElementById('stDone').textContent=done;
+  document.getElementById('stLeft').textContent=AXES.length-done;
+}
 
-document.addEventListener('keydown', e => {
-  if (document.getElementById('annotationSection').classList.contains('hidden')) return;
-  if (document.getElementById('mainCard').classList.contains('hidden')) return;
-  if (e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA') return;
-  if (e.key==='Enter'){e.preventDefault();saveAndNext();}
-  if (e.key==='ArrowLeft'){e.preventDefault();navigate(-1);}
-  if (e.key==='ArrowRight'){e.preventDefault();saveAndNext();}
+document.addEventListener('keydown',e=>{
+  if(document.getElementById('annotationSection').classList.contains('hidden'))return;
+  if(document.getElementById('mainCard').classList.contains('hidden'))return;
+  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'||e.target.tagName==='SELECT')return;
+  if(e.key==='Enter'){e.preventDefault();saveAndNext();}
+  if(e.key==='ArrowLeft'){e.preventDefault();navigate(-1);}
+  if(e.key==='ArrowRight'){e.preventDefault();saveAndNext();}
 });
 
-function exportJSON() {
-  const out = { annotator:annotatorName, exported_at:new Date().toISOString(), total_axes:AXES.length,
-    annotations: AXES.map(ax => {
-      const s = annotations[ax.key]||{};
-      return { ...(s._meta||{}), suggest_neg:s._suggest_neg||null, suggest_pos:s._suggest_pos||null,
-        ratings:{ [ax.socialGroup]:s[ax.socialGroup]||{score:null,not_applicable:null,word_type:'social_group'},
-                  [ax.randomNoun]:s[ax.randomNoun]||{score:null,not_applicable:null,word_type:'random_noun'} } };
-    }) };
+// ─── Export ───────────────────────────────────────────────────────────────────
+const getMeta=()=>({name:annotatorName,age:annotatorAge,mother_tongue:annotatorLang,english_proficiency:annotatorEng});
+
+function exportJSON(){
+  const out={
+    annotator:getMeta(), exported_at:new Date().toISOString(), total_axes:AXES.length,
+    annotations:AXES.map(ax=>{
+      const s=annotations[ax.key]||{};
+      const entry={...(s._meta||{}),suggest_neg:s._suggest_neg||null,suggest_pos:s._suggest_pos||null,ratings:{}};
+      entry.ratings[ax.socialGroup]=s[ax.socialGroup]||{score:null,not_applicable:null,word_type:'social_group'};
+      if(ax.randomNoun)  entry.ratings[ax.randomNoun] =s[ax.randomNoun] ||{score:null,not_applicable:null,word_type:'random_noun'};
+      if(ax.controlWord) entry.ratings[ax.controlWord]=s[ax.controlWord]||{score:null,not_applicable:null,word_type:'control',expected_score:ax.controlExpected};
+      return entry;
+    })
+  };
   dl('annotations_'+annotatorName.replace(/\s+/g,'_')+'.json',JSON.stringify(out,null,2),'application/json');
   showExportAlert('JSON downloaded.');
 }
-function exportCSV() {
-  const cols=['axis_key','pair','negative_pole','positive_pole','word','word_type','score','not_applicable','suggest_neg','suggest_pos','annotator','timestamp'];
+
+function exportCSV(){
+  const cols=['axis_key','pair','negative_pole','positive_pole','word','word_type',
+              'score','not_applicable','expected_score','control_correct',
+              'suggest_neg','suggest_pos','annotator','age','mother_tongue','english_proficiency','timestamp'];
   const rows=[];
-  AXES.forEach(ax=>{const s=annotations[ax.key]||{};const m=s._meta||{};
-    [ax.socialGroup,ax.randomNoun].forEach((word,i)=>{const r=s[word]||{};
-      rows.push({axis_key:ax.key,pair:ax.pair,negative_pole:ax.negName,positive_pole:ax.posName,
-        word,word_type:i===0?'social_group':'random_noun',score:r.score??'',
+  const am=getMeta();
+  AXES.forEach(ax=>{
+    const s=annotations[ax.key]||{},m=s._meta||{};
+    const items=[
+      {word:ax.socialGroup, type:'social_group'},
+      ...(ax.randomNoun  ?[{word:ax.randomNoun,  type:'random_noun'}]:[]),
+      ...(ax.controlWord ?[{word:ax.controlWord, type:'control'}]    :[]),
+    ];
+    items.forEach(({word,type})=>{
+      const r=s[word]||{};
+      rows.push({
+        axis_key:ax.key,pair:ax.pair,negative_pole:ax.negName,positive_pole:ax.posName,
+        word,word_type:type,score:r.score??'',
         not_applicable:r.not_applicable?'yes':(r.not_applicable===false?'no':''),
+        expected_score:type==='control'?(ax.controlExpected??''):'',
+        control_correct:type==='control'?(r.correct!=null?(r.correct?'yes':'no'):''):'',
         suggest_neg:s._suggest_neg||'',suggest_pos:s._suggest_pos||'',
-        annotator:m.annotator||'',timestamp:m.timestamp||''});});});
+        annotator:am.name,age:am.age,mother_tongue:am.mother_tongue,english_proficiency:am.english_proficiency,
+        timestamp:m.timestamp||''
+      });
+    });
+  });
   const csv=[cols.join(','),...rows.map(r=>cols.map(c=>'"'+String(r[c]??'').replace(/"/g,'""')+'"').join(','))].join('\n');
   dl('annotations_'+annotatorName.replace(/\s+/g,'_')+'.csv',csv,'text/csv');
   showExportAlert('CSV downloaded.');
 }
+
 function dl(n,c,t){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([c],{type:t}));a.download=n;a.click();}
 function showExportAlert(m){const e=document.getElementById('exportAlert');e.innerHTML='<span class="alert-msg">'+m+'</span>';setTimeout(()=>e.innerHTML='',3500);}
 </script>
