@@ -151,8 +151,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     </div>
     <div class="warn-note">
       <strong>Important:</strong> Please complete the annotation <strong>in one sitting</strong> without interruption. Taking breaks may shift your perspective and affect consistency.<br><br>
-      Please make sure you are <strong>connected to the internet</strong> before starting — your responses are saved automatically to our server after each question. If you lose connection, responses will be queued and sent as soon as you reconnect.<br><br>
-      As an extra safety measure, a CSV and JSON file will be <strong>downloaded automatically to your device</strong> when you finish. Please <strong>send both files back to us</strong> by email after completing the annotation.
+      A CSV file will be <strong>downloaded automatically to your device</strong> when you finish. Please <strong>send this file back to us</strong> by email after completing the annotation.
     </div>
     <div style="padding:0 1.5rem 1.5rem">
       <div class="field">
@@ -267,11 +266,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       </div>
     </div>
 
-    <div class="done-state hidden" id="doneMsg">✓ All done! A CSV and JSON file have been downloaded to your device — please send both files back to us by email. Thank you!</div>
+    <div class="done-state hidden" id="doneMsg">✓ All done! A CSV file has been downloaded to your device — please send it back to us by email. Thank you!</div>
     <div class="export-bar">
       <span>Export annotations</span>
       <div class="btn-row">
-        <button class="btn btn-sm" onclick="exportJSON()">Download JSON</button>
         <button class="btn btn-sm" onclick="exportCSV()">Download CSV</button>
       </div>
     </div>
