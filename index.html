@@ -182,7 +182,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     <div class="setup-section-title">English proficiency</div>
     <div style="padding:0 1.5rem .5rem">
       <div class="field">
-        <label>Self-rated English level (CEFR)</label>
+        <label>Self-rated English level</label>
         <select id="annotatorEng">
           <option value="">— select —</option>
           <option value="1_A1">1 – A1 (Beginner)</option>
@@ -191,7 +191,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
           <option value="4_B2">4 – B2 (Upper-intermediate)</option>
           <option value="5_C1C2">5 – C1/C2 (Fluent / Native)</option>
         </select>
-        <div style="font-size:12px;color:var(--text3);margin-top:5px;line-height:1.5">A1 = beginner · A2 = elementary · B1 = intermediate · B2 = upper-intermediate · C1/C2 = fluent or native-level</div>
       </div>
     </div>
 
@@ -213,8 +212,20 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
         </select>
       </div>
       <div class="field">
-        <label>Field of study or professional background <span style="font-weight:400;color:var(--text3)">(please describe in your own words)</span></label>
-        <textarea id="annotatorBackground" placeholder="e.g. I studied linguistics at university and work as a translator. / I have a background in engineering and have lived in three different countries."></textarea>
+        <label>Field of study or professional background</label>
+        <select id="annotatorBackground">
+          <option value="">— select —</option>
+          <option value="arts_humanities">Arts &amp; Humanities</option>
+          <option value="social_sciences">Social Sciences</option>
+          <option value="languages_linguistics">Languages &amp; Linguistics</option>
+          <option value="education">Education</option>
+          <option value="business_economics">Business &amp; Economics</option>
+          <option value="law">Law</option>
+          <option value="stem">STEM (Science, Technology, Engineering, Math)</option>
+          <option value="medicine_health">Medicine &amp; Health</option>
+          <option value="trades_vocational">Trades &amp; Vocational</option>
+          <option value="other">Other</option>
+        </select>
       </div>
       <div class="btn-row" style="margin-top:4px">
         <button class="btn btn-primary" onclick="startSession()">Start annotating →</button>
