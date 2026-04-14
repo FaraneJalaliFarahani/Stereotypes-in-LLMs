@@ -151,7 +151,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     </div>
     <div class="warn-note">
       <strong>Important:</strong> Please complete the annotation <strong>in one sitting</strong> without interruption. Taking breaks may shift your perspective and affect consistency.<br><br>
-       CSV and JSON files will be <strong>downloaded automatically to your device</strong> when you finish. Please <strong>send both files back to us</strong> by email after completing the annotation.
+      Please make sure you are <strong>connected to the internet</strong> before starting — your responses are saved automatically to our server after each question. If you lose connection, responses will be queued and sent as soon as you reconnect.<br><br>
+      As an extra safety measure, a CSV and JSON file will be <strong>downloaded automatically to your device</strong> when you finish. Please <strong>send both files back to us</strong> by email after completing the annotation.
     </div>
     <div style="padding:0 1.5rem 1.5rem">
       <div class="field">
@@ -285,8 +286,8 @@ const CONTROL_MAP = {
   'smart|stupid':          { word: 'Albert Einstein', expected: 1 },
   'painless|painful':      { word: 'bruise',          expected: 5 },
   'painful|painless':      { word: 'bruise',          expected: 1 },
-  'sad|glad':              { word: 'funeral',         expected: 1 },
-  'glad|sad':              { word: 'funeral',         expected: 5 },
+  'tasteless|tasty':       { word: 'ice cream',       expected: 5 },
+  'tasty|tasteless':       { word: 'ice cream',       expected: 1 },
   'weak|strong':           { word: 'bodybuilder',     expected: 5 },
   'strong|weak':           { word: 'bodybuilder',     expected: 1 },
   'nonviolent|violent':    { word: 'war',             expected: 5 },
@@ -301,8 +302,8 @@ const CONTROL_MAP = {
   'wet|dry':               { word: 'desert',          expected: 5 },
   'irreligious|religious': { word: 'atheist',         expected: 1 },
   'religious|irreligious': { word: 'atheist',         expected: 5 },
-  'poor|rich':             { word: 'yacht',           expected: 5 },
-  'rich|poor':             { word: 'yacht',           expected: 1 },
+  'poor|rich':             { word: 'Elon Musk',       expected: 5 },
+  'rich|poor':             { word: 'Elon Musk',       expected: 1 },
 };
 
 function getControl(ax) {
@@ -618,9 +619,8 @@ function showDone(){
   document.getElementById('doneMsg').classList.remove('hidden');
   document.getElementById('pfill').style.width='100%';
   autoSave(null);
-  // Auto-download both CSV and JSON as safety backup
+  // Auto-download CSV as safety backup
   exportCSV(true);
-  exportJSON(true);
 }
 
 function updateStats(){
