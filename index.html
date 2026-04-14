@@ -151,7 +151,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     </div>
     <div class="warn-note">
       <strong>Important:</strong> Please complete the annotation <strong>in one sitting</strong> without interruption. Taking breaks may shift your perspective and affect consistency.<br><br>
-      A CSV file will be <strong>downloaded automatically to your device</strong> when you finish. Please <strong>send this file back to us</strong> by email after completing the annotation.
+      Please make sure you are <strong>connected to the internet</strong> before starting — your responses are saved automatically to our server after each question. If you lose connection, responses will be queued and sent as soon as you reconnect.<br><br>
+      As an extra safety measure, a CSV file will be <strong>downloaded automatically to your device</strong> when you finish. Please <strong>send this file back to us</strong> by email after completing the annotation.
     </div>
     <div style="padding:0 1.5rem 1.5rem">
       <div class="field">
@@ -266,7 +267,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       </div>
     </div>
 
-    <div class="done-state hidden" id="doneMsg">✓ All done! A CSV file has been downloaded to your device — please send it back to us by email. Thank you!</div>
+    <div class="done-state hidden" id="doneMsg">✓ All done! A CSV and JSON file have been downloaded to your device — please send both files back to us by email. Thank you!</div>
     <div class="export-bar">
       <span>Export annotations</span>
       <div class="btn-row">
@@ -285,8 +286,8 @@ const CONTROL_MAP = {
   'smart|stupid':          { word: 'Albert Einstein', expected: 1 },
   'painless|painful':      { word: 'bruise',          expected: 5 },
   'painful|painless':      { word: 'bruise',          expected: 1 },
-  'tasteless|tasty':       { word: 'ice cream',         expected: 5 },
-  'tasty|tasteless':       { word: 'ice cream',         expected: 1 },
+  'sad|glad':              { word: 'funeral',         expected: 1 },
+  'glad|sad':              { word: 'funeral',         expected: 5 },
   'weak|strong':           { word: 'bodybuilder',     expected: 5 },
   'strong|weak':           { word: 'bodybuilder',     expected: 1 },
   'nonviolent|violent':    { word: 'war',             expected: 5 },
@@ -301,8 +302,8 @@ const CONTROL_MAP = {
   'wet|dry':               { word: 'desert',          expected: 5 },
   'irreligious|religious': { word: 'atheist',         expected: 1 },
   'religious|irreligious': { word: 'atheist',         expected: 5 },
-  'poor|rich':             { word: 'Elon Musk',           expected: 5 },
-  'rich|poor':             { word: 'Elon Musk',           expected: 1 },
+  'poor|rich':             { word: 'yacht',           expected: 5 },
+  'rich|poor':             { word: 'yacht',           expected: 1 },
 };
 
 function getControl(ax) {
@@ -334,7 +335,7 @@ let annotatorName='', annotatorAge='', annotatorLang='', annotatorEng='';
 let scores = [null,null,null], nas = [false,false,false];
 
 // ─── Google Sheets + retry queue ─────────────────────────────────────────────
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzAIRn-oVmT0kU4HbbHJUAeDZxCFfndUA8AqRXsveNYC_ahxTC169D0GQjPs1wLqxWAkw/exec';
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyn78eo6HmbAQ8WjOAhTs6-0wK4PFfupWiRLxIC_0lQ-FiBRf6AVae8YlS7jLxxn6jfUg/exec';
 let retryQueue = [];
 
 function sendToSheet(rowData) {
@@ -556,7 +557,7 @@ function renderNAFor(w){
 
 // ─── Save & navigate ──────────────────────────────────────────────────────────
 function saveAndNext(){
-  if(!nas[0]&&scores[0]===null){alert('Please rate the word or mark it as "Not applicable".');return;}
+  if(!nas[0]&&scores[0]===null){alert('Please rate the social group word or mark it as "Not applicable".');return;}
   const ax=AXES[currentIndex];
   if(!annotations[ax.key])annotations[ax.key]={};
 
@@ -618,8 +619,9 @@ function showDone(){
   document.getElementById('doneMsg').classList.remove('hidden');
   document.getElementById('pfill').style.width='100%';
   autoSave(null);
-  // Auto-download CSV as safety backup
+  // Auto-download both CSV and JSON as safety backup
   exportCSV(true);
+  exportJSON(true);
 }
 
 function updateStats(){
@@ -640,7 +642,7 @@ document.addEventListener('keydown',e=>{
 // ─── Export ───────────────────────────────────────────────────────────────────
 const getMeta=()=>({name:annotatorName,age:annotatorAge,mother_tongue:annotatorLang,english_proficiency:annotatorEng});
 
-function exportJSON(){
+function exportJSON(silent){
   const out={
     annotator:getMeta(), exported_at:new Date().toISOString(), total_axes:AXES.length,
     annotations:AXES.map(ax=>{
@@ -652,7 +654,7 @@ function exportJSON(){
     })
   };
   dl('annotations_'+annotatorName.replace(/\s+/g,'_')+'.json',JSON.stringify(out,null,2),'application/json');
-  showExportAlert('JSON downloaded.');
+  if(!silent) showExportAlert('JSON downloaded.');
 }
 
 function exportCSV(silent){
