@@ -91,6 +91,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 }
 .ri-labels{display:flex;justify-content:center;gap:6px;margin-top:3px}
 .ri-labels span{width:60px;text-align:center;font-size:10px;color:var(--text3);line-height:1.3}
+.ri-labels span:first-child{color:var(--neg-tx);font-weight:600}
+.ri-labels span:last-child{color:var(--pos-tx);font-weight:600}
 .ri-na{display:flex;align-items:center;gap:8px;margin-top:14px}
 .ri-na input{width:17px;height:17px;accent-color:var(--accent);cursor:pointer}
 .ri-na label{font-size:13px;color:var(--text2);cursor:pointer}
@@ -257,8 +259,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       <!-- Single rating block (reused for social group and control word) -->
       <div class="rating-section" id="ratingBlock">
         
-        <div class="ri-word" id="rWord">—</div>
-        <div class="ri-question" id="rQ">—</div>
+        <div class="ri-word" id="rWord"></div>
+        <div class="ri-question" id="rQ"></div>
         <div class="ri-scale" id="rScaleWrap">
           <div class="ri-btns" id="rBtns">
             <button class="ri-btn" data-val="1" onclick="setScore(1)">1</button>
@@ -654,7 +656,10 @@ function saveAndNext(){
   }
 
   updateStats();
-  if(currentIndex>=AXES.length){showDone();}else{showStep();}
+  if(currentIndex>=AXES.length){
+    // Brief delay so user sees the save completed before done screen
+    setTimeout(showDone, 150);
+  }else{showStep();}
 }
 
 function navigateBack(){
