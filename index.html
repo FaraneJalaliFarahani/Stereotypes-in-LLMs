@@ -432,8 +432,8 @@ async function loadPairs(){
     AXES=Object.entries(EMBEDDED_DATA).map(([k,v])=>parseEntry(k,v));
     if(!AXES.length)throw new Error('No axes found.');
     assignWords(AXES);
-    document.getElementById('stTotal').textContent=AXES.length;
-    document.getElementById('stLeft').textContent=AXES.length;
+document.getElementById('stTotal').textContent = totalPages();
+document.getElementById('stLeft').textContent = totalPages();
     document.getElementById('setupPanel').classList.remove('hidden');
   }catch(err){
     console.error('Failed to load axes:',err);
