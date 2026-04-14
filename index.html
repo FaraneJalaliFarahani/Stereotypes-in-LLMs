@@ -124,7 +124,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 /* Control word step indicator */
 .control-notice{font-size:12px;font-family:var(--mono);color:var(--ctrl-tx);background:var(--ctrl-bg);border:1px solid var(--ctrl-bdr);border-radius:var(--r);padding:6px 12px;display:inline-flex;align-items:center;gap:6px;margin-bottom:12px}
 /* Section divider in setup */
-.setup-section-title{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);padding:0 1.5rem;margin:1.25rem 0 .5rem;font-family:var(--mono)}
+.setup-section-title{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);padding:0 1.5rem;margin:.5rem 0 .25rem;font-family:var(--mono)}
 @media(max-width:540px){
   .axis-defs{grid-template-columns:1fr}
   .suggest-grid{grid-template-columns:1fr}
@@ -163,9 +163,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
     <!-- Personal info -->
     <div class="setup-section-title">Personal information</div>
-    <div style="padding:0 1.5rem .5rem">
-      <div class="field">
-        <label>Your name</label>
+    <div style="padding:0 1.5rem 0">
         <input type="text" id="annotatorName" placeholder="e.g. Alice" />
       </div>
       <div class="field">
@@ -180,7 +178,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
     <!-- English proficiency -->
     <div class="setup-section-title">English proficiency</div>
-    <div style="padding:0 1.5rem .5rem">
+    <div style="padding:0 1.5rem 0">
       <div class="field">
         <label>Self-rated English level</label>
         <select id="annotatorEng">
