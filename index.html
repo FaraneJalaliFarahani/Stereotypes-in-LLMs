@@ -323,7 +323,11 @@ const CONTROL_MAP = {
 };
 
 function getControl(ax) {
-  const key = (ax.negName + '|' + ax.posName).toLowerCase();
+  // Strip .a.01 suffixes and normalize to lowercase for robust matching
+  function norm(w) {
+    return w.replace(/\.a\.\d+$/i, '').replace(/[-\s]+/g, '-').trim().toLowerCase();
+  }
+  const key = norm(ax.negName) + '|' + norm(ax.posName);
   return CONTROL_MAP[key] || null;
 }
 
