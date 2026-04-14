@@ -67,8 +67,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .axis-def.pos .def-word{color:var(--pos-tx)}
 .def-text{font-size:12px;color:var(--text2);margin-top:3px;line-height:1.5}
 .rating-section{padding:1.5rem}
-.rating-section.control-block{background:var(--ctrl-bg);border-top:2px solid var(--ctrl-bdr)}
-.control-badge{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--ctrl-tx);background:var(--ctrl-bg);border:1px solid var(--ctrl-bdr);border-radius:20px;padding:2px 10px;margin-bottom:10px}
+.rating-section.control-block{}
+.control-badge{display:none}
 .ri-word{font-size:20px;font-weight:700;margin-bottom:6px}
 .ri-question{font-size:15px;color:var(--text2);margin-bottom:16px;line-height:1.5}
 .ri-question em{font-style:normal;font-weight:600}
@@ -298,38 +298,28 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 // ─── Control word mappings ────────────────────────────────────────────────────
 // Key = "negName|posName" lowercased. expected = correct score (1=neg pole, 5=pos pole).
 const CONTROL_MAP = {
-  // The axis negName is score-1 pole, posName is score-5 pole.
-  // violent|nonviolent: war → very violent → score 5 on the pos side?
-  // Wait: neg=violent(1), pos=nonviolent(5). War is violent → score 1.
-  'violent|nonviolent':       { word: 'war',              expected: 1 },
-  'nonviolent|violent':       { word: 'war',              expected: 5 },
-  // fast|slow: neg=fast(1), pos=slow(5). Snail is slow → score 5.
-  'fast|slow':                { word: 'snail',            expected: 5 },
-  'slow|fast':                { word: 'snail',            expected: 1 },
-  // painful|painless: neg=painful(1), pos=painless(5). Bruise is painful → score 1.
-  'painful|painless':         { word: 'bruise',           expected: 1 },
-  'painless|painful':         { word: 'bruise',           expected: 5 },
-  // wet|dry: neg=wet(1), pos=dry(5). Desert is dry → score 5.
-  'wet|dry':                  { word: 'desert',           expected: 5 },
-  'dry|wet':                  { word: 'desert',           expected: 1 },
-  // rich|poor: neg=rich(1), pos=poor(5). Billionaire is rich → score 1.
-  'rich|poor':                { word: 'billionaire',      expected: 1 },
-  'poor|rich':                { word: 'billionaire',      expected: 5 },
-  // old|young: neg=old(1), pos=young(5). Grandfather is old → score 1.
-  'old|young':                { word: 'grandfather',      expected: 1 },
-  'young|old':                { word: 'grandfather',      expected: 5 },
-  // large|small: neg=large(1), pos=small(5). Ant is small → score 5.
-  'large|small':              { word: 'ant',              expected: 5 },
-  'small|large':              { word: 'ant',              expected: 1 },
-  // lower-class|upper-class: neg=lower-class(1), pos=upper-class(5). Royal family → score 5.
-  'lower-class|upper-class':  { word: 'royal family',     expected: 5 },
-  'upper-class|lower-class':  { word: 'royal family',     expected: 1 },
-  // intelligent|unintelligent: neg=intelligent(1), pos=unintelligent(5). Einstein → score 1.
-  'intelligent|unintelligent':{ word: 'Albert Einstein',  expected: 1 },
-  'unintelligent|intelligent':{ word: 'Albert Einstein',  expected: 5 },
-  // high-rise|low-rise: neg=high-rise(1), pos=low-rise(5). Burj Khalifa → score 1.
-  'high-rise|low-rise':       { word: 'Burj Khalifa',     expected: 1 },
-  'low-rise|high-rise':       { word: 'Burj Khalifa',     expected: 5 },
+  'stupid|smart':          { word: 'Albert Einstein', expected: 5 },
+  'smart|stupid':          { word: 'Albert Einstein', expected: 1 },
+  'painless|painful':      { word: 'bruise',          expected: 5 },
+  'painful|painless':      { word: 'bruise',          expected: 1 },
+  'sad|glad':              { word: 'funeral',         expected: 1 },
+  'glad|sad':              { word: 'funeral',         expected: 5 },
+  'weak|strong':           { word: 'bodybuilder',     expected: 5 },
+  'strong|weak':           { word: 'bodybuilder',     expected: 1 },
+  'nonviolent|violent':    { word: 'war',             expected: 5 },
+  'violent|nonviolent':    { word: 'war',             expected: 1 },
+  'noisy|quiet':           { word: 'stadium',         expected: 1 },
+  'quiet|noisy':           { word: 'stadium',         expected: 5 },
+  'careless|careful':      { word: 'surgeon',         expected: 5 },
+  'careful|careless':      { word: 'surgeon',         expected: 1 },
+  'small|large':           { word: 'ant',             expected: 1 },
+  'large|small':           { word: 'ant',             expected: 5 },
+  'dry|wet':               { word: 'desert',          expected: 1 },
+  'wet|dry':               { word: 'desert',          expected: 5 },
+  'irreligious|religious': { word: 'atheist',         expected: 1 },
+  'religious|irreligious': { word: 'atheist',         expected: 5 },
+  'poor|rich':             { word: 'yacht',           expected: 5 },
+  'rich|poor':             { word: 'yacht',           expected: 1 },
 };
 
 function getControl(ax) {
@@ -367,7 +357,7 @@ let annotatorName='', annotatorAge='', annotatorLang='', annotatorEng='';
 let scores = [null,null,null], nas = [false,false,false];
 
 // ─── Auto-save ────────────────────────────────────────────────────────────────
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyy5_Mpelvkyurki5JqyN6o4r1EUWixsPnH2WczPvGylk7MkkZDkf9NPgHNCuBk8ltK/exec';
+const SHEET_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
 
 function autoSave(rowData) {
   try {
@@ -377,12 +367,13 @@ function autoSave(rowData) {
     }));
   } catch(e) {}
   if (!rowData || !SHEET_URL || SHEET_URL === 'YOUR_APPS_SCRIPT_URL_HERE') return;
-  fetch(SHEET_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(rowData)
-  }).catch(e => console.warn('Sheet save failed:', e));
+  // Apps Script requires data as URL parameter (GET) to avoid CORS preflight issues
+  const encoded = encodeURIComponent(JSON.stringify(rowData));
+  fetch(SHEET_URL + '?data=' + encoded, {
+    method: 'GET',
+  }).then(r => r.json())
+    .then(d => { if(d.status !== 'ok') console.warn('Sheet error:', d); })
+    .catch(e => console.warn('Sheet save failed:', e));
 }
 
 // ─── Parse ────────────────────────────────────────────────────────────────────
