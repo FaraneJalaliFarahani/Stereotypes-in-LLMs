@@ -50,12 +50,16 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .btn-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .field{margin-bottom:14px}
 .field label{display:block;font-size:13px;color:var(--text2);margin-bottom:5px;font-weight:500}
-.field input,.field select{width:100%;max-width:320px;padding:9px 12px;font-size:14px;font-family:var(--font);background:var(--bg-card);color:var(--text);border:1px solid var(--bdr-md);border-radius:var(--r);outline:none}
-.field input:focus,.field select:focus{border-color:var(--accent)}
+.field input,.field select,.field textarea{width:100%;max-width:420px;padding:9px 12px;font-size:14px;font-family:var(--font);background:var(--bg-card);color:var(--text);border:1px solid var(--bdr-md);border-radius:var(--r);outline:none}
+.field textarea{resize:vertical;min-height:70px;max-width:100%}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent)}
+.field input[style*="max-width:120px"]{max-width:120px}
 .progress-row{display:flex;align-items:center;gap:12px;padding:.85rem 1.5rem;border-bottom:1px solid var(--bdr);background:var(--bg-sec)}
 .ptrack{flex:1;height:4px;background:var(--bg-tri);border-radius:2px;overflow:hidden}
 .pfill{height:100%;background:var(--accent);border-radius:2px;transition:width .3s ease}
 .plabel{font-family:var(--mono);font-size:12px;color:var(--text2);white-space:nowrap}
+/* Step sub-label inside progress */
+.step-badge{font-family:var(--mono);font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid var(--bdr-md);background:var(--bg-card);color:var(--text3);margin-left:4px}
 .axis-header{padding:1.25rem 1.5rem;border-bottom:1px solid var(--bdr)}
 .axis-label{font-family:var(--mono);font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
 .axis-defs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
@@ -67,8 +71,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .axis-def.pos .def-word{color:var(--pos-tx)}
 .def-text{font-size:12px;color:var(--text2);margin-top:3px;line-height:1.5}
 .rating-section{padding:1.5rem}
-.rating-section.control-block{}
-.control-badge{display:none}
 .ri-word{font-size:20px;font-weight:700;margin-bottom:6px}
 .ri-question{font-size:15px;color:var(--text2);margin-bottom:16px;line-height:1.5}
 .ri-question em{font-style:normal;font-weight:600}
@@ -119,6 +121,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .done-state{text-align:center;padding:3rem 1rem;color:var(--text2);font-size:15px}
 .err-text{font-size:13px;color:var(--err-tx);margin-top:8px}
 .divider{border-top:1px solid var(--bdr)}
+/* Control word step indicator */
+.control-notice{font-size:12px;font-family:var(--mono);color:var(--ctrl-tx);background:var(--ctrl-bg);border:1px solid var(--ctrl-bdr);border-radius:var(--r);padding:6px 12px;display:inline-flex;align-items:center;gap:6px;margin-bottom:12px}
+/* Section divider in setup */
+.setup-section-title{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);padding:0 1.5rem;margin:1.25rem 0 .5rem;font-family:var(--mono)}
 @media(max-width:540px){
   .axis-defs{grid-template-columns:1fr}
   .suggest-grid{grid-template-columns:1fr}
@@ -137,10 +143,11 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
     <span class="tag" id="modeLabel">Ready</span>
   </div>
 
+  <!-- ═══════════════════════════════ SETUP PANEL ═══════════════════════════ -->
   <div class="card" id="setupPanel">
     <div class="inst-block">
       <h3>Instructions</h3>
-      <p>You will see <strong>antonym pairs</strong> (two opposite adjectives). For each pair, you will rate <strong>one or more words</strong> on a 1–5 scale between the two adjectives. Sometimes you will be asked to rate a second word on the same scale.</p>
+      <p>You will see <strong>antonym pairs</strong> (two opposite adjectives). For each pair, you will rate <strong>one word per page</strong> on a 1–5 scale between the two adjectives.</p>
       <div class="inst-example">
         <div class="ex-label">Example</div>
         <p>Antonym pair: <strong>poor ↔ rich</strong></p>
@@ -153,7 +160,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       <strong>Important:</strong> Please complete the annotation <strong>in one sitting</strong> without interruption. Taking breaks may shift your perspective and affect consistency.<br><br>
       A CSV file will be <strong>downloaded automatically to your device</strong> when you finish. Please <strong>send this file back to us</strong> by email after completing the annotation.
     </div>
-    <div style="padding:0 1.5rem 1.5rem">
+
+    <!-- Personal info -->
+    <div class="setup-section-title">Personal information</div>
+    <div style="padding:0 1.5rem .5rem">
       <div class="field">
         <label>Your name</label>
         <input type="text" id="annotatorName" placeholder="e.g. Alice" />
@@ -166,37 +176,69 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
         <label>Mother tongue</label>
         <input type="text" id="annotatorLang" placeholder="e.g. German" />
       </div>
+    </div>
+
+    <!-- English proficiency -->
+    <div class="setup-section-title">English proficiency</div>
+    <div style="padding:0 1.5rem .5rem">
       <div class="field">
-        <label>English proficiency (self-rated)</label>
+        <label>Self-rated English level (CEFR)</label>
         <select id="annotatorEng">
           <option value="">— select —</option>
-          <option value="1">1 – Beginner</option>
-          <option value="2">2 – Elementary</option>
-          <option value="3">3 – Intermediate</option>
-          <option value="4">4 – Upper-intermediate</option>
-          <option value="5">5 – Fluent / Native</option>
+          <option value="1_A1">1 – A1 (Beginner)</option>
+          <option value="2_A2">2 – A2 (Elementary)</option>
+          <option value="3_B1">3 – B1 (Intermediate)</option>
+          <option value="4_B2">4 – B2 (Upper-intermediate)</option>
+          <option value="5_C1C2">5 – C1/C2 (Fluent / Native)</option>
+        </select>
+        <div style="font-size:12px;color:var(--text3);margin-top:5px;line-height:1.5">A1 = beginner · A2 = elementary · B1 = intermediate · B2 = upper-intermediate · C1/C2 = fluent or native-level</div>
+      </div>
+    </div>
+
+    <!-- Education & background -->
+    <div class="setup-section-title">Education &amp; background</div>
+    <div style="padding:0 1.5rem 1.5rem">
+      <div class="field">
+        <label>Highest level of education completed</label>
+        <select id="annotatorEdu">
+          <option value="">— select —</option>
+          <option value="no_formal">No formal education</option>
+          <option value="primary">Primary school</option>
+          <option value="secondary">Secondary / High school</option>
+          <option value="vocational">Vocational / Trade qualification</option>
+          <option value="bachelor">Bachelor's degree</option>
+          <option value="master">Master's degree</option>
+          <option value="phd">Doctorate / PhD</option>
+          <option value="other">Other</option>
         </select>
       </div>
-      <div class="btn-row">
+      <div class="field">
+        <label>Field of study or professional background <span style="font-weight:400;color:var(--text3)">(please describe in your own words)</span></label>
+        <textarea id="annotatorBackground" placeholder="e.g. I studied linguistics at university and work as a translator. / I have a background in engineering and have lived in three different countries."></textarea>
+      </div>
+      <div class="btn-row" style="margin-top:4px">
         <button class="btn btn-primary" onclick="startSession()">Start annotating →</button>
       </div>
       <div class="err-text" id="setupErr"></div>
     </div>
   </div>
 
+  <!-- ═══════════════════════════════ STATS ════════════════════════════════ -->
   <div id="statsSection" class="hidden">
     <div class="stats-row">
-      <div class="stat"><div class="sv" id="stTotal">—</div><div class="sl">Questions</div></div>
+      <div class="stat"><div class="sv" id="stTotal">—</div><div class="sl">Axes</div></div>
       <div class="stat"><div class="sv" id="stDone">0</div><div class="sl">Done</div></div>
       <div class="stat"><div class="sv" id="stLeft">—</div><div class="sl">Remaining</div></div>
     </div>
   </div>
 
+  <!-- ═══════════════════════════════ ANNOTATION ═══════════════════════════ -->
   <div id="annotationSection" class="hidden">
     <div class="card" id="mainCard">
       <div class="progress-row">
         <div class="ptrack"><div class="pfill" id="pfill" style="width:0%"></div></div>
         <span class="plabel" id="plabel">— / —</span>
+        <span class="step-badge" id="stepBadge">step 1/2</span>
       </div>
       <div class="axis-header">
         <div class="axis-label">Antonym Pair <span id="axisIdx"></span></div>
@@ -206,44 +248,28 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
         </div>
       </div>
 
-      <!-- Block 1: Social group (always shown) -->
-      <div class="rating-section" id="ratingBlock1">
-        <div class="ri-word" id="word1">—</div>
-        <div class="ri-question" id="q1">—</div>
-        <div class="ri-scale" id="scaleWrap1">
-          <div class="ri-btns" id="btns1">
-            <button class="ri-btn" data-val="1" onclick="setScore(0,1)">1</button>
-            <button class="ri-btn" data-val="2" onclick="setScore(0,2)">2</button>
-            <button class="ri-btn" data-val="3" onclick="setScore(0,3)">3</button>
-            <button class="ri-btn" data-val="4" onclick="setScore(0,4)">4</button>
-            <button class="ri-btn" data-val="5" onclick="setScore(0,5)">5</button>
+      <!-- Single rating block (reused for social group and control word) -->
+      <div class="rating-section" id="ratingBlock">
+        <div id="controlNotice" class="control-notice hidden">🎯 Control item</div>
+        <div class="ri-word" id="rWord">—</div>
+        <div class="ri-question" id="rQ">—</div>
+        <div class="ri-scale" id="rScaleWrap">
+          <div class="ri-btns" id="rBtns">
+            <button class="ri-btn" data-val="1" onclick="setScore(1)">1</button>
+            <button class="ri-btn" data-val="2" onclick="setScore(2)">2</button>
+            <button class="ri-btn" data-val="3" onclick="setScore(3)">3</button>
+            <button class="ri-btn" data-val="4" onclick="setScore(4)">4</button>
+            <button class="ri-btn" data-val="5" onclick="setScore(5)">5</button>
           </div>
         </div>
-        <div class="ri-labels" id="labels1">
-          <span id="lbl1a">—</span><span>somewhat <span id="lbl1c">—</span></span><span>neutral</span><span>somewhat <span id="lbl1d">—</span></span><span id="lbl1b">—</span>
+        <div class="ri-labels" id="rLabels">
+          <span id="lblA">—</span>
+          <span>somewhat <span id="lblC">—</span></span>
+          <span>neutral</span>
+          <span>somewhat <span id="lblD">—</span></span>
+          <span id="lblB">—</span>
         </div>
-        <div class="ri-na"><input type="checkbox" id="na1" onchange="toggleNA(0)"><label for="na1">Not applicable</label></div>
-      </div>
-
-      <!-- Block 3: Control word (shown only when axis has a control mapping) -->
-      <div class="divider" id="dividerControl" style="display:none"></div>
-      <div class="rating-section control-block hidden" id="ratingBlock3">
-        <div class="control-badge">🎯 Control item</div>
-        <div class="ri-word" id="word3">—</div>
-        <div class="ri-question" id="q3">—</div>
-        <div class="ri-scale" id="scaleWrap3">
-          <div class="ri-btns" id="btns3">
-            <button class="ri-btn" data-val="1" onclick="setScore(2,1)">1</button>
-            <button class="ri-btn" data-val="2" onclick="setScore(2,2)">2</button>
-            <button class="ri-btn" data-val="3" onclick="setScore(2,3)">3</button>
-            <button class="ri-btn" data-val="4" onclick="setScore(2,4)">4</button>
-            <button class="ri-btn" data-val="5" onclick="setScore(2,5)">5</button>
-          </div>
-        </div>
-        <div class="ri-labels" id="labels3">
-          <span id="lbl3a">—</span><span>somewhat <span id="lbl3c">—</span></span><span>neutral</span><span>somewhat <span id="lbl3d">—</span></span><span id="lbl3b">—</span>
-        </div>
-        <div class="ri-na"><input type="checkbox" id="na3" onchange="toggleNA(2)"><label for="na3">Not applicable</label></div>
+        <div class="ri-na"><input type="checkbox" id="rNA" onchange="toggleNA()"><label for="rNA">Not applicable</label></div>
       </div>
 
       <div class="suggest-section hidden" id="suggestSection">
@@ -261,8 +287,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       </div>
 
       <div class="nav-row">
-        <button class="btn btn-sm" id="prevBtn" onclick="navigate(-1)" disabled>← Prev</button>
-        <button class="btn btn-sm btn-primary" onclick="saveAndNext()">Save &amp; next →</button>
+        <button class="btn btn-sm" id="prevBtn" onclick="navigateBack()" disabled>← Prev</button>
+        <button class="btn btn-sm btn-primary" id="nextBtn" onclick="saveAndNext()">Save &amp; next →</button>
       </div>
     </div>
 
@@ -305,11 +331,9 @@ const CONTROL_MAP = {
 };
 
 function getControl(ax) {
-  function norm(w) {
-    return w.replace(/\.a\.\d+$/i, '').replace(/[-\s]+/g, '-').trim().toLowerCase();
-  }
-  const key = norm(ax.negName) + '|' + norm(ax.posName);
-  return CONTROL_MAP[key] || null;
+  function norm(w) { return w.replace(/\.a\.\d+$/i,'').replace(/[-\s]+/g,'-').trim().toLowerCase(); }
+  const key = norm(ax.negName)+'|'+norm(ax.posName);
+  return CONTROL_MAP[key]||null;
 }
 
 // ─── Word pools ───────────────────────────────────────────────────────────────
@@ -329,295 +353,325 @@ const SOCIAL_GROUPS = [
 const AXES_URL = 'example_axes.json';
 let EMBEDDED_DATA = null;
 let AXES = [], annotations = {}, currentIndex = 0;
-let annotatorName='', annotatorAge='', annotatorLang='', annotatorEng='';
-let scores = [null,null,null], nas = [false,false,false];
+let annotatorName='', annotatorAge='', annotatorLang='', annotatorEng='', annotatorEdu='', annotatorBackground='';
+
+// currentStep: 'social' | 'control'
+let currentStep = 'social';
+let currentScore = null, currentNA = false;
 
 // ─── Google Sheets + retry queue ─────────────────────────────────────────────
 const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyn78eo6HmbAQ8WjOAhTs6-0wK4PFfupWiRLxIC_0lQ-FiBRf6AVae8YlS7jLxxn6jfUg/exec';
 let retryQueue = [];
 
 function sendToSheet(rowData) {
-  if (!SHEET_URL || SHEET_URL === 'YOUR_APPS_SCRIPT_URL_HERE') return;
+  if (!SHEET_URL||SHEET_URL==='YOUR_APPS_SCRIPT_URL_HERE') return;
   const encoded = encodeURIComponent(JSON.stringify(rowData));
-  fetch(SHEET_URL + '?data=' + encoded, { method: 'GET' })
-    .then(r => r.json())
-    .then(d => { if(d.status !== 'ok') console.warn('Sheet error:', d); })
-    .catch(() => {
-      // Failed — add to retry queue
-      retryQueue.push(rowData);
-      saveQueueToStorage();
-    });
+  fetch(SHEET_URL+'?data='+encoded,{method:'GET'})
+    .then(r=>r.json())
+    .then(d=>{if(d.status!=='ok') console.warn('Sheet error:',d);})
+    .catch(()=>{retryQueue.push(rowData);saveQueueToStorage();});
 }
-
-function saveQueueToStorage() {
-  try { localStorage.setItem('retry_queue', JSON.stringify(retryQueue)); } catch(e) {}
+function saveQueueToStorage(){try{localStorage.setItem('retry_queue',JSON.stringify(retryQueue));}catch(e){}}
+function loadQueueFromStorage(){try{const q=localStorage.getItem('retry_queue');if(q)retryQueue=JSON.parse(q);}catch(e){}}
+function flushQueue(){
+  if(!navigator.onLine||retryQueue.length===0)return;
+  const toSend=retryQueue.slice();retryQueue=[];saveQueueToStorage();
+  toSend.forEach(row=>sendToSheet(row));
 }
-
-function loadQueueFromStorage() {
-  try {
-    const q = localStorage.getItem('retry_queue');
-    if (q) retryQueue = JSON.parse(q);
-  } catch(e) {}
-}
-
-function flushQueue() {
-  if (!navigator.onLine || retryQueue.length === 0) return;
-  const toSend = retryQueue.slice();
-  retryQueue = [];
-  saveQueueToStorage();
-  toSend.forEach(row => sendToSheet(row));
-}
-
-function autoSave(rowData) {
-  // Always save to localStorage first
-  try {
-    localStorage.setItem('annotation_backup', JSON.stringify({
-      annotatorName, annotatorAge, annotatorLang, annotatorEng,
-      annotations, currentIndex, savedAt: new Date().toISOString()
-    }));
-  } catch(e) {}
-  if (!rowData) return;
-  if (navigator.onLine) {
-    sendToSheet(rowData);
-  } else {
-    retryQueue.push(rowData);
-    saveQueueToStorage();
-  }
+function autoSave(rowData){
+  try{localStorage.setItem('annotation_backup',JSON.stringify({annotatorName,annotatorAge,annotatorLang,annotatorEng,annotatorEdu,annotatorBackground,annotations,currentIndex,savedAt:new Date().toISOString()}));}catch(e){}
+  if(!rowData)return;
+  if(navigator.onLine){sendToSheet(rowData);}else{retryQueue.push(rowData);saveQueueToStorage();}
 }
 
 // ─── Offline detection ────────────────────────────────────────────────────────
-function updateOnlineStatus() {
-  document.getElementById('offlineBanner').style.display = navigator.onLine ? 'none' : 'block';
-  if (navigator.onLine) flushQueue();
+function updateOnlineStatus(){
+  document.getElementById('offlineBanner').style.display=navigator.onLine?'none':'block';
+  if(navigator.onLine)flushQueue();
 }
-window.addEventListener('online',  updateOnlineStatus);
-window.addEventListener('offline', updateOnlineStatus);
+window.addEventListener('online',updateOnlineStatus);
+window.addEventListener('offline',updateOnlineStatus);
 loadQueueFromStorage();
 updateOnlineStatus();
 
 // ─── Parse ────────────────────────────────────────────────────────────────────
-function parseEntry(key, raw) {
-  const lines = raw.split('\n').map(s=>s.trim()).filter(Boolean);
-  const pairLine = lines.find(l=>l.startsWith('Antonym Pair:'))||'';
-  const pairRaw = pairLine.replace('Antonym Pair:','').trim();
-  const clean = w=>w.replace(/\.[a-z]\.\d+$/,'').trim();
-  const parts = pairRaw.split('|');
-  const w1=clean(parts[0]||''), w2=clean(parts[1]||'');
-  const getDef = prefix=>{
-    const line=lines.find(l=>l.startsWith(prefix+':'))||'';
-    const body=line.replace(prefix+':','').trim();
-    const i=body.indexOf('\u2192');
-    return i>=0?body.slice(i+1).trim():body;
-  };
-  return {key, pair:w1+'|'+w2, negName:w1, posName:w2, negDef:getDef('Positive'), posDef:getDef('Negative')};
+function parseEntry(key,raw){
+  const lines=raw.split('\n').map(s=>s.trim()).filter(Boolean);
+  const pairLine=lines.find(l=>l.startsWith('Antonym Pair:'))||'';
+  const pairRaw=pairLine.replace('Antonym Pair:','').trim();
+  const clean=w=>w.replace(/\.[a-z]\.\d+$/,'').trim();
+  const parts=pairRaw.split('|');
+  const w1=clean(parts[0]||''),w2=clean(parts[1]||'');
+  const getDef=prefix=>{const line=lines.find(l=>l.startsWith(prefix+':'))||'';const body=line.replace(prefix+':','').trim();const i=body.indexOf('→');return i>=0?body.slice(i+1).trim():body;};
+  return {key,pair:w1+'|'+w2,negName:w1,posName:w2,negDef:getDef('Positive'),posDef:getDef('Negative')};
 }
 
-function assignWords(axes) {
+function assignWords(axes){
   const sg=SOCIAL_GROUPS.slice();
   for(let i=sg.length-1;i>0;i--){const j=(i*7+13)%(i+1);[sg[i],sg[j]]=[sg[j],sg[i]];}
   axes.forEach((ax,i)=>{
-    ax.socialGroup = sg[i % sg.length];
-    ax.randomNoun  = null;
-    const ctrl = getControl(ax);
-    ax.controlWord     = ctrl ? ctrl.word     : null;
-    ax.controlExpected = ctrl ? ctrl.expected : null;
+    ax.socialGroup=sg[i%sg.length];
+    ax.randomNoun=null;
+    const ctrl=getControl(ax);
+    ax.controlWord=ctrl?ctrl.word:null;
+    ax.controlExpected=ctrl?ctrl.expected:null;
   });
 }
 
-async function loadPairs() {
-  try {
-    const res = await fetch(AXES_URL);
-    if (!res.ok) throw new Error('HTTP '+res.status);
-    EMBEDDED_DATA = await res.json();
-    AXES = Object.entries(EMBEDDED_DATA).map(([k,v])=>parseEntry(k,v));
-    if (!AXES.length) throw new Error('No axes found.');
+async function loadPairs(){
+  try{
+    const res=await fetch(AXES_URL);
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    EMBEDDED_DATA=await res.json();
+    AXES=Object.entries(EMBEDDED_DATA).map(([k,v])=>parseEntry(k,v));
+    if(!AXES.length)throw new Error('No axes found.');
     assignWords(AXES);
-    document.getElementById('stTotal').textContent = AXES.length;
-    document.getElementById('stLeft').textContent  = AXES.length;
+    document.getElementById('stTotal').textContent=AXES.length;
+    document.getElementById('stLeft').textContent=AXES.length;
     document.getElementById('setupPanel').classList.remove('hidden');
-  } catch(err) {
+  }catch(err){
     console.error('Failed to load axes:',err);
     const el=document.createElement('div');
     el.style.cssText='color:var(--err-tx);background:var(--err-bg,#fceaea);border-radius:10px;padding:12px 16px;margin-bottom:1rem;font-size:13px;line-height:1.6';
-    el.textContent='\u26a0 Could not load '+AXES_URL+' \u2014 '+err.message+'. Make sure the JSON file is in the same folder as this HTML file.';
+    el.textContent='⚠ Could not load '+AXES_URL+' — '+err.message+'. Make sure the JSON file is in the same folder as this HTML file.';
     document.querySelector('.app').insertBefore(el,document.getElementById('setupPanel'));
   }
 }
 loadPairs();
 
 // ─── Session start ────────────────────────────────────────────────────────────
-function startSession() {
-  annotatorName = document.getElementById('annotatorName').value.trim();
-  annotatorAge  = document.getElementById('annotatorAge').value.trim();
-  annotatorLang = document.getElementById('annotatorLang').value.trim();
-  annotatorEng  = document.getElementById('annotatorEng').value;
-  if (!annotatorName){ document.getElementById('setupErr').textContent='Please enter your name.'; return; }
-  if (!annotatorAge) { document.getElementById('setupErr').textContent='Please enter your age.'; return; }
-  if (!annotatorLang){ document.getElementById('setupErr').textContent='Please enter your mother tongue.'; return; }
-  if (!annotatorEng) { document.getElementById('setupErr').textContent='Please rate your English proficiency.'; return; }
+function startSession(){
+  annotatorName       = document.getElementById('annotatorName').value.trim();
+  annotatorAge        = document.getElementById('annotatorAge').value.trim();
+  annotatorLang       = document.getElementById('annotatorLang').value.trim();
+  annotatorEng        = document.getElementById('annotatorEng').value;
+  annotatorEdu        = document.getElementById('annotatorEdu').value;
+  annotatorBackground = document.getElementById('annotatorBackground').value.trim();
+  if(!annotatorName)   {document.getElementById('setupErr').textContent='Please enter your name.';return;}
+  if(!annotatorAge)    {document.getElementById('setupErr').textContent='Please enter your age.';return;}
+  if(!annotatorLang)   {document.getElementById('setupErr').textContent='Please enter your mother tongue.';return;}
+  if(!annotatorEng)    {document.getElementById('setupErr').textContent='Please select your English proficiency level.';return;}
+  if(!annotatorEdu)    {document.getElementById('setupErr').textContent='Please select your highest level of education.';return;}
+  if(!annotatorBackground){document.getElementById('setupErr').textContent='Please briefly describe your field of study or professional background.';return;}
   document.getElementById('setupErr').textContent='';
   document.getElementById('setupPanel').classList.add('hidden');
   document.getElementById('statsSection').classList.remove('hidden');
   document.getElementById('annotationSection').classList.remove('hidden');
   document.getElementById('modeLabel').textContent=annotatorName;
-  currentIndex=0; showAxis(0); updateStats();
+  currentIndex=0; currentStep='social';
+  showStep();
+  updateStats();
 }
 
-// ─── Show axis ────────────────────────────────────────────────────────────────
-function showAxis(idx) {
-  if (idx>=AXES.length){showDone();return;}
-  const ax=AXES[idx];
-  document.getElementById('axisIdx').textContent='#'+(idx+1);
+// ─── Step helpers ─────────────────────────────────────────────────────────────
+// Each axis has up to 2 steps: 'social' and (if controlWord exists) 'control'.
+// We track navigation as a flat list of {axisIdx, step} pairs.
+// For simplicity, we keep currentIndex + currentStep as state.
+
+function getStepsForAxis(ax){
+  return ax.controlWord ? ['social','control'] : ['social'];
+}
+
+function totalPages(){
+  return AXES.reduce((s,ax)=>s+getStepsForAxis(ax).length, 0);
+}
+
+function pageNumber(){
+  let n=0;
+  for(let i=0;i<currentIndex;i++) n+=getStepsForAxis(AXES[i]).length;
+  const steps=getStepsForAxis(AXES[currentIndex]);
+  n+=steps.indexOf(currentStep)+1;
+  return n;
+}
+
+function showStep(){
+  if(currentIndex>=AXES.length){showDone();return;}
+  const ax=AXES[currentIndex];
+  const steps=getStepsForAxis(ax);
+  const stepNum=steps.indexOf(currentStep)+1;
+  const stepTotal=steps.length;
+
+  // progress
+  const pg=pageNumber(), total=totalPages();
+  document.getElementById('pfill').style.width=Math.round(((pg-1)/total)*100)+'%';
+  document.getElementById('plabel').textContent=pg+' / '+total;
+  document.getElementById('stepBadge').textContent='step '+stepNum+'/'+stepTotal;
+  document.getElementById('stepBadge').style.display=stepTotal>1?'':'none';
+
+  document.getElementById('axisIdx').textContent='#'+(currentIndex+1);
   document.getElementById('negWord').textContent=ax.negName;
   document.getElementById('negDef').textContent=ax.negDef;
   document.getElementById('posWord').textContent=ax.posName;
   document.getElementById('posDef').textContent=ax.posDef;
-  document.getElementById('pfill').style.width=Math.round((idx/AXES.length)*100)+'%';
-  document.getElementById('plabel').textContent=(idx+1)+' / '+AXES.length;
-  document.getElementById('prevBtn').disabled=idx===0;
 
   const saved=annotations[ax.key]||{};
-  scores[0]=saved[ax.socialGroup]?.score??null;
-  nas[0]   =saved[ax.socialGroup]?.not_applicable??false;
-  renderBlock(0, ax.socialGroup, ax);
-  scores[1]=null; nas[1]=false;
+  const isControl = currentStep==='control';
+  const word = isControl ? ax.controlWord : ax.socialGroup;
 
-  const b3=document.getElementById('ratingBlock3');
-  const d3=document.getElementById('dividerControl');
-  if(ax.controlWord){
-    b3.classList.remove('hidden'); d3.style.display='';
-    scores[2]=saved[ax.controlWord]?.score??null;
-    nas[2]   =saved[ax.controlWord]?.not_applicable??false;
-    renderBlock(2, ax.controlWord, ax);
-  } else {
-    b3.classList.add('hidden'); d3.style.display='none';
-    scores[2]=null; nas[2]=false;
-  }
+  // Restore saved score for this word
+  currentScore = saved[word]?.score ?? null;
+  currentNA    = saved[word]?.not_applicable ?? false;
 
-  updateSuggestVisibility(ax);
+  // Control notice
+  const cn=document.getElementById('controlNotice');
+  if(isControl){cn.classList.remove('hidden');}else{cn.classList.add('hidden');}
+
+  // Word & question — is/are logic: control words use "Is", social groups use "Are"
+  document.getElementById('rWord').textContent=word;
+  const verb = isControl ? 'Is' : 'Are';
+  document.getElementById('rQ').innerHTML=
+    verb+' <strong>'+word+'</strong> more '+
+    '<em class="neg-color">'+ax.negName+'</em> or '+
+    '<em class="pos-color">'+ax.posName+'</em>?';
+
+  document.getElementById('lblA').textContent=ax.negName;
+  document.getElementById('lblB').textContent=ax.posName;
+  document.getElementById('lblC').textContent=ax.negName;
+  document.getElementById('lblD').textContent=ax.posName;
+  document.getElementById('rNA').checked=currentNA;
+  renderScale(); renderNA();
+
+  // Suggest section (only on social step when score=3)
+  updateSuggestVisibility(ax, word);
+
+  // Prev button
+  const canGoBack = currentIndex>0 || currentStep!='social';
+  document.getElementById('prevBtn').disabled=!canGoBack;
+
+  // Next button label
+  const isLastStep = (currentStep==='control'||!ax.controlWord);
+  const isLastAxis = currentIndex===AXES.length-1;
+  document.getElementById('nextBtn').textContent =
+    (isLastStep&&isLastAxis) ? 'Finish ✓' : 'Save & next →';
+
   document.getElementById('mainCard').classList.remove('hidden');
   document.getElementById('doneMsg').classList.add('hidden');
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
-function renderBlock(w, word, ax) {
-  const n=w+1;
-  const usePlural = word.endsWith('s')||word.includes(' ');
-  document.getElementById('word'+n).textContent=word;
-  document.getElementById('q'+n).innerHTML=
-    (usePlural?'Are ':'Is ')+'<strong>'+word+'</strong> more '+
-    '<em class="neg-color">'+ax.negName+'</em> or '+
-    '<em class="pos-color">'+ax.posName+'</em>?';
-  document.getElementById('lbl'+n+'a').textContent=ax.negName;
-  document.getElementById('lbl'+n+'b').textContent=ax.posName;
-  document.getElementById('lbl'+n+'c').textContent=ax.negName;
-  document.getElementById('lbl'+n+'d').textContent=ax.posName;
-  document.getElementById('na'+n).checked=nas[w];
-  renderScaleFor(w); renderNAFor(w);
-}
 
-function updateSuggestVisibility(ax) {
+function updateSuggestVisibility(ax, word){
   const sugSec=document.getElementById('suggestSection');
-  if(scores[0]===3||scores[2]===3){
+  if(currentScore===3){
     sugSec.classList.remove('hidden');
     document.getElementById('sugNegLbl').textContent=ax.negName;
     document.getElementById('sugPosLbl').textContent=ax.posName;
     const saved=annotations[ax.key]||{};
     document.getElementById('sugNeg').value=saved._suggest_neg||'';
     document.getElementById('sugPos').value=saved._suggest_pos||'';
-  } else {
+  }else{
     sugSec.classList.add('hidden');
   }
 }
 
-function setScore(w,val){
-  scores[w]=val; nas[w]=false;
-  document.getElementById('na'+(w+1)).checked=false;
-  renderNAFor(w); renderScaleFor(w);
-  updateSuggestVisibility(AXES[currentIndex]);
+function setScore(val){
+  currentScore=val; currentNA=false;
+  document.getElementById('rNA').checked=false;
+  renderNA(); renderScale();
+  updateSuggestVisibility(AXES[currentIndex], currentStep==='control'?AXES[currentIndex].controlWord:AXES[currentIndex].socialGroup);
 }
-function toggleNA(w){
-  nas[w]=document.getElementById('na'+(w+1)).checked;
-  if(nas[w])scores[w]=null;
-  renderNAFor(w); renderScaleFor(w);
-  updateSuggestVisibility(AXES[currentIndex]);
+function toggleNA(){
+  currentNA=document.getElementById('rNA').checked;
+  if(currentNA)currentScore=null;
+  renderNA(); renderScale();
+  updateSuggestVisibility(AXES[currentIndex], currentStep==='control'?AXES[currentIndex].controlWord:AXES[currentIndex].socialGroup);
 }
-function renderScaleFor(w){
-  const btns=document.getElementById('btns'+(w+1)).children;
-  for(const b of btns){const v=parseInt(b.dataset.val);b.className='ri-btn'+(v===scores[w]?' a'+v:'');}
+function renderScale(){
+  const btns=document.getElementById('rBtns').children;
+  for(const b of btns){const v=parseInt(b.dataset.val);b.className='ri-btn'+(v===currentScore?' a'+v:'');}
 }
-function renderNAFor(w){
-  const n=w+1;
-  document.getElementById('scaleWrap'+n).style.opacity=nas[w]?'.15':'1';
-  document.getElementById('scaleWrap'+n).style.pointerEvents=nas[w]?'none':'';
-  document.getElementById('labels'+n).style.opacity=nas[w]?'.15':'1';
+function renderNA(){
+  document.getElementById('rScaleWrap').style.opacity=currentNA?'.15':'1';
+  document.getElementById('rScaleWrap').style.pointerEvents=currentNA?'none':'';
+  document.getElementById('rLabels').style.opacity=currentNA?'.15':'1';
 }
 
 // ─── Save & navigate ──────────────────────────────────────────────────────────
 function saveAndNext(){
-  if(!nas[0]&&scores[0]===null){alert('Please rate the word or mark it as "Not applicable".');return;}
+  if(!currentNA&&currentScore===null){alert('Please rate the word or mark it as "Not applicable".');return;}
   const ax=AXES[currentIndex];
   if(!annotations[ax.key])annotations[ax.key]={};
+  const isControl=currentStep==='control';
+  const word=isControl?ax.controlWord:ax.socialGroup;
 
-  annotations[ax.key][ax.socialGroup]={score:scores[0],not_applicable:nas[0],word_type:'social_group'};
-
-  if(ax.controlWord){
-    const correct = nas[2] ? null : (scores[2]===ax.controlExpected);
-    annotations[ax.key][ax.controlWord]={
-      score:scores[2], not_applicable:nas[2],
-      word_type:'control', expected_score:ax.controlExpected, correct
-    };
+  if(isControl){
+    const correct=currentNA?null:(currentScore===ax.controlExpected);
+    annotations[ax.key][word]={score:currentScore,not_applicable:currentNA,word_type:'control',expected_score:ax.controlExpected,correct};
+  }else{
+    annotations[ax.key][word]={score:currentScore,not_applicable:currentNA,word_type:'social_group'};
   }
 
-  annotations[ax.key]._meta={
-    axis_key:ax.key, pair:ax.pair,
-    negative_pole:ax.negName, positive_pole:ax.posName,
-    social_group:ax.socialGroup,
-    control_word:ax.controlWord||null,
-    control_expected:ax.controlExpected||null,
-    annotator:annotatorName, timestamp:new Date().toISOString()
-  };
-
+  // Save suggestion if visible
   const sugSec=document.getElementById('suggestSection');
   if(!sugSec.classList.contains('hidden')){
     annotations[ax.key]._suggest_neg=document.getElementById('sugNeg').value.trim();
     annotations[ax.key]._suggest_pos=document.getElementById('sugPos').value.trim();
   }
 
-  const am=getMeta();
-  const s=annotations[ax.key];
-  const items=[
-    {word:ax.socialGroup, type:'social_group', r:s[ax.socialGroup]||{}},
-    ...(ax.controlWord?[{word:ax.controlWord, type:'control', r:s[ax.controlWord]||{}}]:[]),
-  ];
-  items.forEach(({word,type,r})=>{
-    autoSave({
-      timestamp:new Date().toISOString(),
-      annotator:am.name, age:am.age,
-      mother_tongue:am.mother_tongue, english_proficiency:am.english_proficiency,
-      axis_key:ax.key, pair:ax.pair,
-      negative_pole:ax.negName, positive_pole:ax.posName,
-      word, word_type:type,
-      score:r.score??'',
-      not_applicable:r.not_applicable?'yes':'no',
-      expected_score:type==='control'?(ax.controlExpected??''):'',
-      control_correct:type==='control'?(r.correct!=null?(r.correct?'yes':'no'):''):'',
-      suggest_neg:s._suggest_neg||'',
-      suggest_pos:s._suggest_pos||'',
-    });
+  // Meta (write/update on each step)
+  annotations[ax.key]._meta={
+    axis_key:ax.key,pair:ax.pair,
+    negative_pole:ax.negName,positive_pole:ax.posName,
+    social_group:ax.socialGroup,
+    control_word:ax.controlWord||null,
+    control_expected:ax.controlExpected||null,
+    annotator:annotatorName,timestamp:new Date().toISOString()
+  };
+
+  // Send to sheet
+  const r=annotations[ax.key][word]||{};
+  autoSave({
+    timestamp:new Date().toISOString(),
+    annotator:annotatorName, age:annotatorAge,
+    mother_tongue:annotatorLang, english_proficiency:annotatorEng,
+    education:annotatorEdu, background:annotatorBackground,
+    axis_key:ax.key, pair:ax.pair,
+    negative_pole:ax.negName, positive_pole:ax.posName,
+    word, word_type:isControl?'control':'social_group',
+    score:r.score??'',
+    not_applicable:r.not_applicable?'yes':'no',
+    expected_score:isControl?(ax.controlExpected??''):'',
+    control_correct:isControl?(r.correct!=null?(r.correct?'yes':'no'):''):'',
+    suggest_neg:annotations[ax.key]._suggest_neg||'',
+    suggest_pos:annotations[ax.key]._suggest_pos||'',
   });
+
+  // Advance step
+  const steps=getStepsForAxis(ax);
+  const stepIdx=steps.indexOf(currentStep);
+  if(stepIdx<steps.length-1){
+    // move to next step on same axis
+    currentStep=steps[stepIdx+1];
+  }else{
+    // move to next axis
+    currentIndex++;
+    currentStep='social';
+  }
+
   updateStats();
-  if(currentIndex<AXES.length-1){currentIndex++;showAxis(currentIndex);}else showDone();
+  if(currentIndex>=AXES.length){showDone();}else{showStep();}
 }
 
-function navigate(dir){const n=currentIndex+dir;if(n>=0&&n<AXES.length){currentIndex=n;showAxis(n);}}
+function navigateBack(){
+  const ax=AXES[currentIndex];
+  const steps=getStepsForAxis(ax);
+  const stepIdx=steps.indexOf(currentStep);
+  if(stepIdx>0){
+    currentStep=steps[stepIdx-1];
+  }else if(currentIndex>0){
+    currentIndex--;
+    const prevAx=AXES[currentIndex];
+    const prevSteps=getStepsForAxis(prevAx);
+    currentStep=prevSteps[prevSteps.length-1];
+  }
+  showStep();
+}
 
 function showDone(){
   document.getElementById('mainCard').classList.add('hidden');
   document.getElementById('doneMsg').classList.remove('hidden');
   document.getElementById('pfill').style.width='100%';
   autoSave(null);
-  // Auto-download CSV as safety backup
   exportCSV(true);
 }
 
@@ -632,39 +686,25 @@ document.addEventListener('keydown',e=>{
   if(document.getElementById('mainCard').classList.contains('hidden'))return;
   if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'||e.target.tagName==='SELECT')return;
   if(e.key==='Enter'){e.preventDefault();saveAndNext();}
-  if(e.key==='ArrowLeft'){e.preventDefault();navigate(-1);}
+  if(e.key==='ArrowLeft'){e.preventDefault();navigateBack();}
   if(e.key==='ArrowRight'){e.preventDefault();saveAndNext();}
 });
 
 // ─── Export ───────────────────────────────────────────────────────────────────
-const getMeta=()=>({name:annotatorName,age:annotatorAge,mother_tongue:annotatorLang,english_proficiency:annotatorEng});
-
-function exportJSON(silent){
-  const out={
-    annotator:getMeta(), exported_at:new Date().toISOString(), total_axes:AXES.length,
-    annotations:AXES.map(ax=>{
-      const s=annotations[ax.key]||{};
-      const entry={...(s._meta||{}),suggest_neg:s._suggest_neg||null,suggest_pos:s._suggest_pos||null,ratings:{}};
-      entry.ratings[ax.socialGroup]=s[ax.socialGroup]||{score:null,not_applicable:null,word_type:'social_group'};
-      if(ax.controlWord) entry.ratings[ax.controlWord]=s[ax.controlWord]||{score:null,not_applicable:null,word_type:'control',expected_score:ax.controlExpected};
-      return entry;
-    })
-  };
-  dl('annotations_'+annotatorName.replace(/\s+/g,'_')+'.json',JSON.stringify(out,null,2),'application/json');
-  if(!silent) showExportAlert('JSON downloaded.');
-}
+const getMeta=()=>({name:annotatorName,age:annotatorAge,mother_tongue:annotatorLang,english_proficiency:annotatorEng,education:annotatorEdu,background:annotatorBackground});
 
 function exportCSV(silent){
   const cols=['axis_key','pair','negative_pole','positive_pole','word','word_type',
               'score','not_applicable','expected_score','control_correct',
-              'suggest_neg','suggest_pos','annotator','age','mother_tongue','english_proficiency','timestamp'];
+              'suggest_neg','suggest_pos',
+              'annotator','age','mother_tongue','english_proficiency','education','background','timestamp'];
   const rows=[];
   const am=getMeta();
   AXES.forEach(ax=>{
     const s=annotations[ax.key]||{},m=s._meta||{};
     const items=[
-      {word:ax.socialGroup, type:'social_group'},
-      ...(ax.controlWord?[{word:ax.controlWord, type:'control'}]:[]),
+      {word:ax.socialGroup,type:'social_group'},
+      ...(ax.controlWord?[{word:ax.controlWord,type:'control'}]:[]),
     ];
     items.forEach(({word,type})=>{
       const r=s[word]||{};
@@ -675,14 +715,16 @@ function exportCSV(silent){
         expected_score:type==='control'?(ax.controlExpected??''):'',
         control_correct:type==='control'?(r.correct!=null?(r.correct?'yes':'no'):''):'',
         suggest_neg:s._suggest_neg||'',suggest_pos:s._suggest_pos||'',
-        annotator:am.name,age:am.age,mother_tongue:am.mother_tongue,english_proficiency:am.english_proficiency,
+        annotator:am.name,age:am.age,mother_tongue:am.mother_tongue,
+        english_proficiency:am.english_proficiency,
+        education:am.education,background:am.background,
         timestamp:m.timestamp||''
       });
     });
   });
   const csv=[cols.join(','),...rows.map(r=>cols.map(c=>'"'+String(r[c]??'').replace(/"/g,'""')+'"').join(','))].join('\n');
   dl('annotations_'+annotatorName.replace(/\s+/g,'_')+'.csv',csv,'text/csv');
-  if(!silent) showExportAlert('CSV downloaded.');
+  if(!silent)showExportAlert('CSV downloaded.');
 }
 
 function dl(n,c,t){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([c],{type:t}));a.download=n;a.click();}
