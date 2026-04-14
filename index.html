@@ -555,7 +555,7 @@ function renderNAFor(w){
 
 // ─── Save & navigate ──────────────────────────────────────────────────────────
 function saveAndNext(){
-  if(!nas[0]&&scores[0]===null){alert('Please rate the social group word or mark it as "Not applicable".');return;}
+  if(!nas[0]&&scores[0]===null){alert('Please rate the word or mark it as "Not applicable".');return;}
   const ax=AXES[currentIndex];
   if(!annotations[ax.key])annotations[ax.key]={};
 
