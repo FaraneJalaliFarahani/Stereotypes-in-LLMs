@@ -285,8 +285,8 @@ const CONTROL_MAP = {
   'smart|stupid':          { word: 'Albert Einstein', expected: 1 },
   'painless|painful':      { word: 'bruise',          expected: 5 },
   'painful|painless':      { word: 'bruise',          expected: 1 },
-  'sad|glad':              { word: 'funeral',         expected: 1 },
-  'glad|sad':              { word: 'funeral',         expected: 5 },
+  'tasteless|tasty':       { word: 'ice cream',         expected: 5 },
+  'tasty|tasteless':       { word: 'ice cream',         expected: 1 },
   'weak|strong':           { word: 'bodybuilder',     expected: 5 },
   'strong|weak':           { word: 'bodybuilder',     expected: 1 },
   'nonviolent|violent':    { word: 'war',             expected: 5 },
@@ -301,8 +301,8 @@ const CONTROL_MAP = {
   'wet|dry':               { word: 'desert',          expected: 5 },
   'irreligious|religious': { word: 'atheist',         expected: 1 },
   'religious|irreligious': { word: 'atheist',         expected: 5 },
-  'poor|rich':             { word: 'yacht',           expected: 5 },
-  'rich|poor':             { word: 'yacht',           expected: 1 },
+  'poor|rich':             { word: 'Elon Musk',           expected: 5 },
+  'rich|poor':             { word: 'Elon Musk',           expected: 1 },
 };
 
 function getControl(ax) {
