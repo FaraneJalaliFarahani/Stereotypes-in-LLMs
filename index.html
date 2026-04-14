@@ -91,8 +91,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 }
 .ri-labels{display:flex;justify-content:center;gap:6px;margin-top:3px}
 .ri-labels span{width:60px;text-align:center;font-size:10px;color:var(--text3);line-height:1.3}
-.ri-labels span:first-child{color:var(--neg-tx);font-weight:600}
-.ri-labels span:last-child{color:var(--pos-tx);font-weight:600}
+.lbl-neg{color:var(--neg-tx)!important;font-weight:600}
+.lbl-pos{color:var(--pos-tx)!important;font-weight:600}
 .ri-na{display:flex;align-items:center;gap:8px;margin-top:14px}
 .ri-na input{width:17px;height:17px;accent-color:var(--accent);cursor:pointer}
 .ri-na label{font-size:13px;color:var(--text2);cursor:pointer}
@@ -271,11 +271,11 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
           </div>
         </div>
         <div class="ri-labels" id="rLabels">
-          <span id="lblA">—</span>
-          <span>somewhat <span id="lblC">—</span></span>
+          <span id="lblA" class="lbl-neg"></span>
+          <span>somewhat <span id="lblC"></span></span>
           <span>neutral</span>
-          <span>somewhat <span id="lblD">—</span></span>
-          <span id="lblB">—</span>
+          <span>somewhat <span id="lblD"></span></span>
+          <span id="lblB" class="lbl-pos"></span>
         </div>
         <div class="ri-na"><input type="checkbox" id="rNA" onchange="toggleNA()"><label for="rNA">Not applicable</label></div>
       </div>
@@ -657,13 +657,23 @@ function saveAndNext(){
 
   updateStats();
   if(currentIndex>=AXES.length){
-    // Brief delay so user sees the save completed before done screen
-    setTimeout(showDone, 150);
+    showDone();
+    document.getElementById('prevBtn').disabled=false;
   }else{showStep();}
 }
 
 function navigateBack(){
-  const ax=AXES[currentIndex];
+  // If on done screen, go back to last annotation step
+  document.getElementById('nextBtn').style.display='';
+  document.getElementById('doneMsg').classList.add('hidden');
+  const ax=AXES[currentIndex>=AXES.length?AXES.length-1:currentIndex];
+  if(currentIndex>=AXES.length){
+    currentIndex=AXES.length-1;
+    const prevSteps=getStepsForAxis(ax);
+    currentStep=prevSteps[prevSteps.length-1];
+    showStep();
+    return;
+  }
   const steps=getStepsForAxis(ax);
   const stepIdx=steps.indexOf(currentStep);
   if(stepIdx>0){
@@ -678,7 +688,9 @@ function navigateBack(){
 }
 
 function showDone(){
-  document.getElementById('mainCard').classList.add('hidden');
+  // Keep mainCard visible so annotator can still go back
+  // Just hide the next button and show done message
+  document.getElementById('nextBtn').style.display='none';
   document.getElementById('doneMsg').classList.remove('hidden');
   document.getElementById('pfill').style.width='100%';
   autoSave(null);
