@@ -128,6 +128,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 </style>
 </head>
 <body>
+<div id="offlineBanner" style="display:none;background:#fceaea;color:#7a1f1f;font-size:13px;padding:10px 16px;text-align:center;border-bottom:1px solid #f0b8b8;">
+  ⚠️ You appear to be <strong>offline</strong>. Your answers are being saved locally and will be sent automatically when you reconnect.
+</div>
 <div class="app">
   <div class="header">
     <h1>Antonym Pairs Annotation</h1>
@@ -137,7 +140,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
   <div class="card" id="setupPanel">
     <div class="inst-block">
       <h3>Instructions</h3>
-      <p>You will see <strong>antonym pairs</strong> (two opposite adjectives). For each pair, you will rate word(s) on a 1–5 scale between the two adjectives.</p>
+      <p>You will see <strong>antonym pairs</strong> (two opposite adjectives). For each pair, you will rate <strong>one or more words</strong> on a 1–5 scale between the two adjectives. Sometimes you will be asked to rate a second word on the same scale.</p>
       <div class="inst-example">
         <div class="ex-label">Example</div>
         <p>Antonym pair: <strong>poor ↔ rich</strong></p>
@@ -147,7 +150,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       </div>
     </div>
     <div class="warn-note">
-      <strong>Important:</strong> Please complete the annotation <strong>in one sitting</strong> without interruption. Taking breaks may shift your perspective and affect consistency.
+      <strong>Important:</strong> Please complete the annotation <strong>in one sitting</strong> without interruption. Taking breaks may shift your perspective and affect consistency.<br><br>
+      Please make sure you are <strong>connected to the internet</strong> before starting — your responses are saved automatically to our server after each question. If you lose connection, responses will be queued and sent as soon as you reconnect.<br><br>
+      As an extra safety measure, a CSV file will be <strong>downloaded automatically to your device</strong> when you finish. Please <strong>send this file back to us</strong> by email after completing the annotation.
     </div>
     <div style="padding:0 1.5rem 1.5rem">
       <div class="field">
@@ -221,8 +226,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
         <div class="ri-na"><input type="checkbox" id="na1" onchange="toggleNA(0)"><label for="na1">Not applicable</label></div>
       </div>
 
-
-
       <!-- Block 3: Control word (shown only when axis has a control mapping) -->
       <div class="divider" id="dividerControl" style="display:none"></div>
       <div class="rating-section control-block hidden" id="ratingBlock3">
@@ -264,7 +267,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
       </div>
     </div>
 
-    <div class="done-state hidden" id="doneMsg">✓ All done! Your annotations have been auto-saved. Download a copy below.</div>
+    <div class="done-state hidden" id="doneMsg">✓ All done! A CSV file has been downloaded to your device — please send it back to us by email. Thank you!</div>
     <div class="export-bar">
       <span>Export annotations</span>
       <div class="btn-row">
@@ -278,7 +281,6 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
 <script>
 // ─── Control word mappings ────────────────────────────────────────────────────
-// Key = "negName|posName" lowercased. expected = correct score (1=neg pole, 5=pos pole).
 const CONTROL_MAP = {
   'stupid|smart':          { word: 'Albert Einstein', expected: 5 },
   'smart|stupid':          { word: 'Albert Einstein', expected: 1 },
@@ -305,7 +307,6 @@ const CONTROL_MAP = {
 };
 
 function getControl(ax) {
-  // Strip .a.01 suffixes and normalize to lowercase for robust matching
   function norm(w) {
     return w.replace(/\.a\.\d+$/i, '').replace(/[-\s]+/g, '-').trim().toLowerCase();
   }
@@ -326,41 +327,75 @@ const SOCIAL_GROUPS = [
   "immigrants","uneducated people","traditional women","transgender people","LGBTQ people",
   "White people","Black people","Hispanic people","middle class people","women"
 ];
-const RANDOM_NOUNS = [
-  "door","cherry","cupcake","pumpkin","helmet","brick","triangle","whistle","sparrow","mozzarella",
-  "ananas","lung","alley","ash","bulb","catfish","bosch","dior","cinnamon","doughnut",
-  "sponge","clam","sandwich","sunflower","stork","saucer","sweater","tape","halloween","telephone",
-  "holiday","perfume","kimono","nougat","jackpot","lobby","moonlight","fireball","mousetrap","raisin",
-  "voice","sand","clove","note","key","taste","wish","escort","domino","sixpack"
-];
-
 
 const AXES_URL = 'example_axes.json';
 let EMBEDDED_DATA = null;
 let AXES = [], annotations = {}, currentIndex = 0;
 let annotatorName='', annotatorAge='', annotatorLang='', annotatorEng='';
-// scores[0]=social group, [1]=random noun, [2]=control word
 let scores = [null,null,null], nas = [false,false,false];
 
-// ─── Auto-save ────────────────────────────────────────────────────────────────
+// ─── Google Sheets + retry queue ─────────────────────────────────────────────
 const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyn78eo6HmbAQ8WjOAhTs6-0wK4PFfupWiRLxIC_0lQ-FiBRf6AVae8YlS7jLxxn6jfUg/exec';
+let retryQueue = [];
+
+function sendToSheet(rowData) {
+  if (!SHEET_URL || SHEET_URL === 'YOUR_APPS_SCRIPT_URL_HERE') return;
+  const encoded = encodeURIComponent(JSON.stringify(rowData));
+  fetch(SHEET_URL + '?data=' + encoded, { method: 'GET' })
+    .then(r => r.json())
+    .then(d => { if(d.status !== 'ok') console.warn('Sheet error:', d); })
+    .catch(() => {
+      // Failed — add to retry queue
+      retryQueue.push(rowData);
+      saveQueueToStorage();
+    });
+}
+
+function saveQueueToStorage() {
+  try { localStorage.setItem('retry_queue', JSON.stringify(retryQueue)); } catch(e) {}
+}
+
+function loadQueueFromStorage() {
+  try {
+    const q = localStorage.getItem('retry_queue');
+    if (q) retryQueue = JSON.parse(q);
+  } catch(e) {}
+}
+
+function flushQueue() {
+  if (!navigator.onLine || retryQueue.length === 0) return;
+  const toSend = retryQueue.slice();
+  retryQueue = [];
+  saveQueueToStorage();
+  toSend.forEach(row => sendToSheet(row));
+}
 
 function autoSave(rowData) {
+  // Always save to localStorage first
   try {
     localStorage.setItem('annotation_backup', JSON.stringify({
       annotatorName, annotatorAge, annotatorLang, annotatorEng,
       annotations, currentIndex, savedAt: new Date().toISOString()
     }));
   } catch(e) {}
-  if (!rowData || !SHEET_URL || SHEET_URL === 'YOUR_APPS_SCRIPT_URL_HERE') return;
-  // Apps Script requires data as URL parameter (GET) to avoid CORS preflight issues
-  const encoded = encodeURIComponent(JSON.stringify(rowData));
-  fetch(SHEET_URL + '?data=' + encoded, {
-    method: 'GET',
-  }).then(r => r.json())
-    .then(d => { if(d.status !== 'ok') console.warn('Sheet error:', d); })
-    .catch(e => console.warn('Sheet save failed:', e));
+  if (!rowData) return;
+  if (navigator.onLine) {
+    sendToSheet(rowData);
+  } else {
+    retryQueue.push(rowData);
+    saveQueueToStorage();
+  }
 }
+
+// ─── Offline detection ────────────────────────────────────────────────────────
+function updateOnlineStatus() {
+  document.getElementById('offlineBanner').style.display = navigator.onLine ? 'none' : 'block';
+  if (navigator.onLine) flushQueue();
+}
+window.addEventListener('online',  updateOnlineStatus);
+window.addEventListener('offline', updateOnlineStatus);
+loadQueueFromStorage();
+updateOnlineStatus();
 
 // ─── Parse ────────────────────────────────────────────────────────────────────
 function parseEntry(key, raw) {
@@ -444,15 +479,11 @@ function showAxis(idx) {
   document.getElementById('prevBtn').disabled=idx===0;
 
   const saved=annotations[ax.key]||{};
-
-  // Block 1 – social group (always)
   scores[0]=saved[ax.socialGroup]?.score??null;
   nas[0]   =saved[ax.socialGroup]?.not_applicable??false;
   renderBlock(0, ax.socialGroup, ax);
-
   scores[1]=null; nas[1]=false;
 
-  // Block 3 – control word (when axis has a mapping)
   const b3=document.getElementById('ratingBlock3');
   const d3=document.getElementById('dividerControl');
   if(ax.controlWord){
@@ -489,7 +520,7 @@ function renderBlock(w, word, ax) {
 
 function updateSuggestVisibility(ax) {
   const sugSec=document.getElementById('suggestSection');
-  if(scores[0]===3||scores[1]===3||scores[2]===3){
+  if(scores[0]===3||scores[2]===3){
     sugSec.classList.remove('hidden');
     document.getElementById('sugNegLbl').textContent=ax.negName;
     document.getElementById('sugPosLbl').textContent=ax.posName;
@@ -530,19 +561,13 @@ function saveAndNext(){
   const ax=AXES[currentIndex];
   if(!annotations[ax.key])annotations[ax.key]={};
 
-  // Social group
   annotations[ax.key][ax.socialGroup]={score:scores[0],not_applicable:nas[0],word_type:'social_group'};
 
-
-
-  // Control word (if shown) — store expected score and whether annotator got it right
   if(ax.controlWord){
     const correct = nas[2] ? null : (scores[2]===ax.controlExpected);
     annotations[ax.key][ax.controlWord]={
       score:scores[2], not_applicable:nas[2],
-      word_type:'control',
-      expected_score:ax.controlExpected,
-      correct
+      word_type:'control', expected_score:ax.controlExpected, correct
     };
   }
 
@@ -550,7 +575,6 @@ function saveAndNext(){
     axis_key:ax.key, pair:ax.pair,
     negative_pole:ax.negName, positive_pole:ax.posName,
     social_group:ax.socialGroup,
-    random_noun:ax.randomNoun||null,
     control_word:ax.controlWord||null,
     control_expected:ax.controlExpected||null,
     annotator:annotatorName, timestamp:new Date().toISOString()
@@ -562,32 +586,26 @@ function saveAndNext(){
     annotations[ax.key]._suggest_pos=document.getElementById('sugPos').value.trim();
   }
 
-  // Build a flat row to send to Google Sheets
-  const am = getMeta();
-  const s = annotations[ax.key];
-  const items = [
-    {word: ax.socialGroup, type: 'social_group', r: s[ax.socialGroup]||{}},
-    ...(ax.controlWord ? [{word: ax.controlWord, type: 'control',     r: s[ax.controlWord]||{}}] : []),
+  const am=getMeta();
+  const s=annotations[ax.key];
+  const items=[
+    {word:ax.socialGroup, type:'social_group', r:s[ax.socialGroup]||{}},
+    ...(ax.controlWord?[{word:ax.controlWord, type:'control', r:s[ax.controlWord]||{}}]:[]),
   ];
-  items.forEach(({word, type, r}) => {
+  items.forEach(({word,type,r})=>{
     autoSave({
-      timestamp:       new Date().toISOString(),
-      annotator:       am.name,
-      age:             am.age,
-      mother_tongue:   am.mother_tongue,
-      english_proficiency: am.english_proficiency,
-      axis_key:        ax.key,
-      pair:            ax.pair,
-      negative_pole:   ax.negName,
-      positive_pole:   ax.posName,
-      word,
-      word_type:       type,
-      score:           r.score ?? '',
-      not_applicable:  r.not_applicable ? 'yes' : 'no',
-      expected_score:  type === 'control' ? (ax.controlExpected ?? '') : '',
-      control_correct: type === 'control' ? (r.correct != null ? (r.correct ? 'yes' : 'no') : '') : '',
-      suggest_neg:     s._suggest_neg || '',
-      suggest_pos:     s._suggest_pos || '',
+      timestamp:new Date().toISOString(),
+      annotator:am.name, age:am.age,
+      mother_tongue:am.mother_tongue, english_proficiency:am.english_proficiency,
+      axis_key:ax.key, pair:ax.pair,
+      negative_pole:ax.negName, positive_pole:ax.posName,
+      word, word_type:type,
+      score:r.score??'',
+      not_applicable:r.not_applicable?'yes':'no',
+      expected_score:type==='control'?(ax.controlExpected??''):'',
+      control_correct:type==='control'?(r.correct!=null?(r.correct?'yes':'no'):''):'',
+      suggest_neg:s._suggest_neg||'',
+      suggest_pos:s._suggest_pos||'',
     });
   });
   updateStats();
@@ -595,12 +613,16 @@ function saveAndNext(){
 }
 
 function navigate(dir){const n=currentIndex+dir;if(n>=0&&n<AXES.length){currentIndex=n;showAxis(n);}}
+
 function showDone(){
   document.getElementById('mainCard').classList.add('hidden');
   document.getElementById('doneMsg').classList.remove('hidden');
   document.getElementById('pfill').style.width='100%';
   autoSave(null);
+  // Auto-download CSV as safety backup
+  exportCSV(true);
 }
+
 function updateStats(){
   const done=Object.keys(annotations).filter(k=>annotations[k]._meta).length;
   document.getElementById('stDone').textContent=done;
@@ -626,7 +648,6 @@ function exportJSON(){
       const s=annotations[ax.key]||{};
       const entry={...(s._meta||{}),suggest_neg:s._suggest_neg||null,suggest_pos:s._suggest_pos||null,ratings:{}};
       entry.ratings[ax.socialGroup]=s[ax.socialGroup]||{score:null,not_applicable:null,word_type:'social_group'};
-
       if(ax.controlWord) entry.ratings[ax.controlWord]=s[ax.controlWord]||{score:null,not_applicable:null,word_type:'control',expected_score:ax.controlExpected};
       return entry;
     })
@@ -635,7 +656,7 @@ function exportJSON(){
   showExportAlert('JSON downloaded.');
 }
 
-function exportCSV(){
+function exportCSV(silent){
   const cols=['axis_key','pair','negative_pole','positive_pole','word','word_type',
               'score','not_applicable','expected_score','control_correct',
               'suggest_neg','suggest_pos','annotator','age','mother_tongue','english_proficiency','timestamp'];
@@ -645,8 +666,7 @@ function exportCSV(){
     const s=annotations[ax.key]||{},m=s._meta||{};
     const items=[
       {word:ax.socialGroup, type:'social_group'},
-
-      ...(ax.controlWord ?[{word:ax.controlWord, type:'control'}]    :[]),
+      ...(ax.controlWord?[{word:ax.controlWord, type:'control'}]:[]),
     ];
     items.forEach(({word,type})=>{
       const r=s[word]||{};
@@ -664,7 +684,7 @@ function exportCSV(){
   });
   const csv=[cols.join(','),...rows.map(r=>cols.map(c=>'"'+String(r[c]??'').replace(/"/g,'""')+'"').join(','))].join('\n');
   dl('annotations_'+annotatorName.replace(/\s+/g,'_')+'.csv',csv,'text/csv');
-  showExportAlert('CSV downloaded.');
+  if(!silent) showExportAlert('CSV downloaded.');
 }
 
 function dl(n,c,t){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([c],{type:t}));a.download=n;a.click();}
