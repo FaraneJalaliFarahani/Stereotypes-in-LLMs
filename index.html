@@ -410,7 +410,7 @@ function assignWords(axes){
   // (original formula (i*7+13)%(i+1) is not a real shuffle)
   const sg=SOCIAL_GROUPS.slice();
   for(let i=sg.length-1;i>0;i--){
-    const j=(i*23+5)%(i+1);
+    const j=(i*2+5)%(i+1);
     [sg[i],sg[j]]=[sg[j],sg[i]];
   }
   axes.forEach((ax,i)=>{
