@@ -689,9 +689,11 @@ function showDone(){
 }
 
 function updateStats(){
-  const done=Object.keys(annotations).filter(k=>annotations[k]._meta).length;
-  document.getElementById('stDone').textContent=done;
-  document.getElementById('stLeft').textContent=AXES.length-done;
+  const pg = pageNumber ? pageNumber() : 0;
+  const total = totalPages();
+  const done = currentIndex >= AXES.length ? total : pg - 1;
+  document.getElementById('stDone').textContent = done;
+  document.getElementById('stLeft').textContent = total - done;
 }
 
 document.addEventListener('keydown',e=>{
