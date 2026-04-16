@@ -476,6 +476,7 @@ function totalPages(){
 }
 
 function pageNumber(){
+  if(currentIndex>=AXES.length) return totalPages();
   let n=0;
   for(let i=0;i<currentIndex;i++) n+=getStepsForAxis(AXES[i]).length;
   const steps=getStepsForAxis(AXES[currentIndex]);
@@ -646,11 +647,13 @@ function saveAndNext(){
     currentStep='social';
   }
 
+if(currentIndex>=AXES.length){
   updateStats();
-  if(currentIndex>=AXES.length){
-    showDone();
-    document.getElementById('prevBtn').disabled=false;
-  }else{showStep();}
+  showDone();
+  document.getElementById('prevBtn').disabled=false;
+}else{
+  updateStats();
+  showStep();
 }
 
 function navigateBack(){
