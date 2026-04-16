@@ -402,7 +402,7 @@ function parseEntry(key,raw){
   const w1=clean(parts[0]||''),w2=clean(parts[1]||'');
   // FIX #3: getDef was using 'Positive' for negDef and 'Negative' for posDef — swapped
   const getDef=prefix=>{const line=lines.find(l=>l.startsWith(prefix+':'))||'';const body=line.replace(prefix+':','').trim();const i=body.indexOf('→');return i>=0?body.slice(i+1).trim():body;};
-  return {key,pair:w1+'|'+w2,negName:w1,posName:w2,negDef:getDef('Positive'),posDef:getDef('Negative')};
+  return {key,pair:w1+'|'+w2,negName:w1,posName:w2,negDef:getDef('Negative'),posDef:getDef('Positive')};
 }
 
 function assignWords(axes){
