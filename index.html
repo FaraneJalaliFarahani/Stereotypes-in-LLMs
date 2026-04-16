@@ -311,28 +311,26 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 
 <script>
 const CONTROL_MAP = {
-  'stupid|smart':          { word: 'Albert Einstein', expected: 5 },
-  'smart|stupid':          { word: 'Albert Einstein', expected: 1 },
-  'painless|painful':      { word: 'bruise',          expected: 5 },
-  'painful|painless':      { word: 'bruise',          expected: 1 },
-  'tasteless|tasty':       { word: 'ice cream',       expected: 5 },
-  'tasty|tasteless':       { word: 'ice cream',       expected: 1 },
+  x'dirty|clean':           { word: 'trash can',      expected: 1 },
+  'clean|dirty':           { word: 'trash can',      expected: 5 },
   'weak|strong':           { word: 'bodybuilder',     expected: 5 },
   'strong|weak':           { word: 'bodybuilder',     expected: 1 },
-  'nonviolent|violent':    { word: 'war',             expected: 5 },
-  'violent|nonviolent':    { word: 'war',             expected: 1 },
-  'noisy|quiet':           { word: 'stadium',         expected: 1 },
-  'quiet|noisy':           { word: 'stadium',         expected: 5 },
-  'careless|careful':      { word: 'surgeon',         expected: 5 },
-  'careful|careless':      { word: 'surgeon',         expected: 1 },
-  'small|large':           { word: 'ant',             expected: 1 },
-  'large|small':           { word: 'ant',             expected: 5 },
-  'dry|wet':               { word: 'desert',          expected: 1 },
-  'wet|dry':               { word: 'desert',          expected: 5 },
-  'irreligious|religious': { word: 'atheist',         expected: 1 },
-  'religious|irreligious': { word: 'atheist',         expected: 5 },
-  'poor|rich':             { word: 'Elon Musk',       expected: 5 },
-  'rich|poor':             { word: 'Elon Musk',       expected: 1 },
+  'small|large':           { word: 'bee',          expected: 1 },
+  'large|small':           { word: 'bee',          expected: 5 },
+  'poor|rich':             { word: 'billionaire',    expected: 5 },
+  'rich|poor':             { word: 'billionaire',    expected: 1 },
+  'slow|fast':             { word: 'snail',        expected: 1 },
+  'fast|slow':             { word: 'snail',        expected: 5 },
+  'powerless|powerful':    { word: 'king',           expected: 5 },
+  'powerful|powerless':    { word: 'king',           expected: 1 },
+  'horizontal|vertical':   { word: 'skyscraper',     expected: 5 },
+  'vertical|horizontal':   { word: 'skyscraper',     expected: 1 },
+  'light|heavy':           { word: 'feather',        expected: 1 },
+  'heavy|light':           { word: 'feather',        expected: 5 },
+  'dishonest|honest':      { word: 'liar',           expected: 1 },
+  'honest|dishonest':      { word: 'liar',           expected: 5 },
+  'cowardly|brave':        { word: 'firefighter',    expected: 5 },
+  'brave|cowardly':        { word: 'firefighter',    expected: 1 }
 };
 
 function getControl(ax) {
@@ -354,7 +352,7 @@ const SOCIAL_GROUPS = [
   "White people","Black people","Hispanic people","middle class people","women"
 ];
 
-const AXES_URL = 'example_axes.json';
+const AXES_URL = 'stratified_axes.json';
 let EMBEDDED_DATA = null;
 let AXES = [], annotations = {}, currentIndex = 0;
 let annotatorName='', annotatorAge='', annotatorLang='', annotatorEng='', annotatorEdu='', annotatorBackground='';
@@ -523,7 +521,7 @@ function showStep(){
   if(isControl){cn.classList.remove('hidden');}else{cn.classList.add('hidden');}
 
   document.getElementById('rWord').textContent=word;
-  const verb = isControl ? 'Is' : 'Are';
+  const verb = isControl ? 'Is a' : 'Are';
   document.getElementById('rQ').innerHTML=
     verb+' <strong>'+word+'</strong> more '+
     '<em class="neg-color">'+ax.negName+'</em> or '+
